@@ -17,6 +17,8 @@
   <ItemGroup>
     <Text Include="Readme" />
     <Text Include="include\asm\asm.inc" />
+    <Text Include="boot\build\obji386\Placeholder.txt" />
+    <Text Include="build\target\Placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="boot\i386\boot.asm">

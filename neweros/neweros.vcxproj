@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="boot\build\obji386\Placeholder.txt" />
+    <Text Include="build\target\Placeholder.txt" />
     <Text Include="include\asm\asm.inc" />
     <Text Include="Readme" />
   </ItemGroup>
