@@ -38,7 +38,7 @@ void handleRelocation(char* objFile, IMAGE_FILE_HEADER* header,IMAGE_SECTION_HEA
 	}
 }
 
-//16进制并不需要给出基址
+//16位程序并不需要给出基址
 int main(int argc, char** argv) {
 	if (argc != 3) {
 		cout << "usage native2bin.exe *.obj *.bin" << endl;

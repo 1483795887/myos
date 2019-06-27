@@ -19,7 +19,7 @@ mbr_start:
     mov cx, 100h
     rep movsw
 
-    .jmpl 9000h, next
+    .jmpl MBRSEG, next
 
 next:
     mov ax, cs
