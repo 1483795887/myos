@@ -1,0 +1,5 @@
+MBRSEG      =   0400h
+BOOTSEG     =   07c0h
+LOADERSEG   =   0800h
+SETUPSEG    =   0900h
+KERNELSEG   =   1000h

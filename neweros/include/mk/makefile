@@ -1,4 +1,4 @@
-﻿
+
 incs = /I. /I$(osbase)\include\ /I$(osbase)\include\asm\ 
 
 machine = x86
@@ -6,7 +6,7 @@ targaopts = /coff /Cp
 
 aopts	  = $(targaopts) 
 
-AS = ml.exe /nologo
+AS = ml.exe /nologo 
 AFLAGS = $(aopts) $(incs) /c /Foobj$(targ)\ 
 
 CC = cl.exe /nologo

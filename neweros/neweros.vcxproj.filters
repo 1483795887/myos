@@ -24,5 +24,14 @@
     <None Include="boot\i386\boot.asm">
       <Filter>源文件</Filter>
     </None>
+    <None Include="include\asm\x86Common.inc">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="boot\i386\sectreader.inc">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="boot\i386\mbr.asm">
+      <Filter>源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>

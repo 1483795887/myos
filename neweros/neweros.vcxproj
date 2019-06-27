@@ -26,6 +26,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="boot\i386\boot.asm" />
+    <None Include="boot\i386\mbr.asm" />
+    <None Include="boot\i386\sectreader.inc" />
+    <None Include="include\asm\x86Common.inc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -84,7 +87,7 @@
     <NMakeBuildCommandLine>"$(ProjectDir)Build.bat" $(PlatformTarget) $(Configuration)</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>"$(ProjectDir)Rebuild.bat" $(PlatformTarget) $(Configuration)</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>"$(ProjectDir)Clean.bat" $(PlatformTarget) $(Configuration)</NMakeCleanCommandLine>
-    <IncludePath>$(OsInclude);$(IncludePath)</IncludePath>
+    <IncludePath>$(OsInclude);$(OsInclude)\asm;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <NMakeOutput>neweros.exe</NMakeOutput>

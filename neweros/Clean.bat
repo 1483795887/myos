@@ -1,2 +1,2 @@
-﻿set wrkarch=%1
+set wrkarch=%1
 nmake -nologo %wrkarch%= clean
