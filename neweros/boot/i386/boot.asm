@@ -1,4 +1,4 @@
-include asm.inc
+﻿include asm.inc
 
 .code16
 	mov eax, 1

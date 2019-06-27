@@ -1,4 +1,4 @@
-
+﻿
 incs = /I. /I$(osbase)\include\ /I$(osbase)\include\asm\ 
 
 machine = x86

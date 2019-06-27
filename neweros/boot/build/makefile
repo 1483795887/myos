@@ -1,4 +1,4 @@
-NATIVE2BIN = $(osbase)\tools\native2bin.exe
+﻿NATIVE2BIN = $(osbase)\tools\native2bin.exe
 
 asobjs = $(OBJ)\boot.obj #..\$(targ)\loader.asm
 
