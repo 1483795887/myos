@@ -1,8 +1,7 @@
 subargs = /$(MAKEFLAGS) osbase=$(MAKEDIR)
 
 !if defined(x86)
-subargs		= $(subargs) targ=
-topobj=$(MAKEDIR)\build\obji386
+subargs		= $(subargs) targ=i386 topobj=$(MAKEDIR)\build\obji386 toptarget=$(MAKEDIR)\build\target
 targ		= i386
 lmachine	= x86
 !else

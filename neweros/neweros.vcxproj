@@ -18,6 +18,13 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="include\asm\asm.inc" />
+    <Text Include="Readme" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="boot\i386\boot.asm" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{6A49BDA8-A15D-448E-9DAA-CBD364037CFF}</ProjectGuid>
@@ -71,6 +78,7 @@
     <NMakeBuildCommandLine>"$(ProjectDir)Build.bat" $(PlatformTarget) $(Configuration)</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>"$(ProjectDir)Rebuild.bat" $(PlatformTarget) $(Configuration)</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>"$(ProjectDir)Clean.bat" $(PlatformTarget) $(Configuration)</NMakeCleanCommandLine>
+    <IncludePath>D:\exercise\os\neweros\neweros\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <NMakeOutput>neweros.exe</NMakeOutput>

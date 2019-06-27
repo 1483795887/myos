@@ -15,12 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Readme" />
-    <Text Include="include\asm\asm.inc" />
+    <ClInclude Include="pch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CoffHeaders.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="boot\i386\boot.asm">
+    <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
-    </None>
+    </ClCompile>
+    <ClCompile Include="native2bin.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

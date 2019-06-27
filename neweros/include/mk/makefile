@@ -1,30 +1,24 @@
 
-incs = -I.
+incs = /I. /I$(osbase)\include\ /I$(osbase)\include\asm\ 
 
 machine = x86
-targaopts = -coff -Cp
+targaopts = /coff /Cp 
 
-aopts	  = $(targaopts)
+aopts	  = $(targaopts) 
 
-AS = ml.exe -nologo
-AFLAGS = $(aopts) $(incs) -Foobj$(targ)\ 
+AS = ml.exe /nologo
+AFLAGS = $(aopts) $(incs) /c /Foobj$(targ)\ 
 
-CC = cl.exe -nologo
-CFLAGS = $(copts) $(incs) -Foobj$(targ)\ 
+CC = cl.exe /nologo
+CFLAGS = $(incs) /c /Foobj$(targ)\ 
 
 OBJ = obj$(targ)
 
-#build:$(topobj)\$(library).lib
-
-#clean:
-	#-del $(ccobjs) $(asobjs) /Q
-
-#$(topobj)\$(library).lib:$(ccobjs) $(asobjs)
-#	@echo linking $(library).lib
-#	$(LIB) $(LIBFLAGS) -out:$@ $**
-
-{..\}.cpp{$(OBJ)\}.obj::
-	$(CC) $(CFLAGS) -c $<
+build:$(TARGET)
 
 {..\$(targ)\}.asm{$(OBJ)\}.obj::
-	$(AS) $(AFLAGS) -c $<
+	echo $<
+	$(AS) $(AFLAGS) $<
+
+clean:
+	-del /Q $(asobjs) $(TARGET)
