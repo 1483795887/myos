@@ -2,4 +2,5 @@ DBRSEG      =   0100h
 ROOTDIRSEG  =   0120h
 TEMPSEG     =   0200h
 BOOTSEG     =   2000h
-BOOTPESEG   =   2200h
+SETUPSEG    =   3000h
+KERNELSEG   =   5000h

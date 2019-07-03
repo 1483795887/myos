@@ -8,8 +8,10 @@ RootClusterIndex    = 02ch
 INODESIZE           = 10h
 NAMEOFF             = 00h
 FILETYPE            = 0bh
-CLUSTERLOW          = 14h
-CLUSTERHIG          = 1ah
+CLUSTERLOW          = 1ah
+CLUSTERHIG          = 14h
 FILESIZE            = 1ch
 
 LONGNAME            = 0fh
+MAXCLUSTER          = 0fffffff8h
+LASTCLUSTER         = 0ffffffffh

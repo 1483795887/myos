@@ -29,7 +29,10 @@ findactionloop:
     jnb noactivedivision
     add di, 010h
     jmp findactionloop
-
+noactivedivision:
+    mov cx, 0
+    call showerror
+    jmp $
 getactivedivision:
     mov eax, es:[di + STARTSECT]
     mov ds:[startSect], eax
@@ -39,7 +42,11 @@ getactivedivision:
     mov cx, 1
     call readsectors
 
+    xor eax, eax
     mov al, es:[SectorsPerCluster]
+    shl eax, 9; * 512
+    mov ds:[sizeOfCluster], eax
+
     mov ds:[sectorsPerCluster], al
     mov ax, es:[SavedSectorCount]
     mov ds:[savedSectorCount],  ax
@@ -49,6 +56,7 @@ getactivedivision:
     mov ds:[sectorCountPerFat], eax
     mov eax, es:[RootClusterIndex]
     mov ds:[rootClusterIndex],  eax
+    mov ds:[dirClusterIndex], eax
 
     mov ebx, ds:[startSect]
     add ebx, dword ptr ds:[savedSectorCount]
@@ -60,12 +68,154 @@ getactivedivision:
     mul ecx
     
     add eax, ebx
-    mov ds:[rootSectorIndex], eax
+    mov ds:[firstDataSector], eax
+
+    mov ax, TEMPSEG;    读取FAT
+    mov es, ax
+    mov si, 0
+    mov cx, 1
+    mov eax, ds:[fatSectorIndex]
+    call readsectors
+
+    mov ax, ROOTDIRSEG
+    mov es, ax
+    mov si, 0
+    mov eax, ds:[dirClusterIndex]
+    call readcluster
+
+    mov di, offset rootName
+    call findfile
+
+    movzx eax, word ptr es:[si + CLUSTERLOW]
+    shl eax, 10h
+    mov ax, es:[si + CLUSTERHIG]
+    mov bx, ROOTDIRSEG
+    mov es, bx
+    mov si, 0
+    call readcluster
+
+    mov di, offset setupName
+    mov ax, SETUPSEG
+    mov si, 0
+    call readfile
+
+    mov di, offset kernelName
+    mov ax, KERNELSEG
+    mov si, 0
+    call readfile
+
+    jmp $
 
     
+findfile proc near          ;di为文件名偏移返回si
+    push ax
+    push es
+    push bx
 
-NameLen = 13
-kernel              db "KERNEL  EXE "
+    mov ax, ROOTDIRSEG
+    mov es, ax
+nextcluser:
+    mov esi, 0
+findfileloop:
+    cmp byte ptr es:[si + FILETYPE], LONGNAME   ;为图方便汇编只读取短文件名文件，
+    jz nextfile                                 ;在kernel的fs中再实现长文件名读取
+    cmp byte ptr es:[si + NAMEOFF], 0
+    jz findfileerror
+    mov bx, 0
+strcmploop:
+    mov al, [bx + di]
+    cmp al, es:[bx + si]
+    jnz nextfile
+    inc bx
+    cmp bx, NameLen
+    jb strcmploop
+    jmp findover
+nextfile:
+    add si, INODESIZE
+    cmp esi, ds:[sizeOfCluster]
+    jnz findfileloop
+    mov eax, ds:[dirClusterIndex]
+    call getNextCluster
+    cmp eax, ds:[rootClusterIndex]
+    jbe findfileerror
+    cmp eax, MAXCLUSTER
+    jnb findfileerror
+    mov ds:[dirClusterIndex], eax
+    mov si, 0
+    call readcluster
+    jmp nextcluser
+findfileerror:
+    mov ax, di
+    sub ax, offset rootName
+    mov bl, NameLen
+    div bl
+    add ax, 2
+    call showerror
+    jmp $
+findover:
+    pop bx
+    pop es
+    pop ax
+
+    mov ax, si
+    ret
+findfile endp
+
+getNextCluster proc ;eax为参数返回eax
+    push es
+    push bx
+    push si
+    push cx
+    mov bx, TEMPSEG
+    mov es, bx
+    shl eax, 2
+    cmp eax, 200h ; *4
+    jb thissector
+    inc dword ptr ds:[fatSectorIndex]
+    mov eax, ds:[fatSectorIndex]
+    mov si, 0
+    mov cx, 1
+    call readsectors
+thissector:
+    and eax, 1fch   ;余512，与4对齐
+    mov eax, [eax]
+    pop cx
+    pop si
+    pop bx
+    pop es
+    ret
+getNextCluster endp
+
+readfile proc near  ;读入es:si di 为文件名偏移
+    push eax
+
+    push si
+    call findfile
+    push es
+    mov ax, ROOTDIRSEG
+    mov es, ax
+    movzx eax, word ptr es:[si + CLUSTERLOW]
+    shl eax, 10h
+    mov ax, es:[si + CLUSTERHIG]
+    pop es
+    pop si
+    
+readfileloop:
+    call readcluster
+    call getNextCluster
+    cmp eax, LASTCLUSTER
+    jnz readfileloop
+
+    pop eax
+    ret
+readloop:
+    
+readfile endp
+
+NameLen = 11
+rootName            db "ROOT       "
+setupName           db "SETUP   EXE"
+kernelName          db "KERNEL  EXE"
 
 startSect           dd 0
 sectorsPerCluster   db 0
@@ -73,9 +223,11 @@ savedSectorCount    dw 0
 fatCount            db 0
 sectorCountPerFat   dd 0
 rootClusterIndex    dd 0
+sizeOfCluster       dd 0
 
 fatSectorIndex      dd 0
-rootSectorIndex     dd 0
+dirClusterIndex     dd 0
+firstDataSector     dd 0
 
     
 
@@ -93,6 +245,23 @@ disk_addr_packet    db  10h            ;结构大小16     +0
                     dw  0               ;目标地址段     +6
                     dd  0               ;LBA低32位      +8    
                     dd  0               ;LBA高32位      +c
+
+readcluster proc near ;eax为cluster序号不修改 es:si为位置，更新
+    push ecx
+    push edx
+    push eax
+
+    sub eax, ds:[rootClusterIndex]
+    movzx ecx, ds:[sectorsPerCluster]
+    mul ecx
+    add eax, ds:[firstDataSector]
+
+    call readsectors
+
+    pop eax
+    pop edx
+    pop ecx
+readcluster endp
 
 ;cx为读取扇区数,es:si为存放位置 eax为LBA,更新es:si的值
 readsectors proc near
@@ -114,21 +283,23 @@ readsectors proc near
 
     ret
 
-readsectors endp
-
-noactivedivision:
-    mov cx, 0
-    call showerror
-    jmp $
-
 readsectorserr:
     mov cx, 1
     call showerror
     jmp $
 
+readsectors endp
+
+
+
+
+
 MessageLength   =   32
 ErrorMessage    db  "NO ACTIVE DIVISION             ",0
                 db  "READ SECTORS FAILED            ",0
+                db  "LOST OF ROOT DIR               ",0
+                db  "LOST OF SETUP.EXE              ",0
+                db  "LOST OF KERNEL.EXE             ",0
 showerror proc near ;cx为编号
     mov ax, MessageLength
     mul cx

@@ -34,7 +34,7 @@ void handleRelocation(char* objFile, IMAGE_FILE_HEADER* header,IMAGE_SECTION_HEA
 
 		uint16_t value = symbol->value + codeSection->RVA;
 
-		*((uint16_t*)pRelocation) = value;
+		*((uint16_t*)pRelocation) += value;
 	}
 }
 

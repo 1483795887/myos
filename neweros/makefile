@@ -28,10 +28,8 @@ $(buildtargets):
 install:
     mount
 
-    -del /s /q $(masterdisk):\*.*
-    -rd /s /q $(masterdisk):\root 
-    mkdir $(masterdisk):\root
-    copy /b $(toptarget)\bootmgr $(masterdisk):\root\bootmgr
+    -mkdir $(masterdisk):\root
+    copy /b /y $(toptarget)\bootmgr $(masterdisk):\bootmgr
 
     unmount
 
