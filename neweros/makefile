@@ -1,7 +1,10 @@
 subargs = /$(MAKEFLAGS) osbase=$(MAKEDIR)
 
+masterdisk = O
+toptarget = $(MAKEDIR)\build\target
+
 !if defined(x86)
-subargs		= $(subargs) targ=i386 topobj=$(MAKEDIR)\build\obji386 toptarget=$(MAKEDIR)\build\target
+subargs		= $(subargs) targ=i386 topobj=$(MAKEDIR)\build\obji386 toptarget=$(toptarget) 
 targ		= i386
 lmachine	= x86
 !else
@@ -18,11 +21,19 @@ default:$(buildtargets) install
 
 $(buildtargets):
 	cd $(MAKEDIR)\$(@R)\build
-		@$(MAKE) $(subargs) module=$(@R)
-	@cd $(MAKEDIR)
+		$(MAKE) $(subargs) module=$(@R)
+	cd $(MAKEDIR)
 	
+    
 install:
-	echo "install"
+    mount
+
+    -del /s /q $(masterdisk):\*.*
+    -rd /s /q $(masterdisk):\root 
+    mkdir $(masterdisk):\root
+    copy /b $(toptarget)\bootmgr $(masterdisk):\root\bootmgr
+
+    unmount
 
 clean:$(cleantargets) remove
 

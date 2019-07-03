@@ -1,2 +1,3 @@
 set wrkarch=%1
-nmake -nologo %wrkarch%= clean
+set wrkconfig=%2
+nmake -nologo %wrkarch%= %wrkconfig%= clean

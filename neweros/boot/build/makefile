@@ -1,14 +1,28 @@
 NATIVE2BIN = $(osbase)\tools\native2bin.exe  
 #测试一下
 
-asobjs = $(OBJ)\mbr.obj $(OBJ)\boot.obj #..\$(targ)\loader.asm
+asobjs = $(OBJ)\bootmgr.obj
+ccarchobjs = $(OBJ)\bootmgrpe.obj
 
-TARGET = $(toptarget)\mbr.sys $(toptarget)\boot.sys# $(osbase)\build\loader.sys
+target = $(toptarget)\bootmgr 
+
+particularopts = /section:.text,ERW /merge:.rdata=.text /base:0x10000 /fixed /align:0x400 /merge:.data=.text /entry:start
+
+#special = $(OBJ)\bootmgr.bin $(OBJ)\bootmgrpe.exe
 
 !include $(osbase)\include\mk\makefile
 
-$(toptarget)\mbr.sys:$(OBJ)\mbr.OBJ
-    $(NATIVE2BIN) $(OBJ)\mbr.obj $(toptarget)\mbr.sys
+#$(toptarget)\bootmgr:$(special)
+#    copy /b $(OBJ)\bootmgr.bin+$(OBJ)\bootmgrpe.sys >> $@
 
-$(toptarget)\boot.sys:$(OBJ)\boot.obj 
-	$(NATIVE2BIN) $(OBJ)\boot.obj $(toptarget)\boot.sys
+
+
+#$(OBJ)\bootmgr.bin:$(OBJ)\bootmgr.obj 
+#	$(NATIVE2BIN) $(OBJ)\bootmgr.obj $(toptarget)\bootmgr.bin
+    
+#$(toptarget)\bootmgrpe.exe:$(OBJ)\bootmgrpe.obj
+#    $(LINK) $(LINKFLAGS) $(particularopts) /out:$@ $**
+
+
+$(toptarget)\bootmgr:$(OBJ)\bootmgr.obj
+    $(NATIVE2BIN) $(OBJ)\bootmgr.obj $(toptarget)\bootmgr
