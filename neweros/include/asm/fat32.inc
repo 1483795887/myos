@@ -13,5 +13,5 @@ CLUSTERHIG          = 14h
 FILESIZE            = 1ch
 
 LONGNAME            = 0fh
-MAXCLUSTER          = 0fffffff8h
-LASTCLUSTER         = 0ffffffffh
+MAXCLUSTER          = 0ffffff8h
+LASTCLUSTER         = 0fffffffh

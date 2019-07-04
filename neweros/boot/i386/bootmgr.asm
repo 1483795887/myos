@@ -97,11 +97,13 @@ getactivedivision:
 
     mov di, offset setupName
     mov ax, SETUPSEG
+    mov es, ax
     mov si, 0
-    call readfile
+    call readfile   
 
     mov di, offset kernelName
     mov ax, KERNELSEG
+    mov es, ax
     mov si, 0
     call readfile
 
@@ -180,7 +182,7 @@ getNextCluster proc ;eax为参数返回eax
     call readsectors
 thissector:
     and eax, 1fch   ;余512，与4对齐
-    mov eax, [eax]
+    mov eax, es: [eax]
     pop cx
     pop si
     pop bx
@@ -202,9 +204,20 @@ readfile proc near  ;读入es:si di 为文件名偏移
     pop es
     pop si
     
+    mov ecx, ds:[sizeOfCluster]
+    shr ecx, 4
+    and ecx, 0ffffh         ;暂时只能支持簇大小在2^28B以内即128M以内，应该没问题
 readfileloop:
+    mov si, 0
+    push ecx
     call readcluster
     call getNextCluster
+    pop ecx
+    push ax
+    mov ax, es
+    add ax, cx
+    mov es ,ax
+    pop ax
     cmp eax, LASTCLUSTER
     jnz readfileloop
 
