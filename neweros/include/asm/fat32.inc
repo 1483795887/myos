@@ -5,7 +5,7 @@ StartSectorIndex    = 01ch
 SectorCountPerFat   = 024h
 RootClusterIndex    = 02ch
 
-INODESIZE           = 10h
+INODESIZE           = 20h
 NAMEOFF             = 00h
 FILETYPE            = 0bh
 CLUSTERLOW          = 1ah

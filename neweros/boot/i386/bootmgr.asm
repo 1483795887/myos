@@ -44,10 +44,10 @@ getactivedivision:
 
     xor eax, eax
     mov al, es:[SectorsPerCluster]
+    mov ds:[sectorsPerCluster], al
     shl eax, 9; * 512
     mov ds:[sizeOfCluster], eax
 
-    mov ds:[sectorsPerCluster], al
     mov ax, es:[SavedSectorCount]
     mov ds:[savedSectorCount],  ax
     mov al, es:[FatCount]
@@ -59,7 +59,8 @@ getactivedivision:
     mov ds:[dirClusterIndex], eax
 
     mov ebx, ds:[startSect]
-    add ebx, dword ptr ds:[savedSectorCount]
+    movzx ecx, word ptr ds:[savedSectorCount]
+    add ebx, ecx
     mov ds:[fatSectorIndex], ebx
 
     xor ecx, ecx
@@ -80,15 +81,15 @@ getactivedivision:
     mov ax, ROOTDIRSEG
     mov es, ax
     mov si, 0
-    mov eax, ds:[dirClusterIndex]
+    mov eax, ds:[dirClusterIndex];读取根目录
     call readcluster
 
     mov di, offset rootName
     call findfile
 
-    movzx eax, word ptr es:[si + CLUSTERLOW]
+    movzx eax, word ptr es:[si + CLUSTERHIG]
     shl eax, 10h
-    mov ax, es:[si + CLUSTERHIG]
+    mov ax, es:[si + CLUSTERLOW]
     mov bx, ROOTDIRSEG
     mov es, bx
     mov si, 0
@@ -150,6 +151,7 @@ findfileerror:
     mov bl, NameLen
     div bl
     add ax, 2
+    mov cx, ax
     call showerror
     jmp $
 findover:
@@ -194,9 +196,9 @@ readfile proc near  ;读入es:si di 为文件名偏移
     push es
     mov ax, ROOTDIRSEG
     mov es, ax
-    movzx eax, word ptr es:[si + CLUSTERLOW]
+    movzx eax, word ptr es:[si + CLUSTERHIG]
     shl eax, 10h
-    mov ax, es:[si + CLUSTERHIG]
+    mov ax, es:[si + CLUSTERLOW]
     pop es
     pop si
     
@@ -261,6 +263,7 @@ readcluster proc near ;eax为cluster序号不修改 es:si为位置，更新
     pop eax
     pop edx
     pop ecx
+    ret
 readcluster endp
 
 ;cx为读取扇区数,es:si为存放位置 eax为LBA,更新es:si的值
@@ -312,6 +315,7 @@ showerror proc near ;cx为编号
 	mov	bx, 0007h		; 光标移动(BH = 0) 黑底白字(BL = 07h)
 	mov	dl, 0
 	int	10h			; int 10h
+    ret
 showerror endp
 .endcode16 
 end
