@@ -1,0 +1,4 @@
+
+SCREEN_WIDTH    = 12h
+SCREEN_HEIGHT   = 14h
+SCREEN_RAM      = 28h

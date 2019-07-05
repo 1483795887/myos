@@ -4,3 +4,7 @@ TEMPSEG     =   0200h
 BOOTSEG     =   2000h
 SETUPSEG    =   3000h
 KERNELSEG   =   5000h
+
+BOOTBASE    =   20000h
+
+KERNEL_CODE =   8h

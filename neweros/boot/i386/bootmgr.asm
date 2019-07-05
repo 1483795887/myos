@@ -1,6 +1,8 @@
 include asm.inc
 include x86Common.inc
 include fat32.inc
+include vga.inc
+include systemdata.inc
 ;这里只写了fat32的
 
 DIVISION    = 01beh
@@ -9,6 +11,7 @@ ACTIVE      = 80h
 STARTSECT   = 08h
 
 .code16
+loader:
 	mov ax, cs
     mov ds, ax
     mov ss, ax
@@ -106,6 +109,8 @@ getactivedivision:
     mov es, ax
     mov si, 0
     call readfile
+
+    jmp enterIntoPM
 
     jmp $
 
@@ -316,6 +321,7 @@ ErrorMessage    db  "NO ACTIVE DIVISION             ",0
                 db  "LOST OF ROOT DIR               ",0
                 db  "LOST OF SETUP.EXE              ",0
                 db  "LOST OF KERNEL.EXE             ",0
+                db  "ERROR IN PE                    ",0
 showerror proc near ;cx为编号
     mov ax, MessageLength
     mul cx
@@ -330,5 +336,128 @@ showerror proc near ;cx为编号
 	int	10h			; int 10h
     ret
 showerror endp
+
+enterIntoPM:
+
+    mov ax, SETUPSEG    ;获得入口点
+    mov es, ax
+    mov si, 0
+    call getEntryOfPE
+    push eax
+
+    mov si, 0
+    mov di, DBR_OFFSET
+    mov ax, DBRSEG
+    mov ds, ax
+    mov ax, TEMPSEG
+    mov es, ax
+    mov cx, 100h
+    rep movsw   ;将dbr保存
+
+    mov ax, TEMPSEG
+    mov es, ax
+    mov ds, ax
+
+    mov di, 1000h
+    mov ax, 4f01h
+    mov cx, 115h
+    int 10h     ;获取信息，放在es:di中
+
+    mov ax, es:[1000h + SCREEN_WIDTH]
+    mov ds:[SCREEN_WIDTH_OFFSET], ax
+
+    mov ax, es:[1000h + SCREEN_HEIGHT]
+    mov ds:[SCREEN_HEIGHT_OFFSET], ax
+
+    mov eax, es:[1000h + SCREEN_RAM]
+    mov ds:[SCREEN_RAM_OFFSET], eax
+
+    mov ax, 4f02h
+    mov bx, 4115h
+    int 10h     ;设置显卡信息
+
+getMemoryInfo:
+    xor ebx, ebx
+    mov edi, MEM_LAYOUT_NUM_OFFSET
+    mov dword ptr ds:[MEM_RANGE_NUM_OFFSET], 0
+gmi1:
+    mov eax, 0e820h
+    mov ecx, 20
+    mov edx, 534d4150h
+    int 15h
+    jc gmifailed
+
+    add edi, 20
+    inc dword ptr ds:[MEM_RANGE_NUM_OFFSET]
+    cmp ebx, 0
+    jne gmi1
+    jmp gmisuccess
+
+gmifailed:
+    mov dword ptr ds:[MEM_RANGE_NUM_OFFSET], 0
+gmisuccess:
+    cli
+
+    mov ax, BOOTSEG
+    mov ds, ax
+    
+    xor ebx, ebx
+
+    mov eax, BOOTBASE
+    add eax, offset gdt
+    mov ds:[GdtAddr], eax
+
+    lidt fword ptr ds:[IdtPtr]
+    lgdt fword ptr ds:[GdtPtr]   ;希望bootmgr在64K以内以至于ds可以不用发生变化
+    
+    in al,92h
+	or al,00000010b
+	out 92h,al
+   
+    mov eax, cr0
+    or eax, 1
+    mov cr0, eax
+    pop eax
+
+    push 8
+    push eax
+    retf
+
+    jmp $
+
+getEntryOfPE proc near ;es:si指向pe的位置，返回eax为入口点
+    push ebx
+    movzx ebx, si
+    cmp word ptr es:[ebx], 05a4dh ;dos头
+    jnz getEntryFailed
+    add ebx, es:[ebx + 03ch]  
+    cmp dword ptr es:[ebx], 04550h   ;PE头
+    jnz getEntryFailed
+    mov eax, es:[ebx + 028h]   ;入口点
+    add eax, es:[ebx + 034h]   ;加上基址
+    pop ebx
+    ret
+getEntryFailed:
+    mov cx, 5
+    call showerror
+    jmp $
+
+getEntryOfPE endp
+
+gdt:
+DUMMY   			dq 0
+CODE_SELECTOR       dq 00c09a0fffff0000h     ;4K 32 C  DPL0 0-4G
+DATA_SELECTOR       dq 00c0920fffff0000h     ;4K 32 RW DPL0 0-4G
+
+GdtPtr					dw  $ - gdt
+GdtAddr					dd  0	
+
+IdtPtr                  dw  0
+                        dd  0
+
+longjmp                 db 066h, 0eah
+                        dd 0
+                        dw 0
+
 .endcode16 
 end

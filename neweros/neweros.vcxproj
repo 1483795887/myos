@@ -28,6 +28,8 @@
     <None Include="boot\i386\bootmgr.asm" />
     <None Include="boot\i386\utils.inc" />
     <None Include="include\asm\fat32.inc" />
+    <None Include="include\asm\systemdata.inc" />
+    <None Include="include\asm\vga.inc" />
     <None Include="include\asm\x86Common.inc" />
     <None Include="mount.bat" />
     <None Include="unmount.bat" />

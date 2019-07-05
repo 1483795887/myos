@@ -39,6 +39,12 @@
     <None Include="unmount.bat">
       <Filter>源文件</Filter>
     </None>
+    <None Include="include\asm\vga.inc">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="include\asm\systemdata.inc">
+      <Filter>头文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\types.h">

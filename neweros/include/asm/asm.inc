@@ -11,8 +11,6 @@ endm
 	.text ends
 endm
 
-.jmpl macro seg,offset
-    db 0eah
-    dw offset
-    dw seg
+.jmp232 macro seg,offset
+    db 
 endm
