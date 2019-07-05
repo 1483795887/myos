@@ -339,12 +339,6 @@ showerror endp
 
 enterIntoPM:
 
-    mov ax, SETUPSEG    ;获得入口点
-    mov es, ax
-    mov si, 0
-    call getEntryOfPE
-    push eax
-
     mov si, 0
     mov di, DBR_OFFSET
     mov ax, DBRSEG
@@ -409,6 +403,13 @@ gmisuccess:
 
     lidt fword ptr ds:[IdtPtr]
     lgdt fword ptr ds:[GdtPtr]   ;希望bootmgr在64K以内以至于ds可以不用发生变化
+
+    mov ax, SETUPSEG    ;获得入口点
+    mov es, ax
+    mov si, 0
+    call getEntryOfPE
+
+    mov ds:[setupoffset], eax
     
     in al,92h
 	or al,00000010b
@@ -417,11 +418,10 @@ gmisuccess:
     mov eax, cr0
     or eax, 1
     mov cr0, eax
-    pop eax
 
-    push 8
-    push eax
-    retf
+longjmp             db 066h,0eah
+setupoffset         dd 0
+setupseg            dw KERNEL_CODE
 
     jmp $
 
@@ -446,18 +446,14 @@ getEntryOfPE endp
 
 gdt:
 DUMMY   			dq 0
-CODE_SELECTOR       dq 00c09a0fffff0000h     ;4K 32 C  DPL0 0-4G
-DATA_SELECTOR       dq 00c0920fffff0000h     ;4K 32 RW DPL0 0-4G
+CODE_SELECTOR       dq 00cf9a000000ffffh     ;4K 32 C  DPL0 0-4G
+DATA_SELECTOR       dq 00cf92000000ffffh     ;4K 32 RW DPL0 0-4G
 
 GdtPtr					dw  $ - gdt
 GdtAddr					dd  0	
 
 IdtPtr                  dw  0
                         dd  0
-
-longjmp                 db 066h, 0eah
-                        dd 0
-                        dw 0
 
 .endcode16 
 end

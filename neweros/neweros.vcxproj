@@ -23,6 +23,7 @@
     <Text Include="build\target\Placeholder.txt" />
     <Text Include="include\asm\asm.inc" />
     <Text Include="Readme" />
+    <Text Include="setup\build\obji386\Placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="boot\i386\bootmgr.asm" />
@@ -36,6 +37,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\types.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="setup\setup.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

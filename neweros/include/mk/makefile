@@ -29,8 +29,11 @@ build:$(target)
 {..\$(targ)\}.asm{$(OBJ)\}.obj::
     $(AS) $(AFLAGS) $<
 
-{..\$(targ)\}.c{$(OBJ)\}.obj::
+{..\}.cpp{$(OBJ)\}.obj::
+    $(CC) $(CFLAGS) $<
+
+{..\$(targ)\}.cpp{$(OBJ)\}.obj::
     $(CC) $(CFLAGS) $<
 
 clean:
-	-del /Q $(asobjs) $(ccarchobjs) $(target) $(special)
+	-del /Q $(asobjs) $(ccarchobjs) $(ccobjs) $(target) $(special)

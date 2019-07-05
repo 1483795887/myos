@@ -13,9 +13,9 @@ lmachine	= x86
 
 #测试一下
 
-modules = boot
-buildtargets = $(modules: =.build).build
-cleantargets = $(modules: =.clean).clean
+modules=boot setup
+buildtargets = $(modules: =.build ).build
+cleantargets = $(modules: =.clean ).clean
 
 default:$(buildtargets) install
 
@@ -30,6 +30,7 @@ install:
 
     -mkdir $(masterdisk):\root
     copy /b /y $(toptarget)\bootmgr $(masterdisk):\bootmgr
+    copy /b /y $(toptarget)\setup.exe $(masterdisk):\root\setup.exe
 
     unmount
 

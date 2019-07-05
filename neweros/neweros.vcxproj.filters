@@ -19,6 +19,7 @@
     <Text Include="include\asm\asm.inc" />
     <Text Include="boot\build\obji386\Placeholder.txt" />
     <Text Include="build\target\Placeholder.txt" />
+    <Text Include="setup\build\obji386\Placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\asm\x86Common.inc">
@@ -50,5 +51,10 @@
     <ClInclude Include="include\types.h">
       <Filter>头文件</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="setup\setup.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
