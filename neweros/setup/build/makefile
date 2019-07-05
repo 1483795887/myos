@@ -1,5 +1,5 @@
 
-ccobjs = $(OBJ)\setup.obj
+ccobjs = $(OBJ)\main.obj
 
 target = $(toptarget)\setup.exe
 

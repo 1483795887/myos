@@ -1,8 +1,8 @@
- setup
+ kernel
 
- Timestamp is 5d1f0a8a (Fri Jul  5 16:30:02 2019)
+ Timestamp is 5d1f0af2 (Fri Jul  5 16:31:46 2019)
 
- Preferred load address is 00030000
+ Preferred load address is c0000000
 
  Start         Length     Name                   Class
  0001:00000000 00000007H .text$mn                CODE
@@ -26,7 +26,7 @@
  0000:00000000       ___volatile_metadata       00000000     <absolute>
  0000:00000000       ___hybrid_auxiliary_iat    00000000     <absolute>
  0000:00000000       ___safe_se_handler_count   00000000     <absolute>
- 0001:00000000       _main                      00030400 f   main.obj
+ 0001:00000000       _main                      c0001000 f   main.obj
 
  entry point at        0001:00000000
 
