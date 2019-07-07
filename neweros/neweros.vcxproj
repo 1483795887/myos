@@ -21,8 +21,10 @@
   <ItemGroup>
     <Text Include="boot\build\obji386\Placeholder.txt" />
     <Text Include="build\target\Placeholder.txt" />
+    <Text Include="fs\build\obji386\Placeholder.txt" />
     <Text Include="include\asm\asm.inc" />
     <Text Include="kernel\build\obji386\Placeholder.txt" />
+    <Text Include="klib\build\obji386\Placeholder.txt" />
     <Text Include="Readme" />
     <Text Include="setup\build\obji386\Placeholder.txt" />
   </ItemGroup>
@@ -33,13 +35,19 @@
     <None Include="include\asm\systemdata.inc" />
     <None Include="include\asm\vga.inc" />
     <None Include="include\asm\x86Common.inc" />
-    <None Include="mount.bat" />
-    <None Include="unmount.bat" />
+    <None Include="install\install.bat" />
+    <None Include="install\MakeVHD.bat" />
+    <None Include="klib\i386\kememory.asm" />
+    <None Include="install\mount.bat" />
+    <None Include="install\unmount.bat" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\fs\pe.h" />
     <ClInclude Include="include\types.h" />
+    <ClInclude Include="setup\setup.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="fs\pe.cpp" />
     <ClCompile Include="kernel\main.cpp" />
     <ClCompile Include="setup\main.cpp" />
   </ItemGroup>

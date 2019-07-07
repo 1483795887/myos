@@ -17,6 +17,8 @@ targopts = /subsystem:native /driver
 
 LINKFLAGS = $(targopts) /MAP $(particularopts)
 
+LIB		  = lib.exe -nologo
+
 !if defined(Debug)
 $(LINKFLAGS) = $(LINKFLAGS) /DEBUG
 $(CFLAGS) = $(CFLAGS) /Zi
@@ -35,5 +37,15 @@ build:$(target)
 {..\$(targ)\}.cpp{$(OBJ)\}.obj::
     $(CC) $(CFLAGS) $<
 
+!if defined(library)
+$(library): $(asobjs) $(ccarchobjs) $(ccobjs)
+	$(LIB) -out:$@ $**
+!endif
+
+!if defined(executable)
+$(executable): $(asobjs) $(ccarchobjs) $(ccobjs) $(lib)
+    $(LINK) $(LINKFLAGS) /out:$@ $**
+!endif
+
 clean:
-	-del /Q $(asobjs) $(ccarchobjs) $(ccobjs) $(target) $(special)
+	-del /Q $(asobjs) $(ccarchobjs) $(ccobjs) $(target)

@@ -1,8 +1,12 @@
 #pragma once
 
 
-typedef unsigned char	U8;
-typedef unsigned short	U16;
-typedef unsigned int	U32;
+typedef unsigned char	BYTE;
+typedef unsigned short	WORD;
+typedef unsigned int	DWORD;
 
-typedef unsigned char* Pvoid;
+typedef unsigned char* PVOID;
+
+typedef enum {
+	FALSE = 0 ,TRUE = 1
+}BOOL;

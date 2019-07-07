@@ -21,6 +21,8 @@
     <Text Include="build\target\Placeholder.txt" />
     <Text Include="setup\build\obji386\Placeholder.txt" />
     <Text Include="kernel\build\obji386\Placeholder.txt" />
+    <Text Include="klib\build\obji386\Placeholder.txt" />
+    <Text Include="fs\build\obji386\Placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\asm\x86Common.inc">
@@ -35,21 +37,36 @@
     <None Include="include\asm\fat32.inc">
       <Filter>头文件</Filter>
     </None>
-    <None Include="mount.bat">
-      <Filter>源文件</Filter>
-    </None>
-    <None Include="unmount.bat">
-      <Filter>源文件</Filter>
-    </None>
     <None Include="include\asm\vga.inc">
       <Filter>头文件</Filter>
     </None>
     <None Include="include\asm\systemdata.inc">
       <Filter>头文件</Filter>
     </None>
+    <None Include="klib\i386\kememory.asm">
+      <Filter>源文件</Filter>
+    </None>
+    <None Include="install\install.bat">
+      <Filter>源文件</Filter>
+    </None>
+    <None Include="install\MakeVHD.bat">
+      <Filter>源文件</Filter>
+    </None>
+    <None Include="install\mount.bat">
+      <Filter>源文件</Filter>
+    </None>
+    <None Include="install\unmount.bat">
+      <Filter>源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\types.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="setup\setup.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\fs\pe.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -58,6 +75,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="setup\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="fs\pe.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

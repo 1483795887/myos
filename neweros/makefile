@@ -1,6 +1,5 @@
 subargs = /$(MAKEFLAGS) osbase=$(MAKEDIR)
 
-masterdisk = O
 toptarget = $(MAKEDIR)\build\target
 
 !if defined(x86)
@@ -13,34 +12,20 @@ lmachine	= x86
 
 #测试一下
 
-modules=boot setup kernel
+modules=boot klib fs setup kernel
 buildtargets = $(modules: =.build ).build
 cleantargets = $(modules: =.clean ).clean
 
-default:$(buildtargets) install
+default:$(buildtargets)
 
 $(buildtargets):
 	cd $(MAKEDIR)\$(@R)\build
 		$(MAKE) $(subargs) module=$(@R)
 	cd $(MAKEDIR)
-	
-    
-install:
-    mount
 
-    -mkdir $(masterdisk):\root
-    copy /b /y $(toptarget)\bootmgr $(masterdisk):\bootmgr
-    copy /b /y $(toptarget)\setup.exe $(masterdisk):\root\setup.exe
-    copy /b /y $(toptarget)\kernel.exe $(masterdisk):\root\kernel.exe
-
-    unmount
-
-clean:$(cleantargets) remove
+clean:$(cleantargets)
 
 $(cleantargets):
 	cd $(MAKEDIR)\$(@R)\build
 		@$(MAKE) $(subargs) module=$(@R) clean
 	@cd $(MAKEDIR)
-
-remove:
-	echo "remove"

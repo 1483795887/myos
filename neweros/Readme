@@ -22,8 +22,8 @@
                             自带的dbr有一些可以用的参数和内存，但为了
                             实现可移植，所以bootmgr从头读起，反正不在乎内存了
                             读取kernel，用于设置idt、gdt，设置显卡，进入保护模式，跳转到setup，
-00030000~00005000 setup 从此开始就是全32位的代码，初始化各种东西，包括内存分页和中断
+00030000~00005000 setup 从此开始就是全32位的代码，初始化各种东西，包括内存分页，按照页将kernel读入
 00050000~00100000 kernel暂存
-00100000~00xxxxxx kernel由于raw中设计填充0所以rawaddress = virtualaddress rsize>=vsize 直接读取就行
+00100000~00xxxxxx kernel 
 c0100000~ffffffff kernel 内存
 ffffe000~fffffffc 先分配一个页给内核做栈，不够再加

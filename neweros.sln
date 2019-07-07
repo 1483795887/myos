@@ -10,6 +10,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "neweros", "neweros\neweros.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "native2bin", "native2bin\native2bin.vcxproj", "{3CE83D55-509B-4DAB-A272-43CADC747E7D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{43D94DB3-B93E-406F-94CB-07D1074022D1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6A49BDA8-A15D-448E-9DAA-CBD364037CFF} = {6A49BDA8-A15D-448E-9DAA-CBD364037CFF}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -34,6 +39,14 @@ Global
 		{3CE83D55-509B-4DAB-A272-43CADC747E7D}.Release|x64.Build.0 = Release|x64
 		{3CE83D55-509B-4DAB-A272-43CADC747E7D}.Release|x86.ActiveCfg = Release|Win32
 		{3CE83D55-509B-4DAB-A272-43CADC747E7D}.Release|x86.Build.0 = Release|Win32
+		{43D94DB3-B93E-406F-94CB-07D1074022D1}.Debug|x64.ActiveCfg = Debug|x64
+		{43D94DB3-B93E-406F-94CB-07D1074022D1}.Debug|x64.Build.0 = Debug|x64
+		{43D94DB3-B93E-406F-94CB-07D1074022D1}.Debug|x86.ActiveCfg = Debug|Win32
+		{43D94DB3-B93E-406F-94CB-07D1074022D1}.Debug|x86.Build.0 = Debug|Win32
+		{43D94DB3-B93E-406F-94CB-07D1074022D1}.Release|x64.ActiveCfg = Release|x64
+		{43D94DB3-B93E-406F-94CB-07D1074022D1}.Release|x64.Build.0 = Release|x64
+		{43D94DB3-B93E-406F-94CB-07D1074022D1}.Release|x86.ActiveCfg = Release|Win32
+		{43D94DB3-B93E-406F-94CB-07D1074022D1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
