@@ -12,7 +12,7 @@ lmachine	= x86
 
 #测试一下
 
-modules=boot klib fs setup kernel
+modules=boot klib fs mm setup kernel
 buildtargets = $(modules: =.build ).build
 cleantargets = $(modules: =.clean ).clean
 

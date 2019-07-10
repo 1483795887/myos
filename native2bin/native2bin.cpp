@@ -4,7 +4,6 @@
 
 #include "pch.h"
 #include <iostream>
-#include <vector>
 #include "CoffHeaders.h"
 
 using namespace std;

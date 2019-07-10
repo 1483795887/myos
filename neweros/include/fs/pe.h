@@ -1,12 +1,15 @@
 #pragma once
 #include "../types.h"
 
+#pragma pack(1)
+#define DOS_MAGIC 0x5a4d
 typedef struct {
 	WORD magic;
 	BYTE reserved[0x3a];
 	DWORD lfanew;
 }DosHeader;
 
+#define NT_SIGNATURE 0x4550
 typedef struct {
 	DWORD signature;
 	WORD  machine;
@@ -46,6 +49,7 @@ typedef struct {
 	DWORD numberOfRvaAndSizes;
 }OptionalHeader;
 
+
 typedef struct {
 	char  name[8];
 	DWORD virtualSize;
@@ -59,11 +63,4 @@ typedef struct {
 	DWORD characteristics;
 }Section;
 
-class PeFileParser {
-private:
-	DosHeader *header;
-	BOOL valid;
-public:
-	PeFileParser(PVOID file);
-	BOOL isFileValid();
-};
+#pragma pack()

@@ -23,6 +23,7 @@
     <Text Include="kernel\build\obji386\Placeholder.txt" />
     <Text Include="klib\build\obji386\Placeholder.txt" />
     <Text Include="fs\build\obji386\Placeholder.txt" />
+    <Text Include="mm\build\obji386\Placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\asm\x86Common.inc">
@@ -42,9 +43,6 @@
     </None>
     <None Include="include\asm\systemdata.inc">
       <Filter>头文件</Filter>
-    </None>
-    <None Include="klib\i386\kememory.asm">
-      <Filter>源文件</Filter>
     </None>
     <None Include="install\install.bat">
       <Filter>源文件</Filter>
@@ -69,6 +67,15 @@
     <ClInclude Include="include\fs\pe.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\klib\kememory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mm\physicalPage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mm\mm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kernel\main.cpp">
@@ -78,6 +85,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="fs\pe.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="klib\i386\kememory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mm\physicalPage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,8 +1,6 @@
 #include "pch.h"
+#include <iostream>
+#include <types.h>
 #include <fs/pe.h>
 
-
-TEST(PeTest, TestName) {
-	PeFileParser parser(0);
-	EXPECT_EQ(FALSE, parser.isFileValid());
-}
+using namespace std;

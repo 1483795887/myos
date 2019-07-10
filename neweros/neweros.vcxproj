@@ -25,6 +25,7 @@
     <Text Include="include\asm\asm.inc" />
     <Text Include="kernel\build\obji386\Placeholder.txt" />
     <Text Include="klib\build\obji386\Placeholder.txt" />
+    <Text Include="mm\build\obji386\Placeholder.txt" />
     <Text Include="Readme" />
     <Text Include="setup\build\obji386\Placeholder.txt" />
   </ItemGroup>
@@ -37,18 +38,22 @@
     <None Include="include\asm\x86Common.inc" />
     <None Include="install\install.bat" />
     <None Include="install\MakeVHD.bat" />
-    <None Include="klib\i386\kememory.asm" />
     <None Include="install\mount.bat" />
     <None Include="install\unmount.bat" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\fs\pe.h" />
+    <ClInclude Include="include\klib\kememory.h" />
+    <ClInclude Include="include\mm\mm.h" />
+    <ClInclude Include="include\mm\physicalPage.h" />
     <ClInclude Include="include\types.h" />
     <ClInclude Include="setup\setup.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fs\pe.cpp" />
     <ClCompile Include="kernel\main.cpp" />
+    <ClCompile Include="klib\i386\kememory.cpp" />
+    <ClCompile Include="mm\physicalPage.cpp" />
     <ClCompile Include="setup\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
