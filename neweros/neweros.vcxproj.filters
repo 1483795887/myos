@@ -76,6 +76,15 @@
     <ClInclude Include="include\mm\mm.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\mm\zone.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mm\physicalPageAllocator\physicalPageAllocator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mm\physicalPageAllocator\SimplePhysicalPageAllocator.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kernel\main.cpp">
@@ -91,6 +100,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="mm\physicalPage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mm\simplePhysicalPageAllocator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

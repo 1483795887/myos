@@ -2,6 +2,8 @@
 
 #include "../types.h"
 #include "mm.h"
+#include "zone.h"
+#include "physicalPageAllocator/physicalPageAllocator.h"
 
 #define PDE_SHIFT 22
 #define PTE_SHIFT 12
@@ -14,6 +16,11 @@ typedef PDE*    PD;
 typedef ULONG   PTE;
 typedef PTE*    PT;
 
+typedef enum {
+	SizeTooBig,
+	Succeed
+} MapPagesStatus;
+
 class PhysicalPageManager {
 public:
     PhysicalPageManager(PD pd);
@@ -21,6 +28,11 @@ public:
     void setPD(PD pd);
     PDE getPDE(ULONG address);
     PTE getPTE(ULONG address);
+	MapPagesStatus mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property);
+    void setZone(Zone zone);
+    void setAllocator(PhysicalPageAllocator* allocator);
 private:
     PD pd;
+    Zone zone;
+    PhysicalPageAllocator* allocator;
 };

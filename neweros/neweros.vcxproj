@@ -46,6 +46,9 @@
     <ClInclude Include="include\klib\kememory.h" />
     <ClInclude Include="include\mm\mm.h" />
     <ClInclude Include="include\mm\physicalPage.h" />
+    <ClInclude Include="include\mm\physicalPageAllocator\physicalPageAllocator.h" />
+    <ClInclude Include="include\mm\physicalPageAllocator\SimplePhysicalPageAllocator.h" />
+    <ClInclude Include="include\mm\zone.h" />
     <ClInclude Include="include\types.h" />
     <ClInclude Include="setup\setup.h" />
   </ItemGroup>
@@ -54,6 +57,7 @@
     <ClCompile Include="kernel\main.cpp" />
     <ClCompile Include="klib\i386\kememory.cpp" />
     <ClCompile Include="mm\physicalPage.cpp" />
+    <ClCompile Include="mm\simplePhysicalPageAllocator.cpp" />
     <ClCompile Include="setup\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

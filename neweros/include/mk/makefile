@@ -20,8 +20,9 @@ LINKFLAGS = $(targopts) /MAP $(particularopts)
 LIB		  = lib.exe -nologo
 
 !if defined(Debug)
-$(LINKFLAGS) = $(LINKFLAGS) /DEBUG
-$(CFLAGS) = $(CFLAGS) /Zi
+LINKFLAGS = $(LINKFLAGS) /DEBUG
+debugData = $(toptarget)\$(module).pdb
+CFLAGS = $(CFLAGS) /Zi /DEBUG /Fd$(debugData)
 !endif
 
 OBJ = obj$(targ)
@@ -43,9 +44,10 @@ $(library): $(asobjs) $(ccarchobjs) $(ccobjs)
 !endif
 
 !if defined(executable)
+mapfile = $(executable:.exe=.map)
 $(executable): $(asobjs) $(ccarchobjs) $(ccobjs) $(lib)
     $(LINK) $(LINKFLAGS) /out:$@ $**
 !endif
 
 clean:
-	-del /Q $(asobjs) $(ccarchobjs) $(ccobjs) $(target)
+	-del /Q $(asobjs) $(ccarchobjs) $(ccobjs) $(target) $(debugData) $(mapfile)

@@ -10,6 +10,10 @@ lmachine	= x86
 !ERROR Usage: make (x86) [clean]
 !endif
 
+!if defined(Debug)
+subargs = $(subargs) Debug=Debug
+!endif
+
 #测试一下
 
 modules=boot klib fs mm setup kernel
