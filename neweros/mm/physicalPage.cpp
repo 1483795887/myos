@@ -11,6 +11,12 @@ inline PTE getPTEIndex(ULONG address) {
     return address >> PTE_SHIFT;
 }
 
+inline ULONG getAddressFromEntry(ULONG entry) {
+    ULONG mask = ~0xfff;
+    entry = entry & mask;
+    return entry;
+}
+
 inline BOOL checkPageAddressValid(ULONG address) {
     if (((ULONG)address) > 4 * G - K)
         return FALSE;
@@ -23,36 +29,51 @@ PhysicalPageManager::PhysicalPageManager(PD pd) {
 
 PhysicalPageManager::PhysicalPageManager() {
     this->pd = (PD)FAILED;
-	this->allocator = NULL;
+    this->allocator = NULL;
 }
 
 void PhysicalPageManager::setPD(PD pd) {
     this->pd = pd;
 }
 
-PDE PhysicalPageManager::getPDE(ULONG address) {
-    if (!checkPageAddressValid((ULONG)pd))
-        return FAILED;
-    return pd[getPDEIndex(address)];
-}
-
-PTE PhysicalPageManager::getPTE(ULONG address) {
-    if (!checkPageAddressValid((ULONG)pd))
-        return FAILED;
-    PDE pde = getPDE(address);
-    if (!checkPageAddressValid((ULONG)pde))
-        return FAILED;
-    PT pt = (PT)(pde & -8);
-    return pt[getPTEIndex(address)];
+ULONG PhysicalPageManager::va2pa(ULONG vAddr) {
+	PDE pde = pd[getPDEIndex(vAddr)];
+	if (!(pde & Existence))
+		return PDNotExist;
+	PT pt = (PT)getAddressFromEntry(pde);
+	PTE pte = pt[getPTEIndex(vAddr)];
+	if (!(pte & Existence))
+		return PTNotExist;
+    return getAddressFromEntry(pte);
 }
 
 MapPagesStatus PhysicalPageManager::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property) {
-	pAddr = addressAlign(pAddr, PAGE_SIZE, FALSE);
-	vAddr = addressAlign(vAddr, PAGE_SIZE, FALSE);
-	size = addressAlign(size, PAGE_SIZE, TRUE);
-	if (vAddr > vAddr + size)
-		return SizeTooBig;
-	return Succeed;
+    pAddr = addressAlign(pAddr, PAGE_SIZE, FALSE);
+    vAddr = addressAlign(vAddr, PAGE_SIZE, FALSE);
+    size = addressAlign(size, PAGE_SIZE, TRUE);
+    property = property & 0xfff;
+    if (vAddr > vAddr + size)
+        return SizeTooBig;
+    ULONG currentSize = 0;
+    while (currentSize < size) {
+        PDE pde = pd[getPDEIndex(vAddr)];
+        if (pde & Existence) {
+            PT pt = (PT)getAddressFromEntry(pde);
+            PTE pte = pt[getPTEIndex(vAddr)];
+            if (pte & Existence)
+                return PageAlreadyExist;
+            else {
+				pte = pAddr | property;
+				pt[getPTEIndex(vAddr)] = pte;
+            }
+
+        } else { //TODO:申请页面
+        }
+        currentSize += PAGE_SIZE;
+		vAddr += PAGE_SIZE;
+		pAddr += PAGE_SIZE;
+    }
+    return Succeed;
 }
 
 void PhysicalPageManager::setZone(Zone zone) {

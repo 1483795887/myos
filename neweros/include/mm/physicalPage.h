@@ -18,16 +18,27 @@ typedef PTE*    PT;
 
 typedef enum {
 	SizeTooBig,
+	PageAlreadyExist,
 	Succeed
 } MapPagesStatus;
+
+typedef enum {
+	Existence = 1, 
+	Writable  = 2,
+	Supervisor= 4
+};
+
+typedef enum {
+	PDNotExist,
+	PTNotExist
+};
 
 class PhysicalPageManager {
 public:
     PhysicalPageManager(PD pd);
     PhysicalPageManager();
     void setPD(PD pd);
-    PDE getPDE(ULONG address);
-    PTE getPTE(ULONG address);
+	ULONG va2pa(ULONG vAddr);
 	MapPagesStatus mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property);
     void setZone(Zone zone);
     void setAllocator(PhysicalPageAllocator* allocator);
@@ -35,4 +46,5 @@ private:
     PD pd;
     Zone zone;
     PhysicalPageAllocator* allocator;
+	
 };
