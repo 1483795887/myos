@@ -29,7 +29,7 @@ typedef enum {
 };
 
 typedef enum {
-	PDNotExist,
+	PDNotExist = 1,
 	PTNotExist
 };
 

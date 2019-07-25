@@ -12,9 +12,7 @@ inline PTE getPTEIndex(ULONG address) {
 }
 
 inline ULONG getAddressFromEntry(ULONG entry) {
-    ULONG mask = ~0xfff;
-    entry = entry & mask;
-    return entry;
+    return entry & ~0xfff;;
 }
 
 inline BOOL checkPageAddressValid(ULONG address) {
@@ -67,7 +65,10 @@ MapPagesStatus PhysicalPageManager::mapPages(ULONG pAddr, ULONG vAddr, ULONG siz
 				pt[getPTEIndex(vAddr)] = pte;
             }
 
-        } else { //TODO:申请页面
+        } else { 
+			PT pt = (PT)allocator->allocPages(&zone, 0);
+			pd[getPDEIndex(vAddr)] = (PDE)((ULONG)pt | property);
+			continue;
         }
         currentSize += PAGE_SIZE;
 		vAddr += PAGE_SIZE;
