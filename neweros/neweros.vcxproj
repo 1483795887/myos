@@ -25,6 +25,7 @@
     <Text Include="include\asm\asm.inc" />
     <Text Include="kernel\build\obji386\Placeholder.txt" />
     <Text Include="klib\build\obji386\Placeholder.txt" />
+    <Text Include="lib\build\obji386\Placeholder.txt" />
     <Text Include="mm\build\obji386\Placeholder.txt" />
     <Text Include="Readme" />
     <Text Include="setup\build\obji386\Placeholder.txt" />
@@ -44,10 +45,11 @@
   <ItemGroup>
     <ClInclude Include="include\fs\pe.h" />
     <ClInclude Include="include\klib\kememory.h" />
+    <ClInclude Include="include\lib\CList.h" />
+    <ClInclude Include="include\lib\CListEntry.h" />
     <ClInclude Include="include\mm\mm.h" />
     <ClInclude Include="include\mm\physicalPage.h" />
-    <ClInclude Include="include\mm\physicalPageAllocator\physicalPageAllocator.h" />
-    <ClInclude Include="include\mm\physicalPageAllocator\SimplePhysicalPageAllocator.h" />
+    <ClInclude Include="include\mm\physicalPageAllocator.h" />
     <ClInclude Include="include\mm\zone.h" />
     <ClInclude Include="include\types.h" />
     <ClInclude Include="setup\setup.h" />
@@ -56,8 +58,8 @@
     <ClCompile Include="fs\pe.cpp" />
     <ClCompile Include="kernel\main.cpp" />
     <ClCompile Include="klib\i386\kememory.cpp" />
+    <ClCompile Include="lib\CList.cpp" />
     <ClCompile Include="mm\physicalPage.cpp" />
-    <ClCompile Include="mm\simplePhysicalPageAllocator.cpp" />
     <ClCompile Include="setup\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

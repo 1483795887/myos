@@ -24,6 +24,7 @@
     <Text Include="klib\build\obji386\Placeholder.txt" />
     <Text Include="fs\build\obji386\Placeholder.txt" />
     <Text Include="mm\build\obji386\Placeholder.txt" />
+    <Text Include="lib\build\obji386\Placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\asm\x86Common.inc">
@@ -79,10 +80,13 @@
     <ClInclude Include="include\mm\zone.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\mm\physicalPageAllocator\physicalPageAllocator.h">
+    <ClInclude Include="include\mm\physicalPageAllocator.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\mm\physicalPageAllocator\SimplePhysicalPageAllocator.h">
+    <ClInclude Include="include\lib\CList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\lib\CListEntry.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -102,7 +106,7 @@
     <ClCompile Include="mm\physicalPage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="mm\simplePhysicalPageAllocator.cpp">
+    <ClCompile Include="lib\CList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

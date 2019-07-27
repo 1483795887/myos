@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fs\pe.cpp" />
+    <ClCompile Include="lib\CListTest.cpp" />
     <ClCompile Include="mm\mmTest.cpp" />
     <ClCompile Include="mm\physicalTest.cpp" />
     <ClCompile Include="pch.cpp">
@@ -72,7 +73,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>mm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mm.lib;lib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include <mm/physicalPage.h>
-#include <mm/physicalPageAllocator/physicalPageAllocator.h>
+#include <mm/physicalPageAllocator.h>
 #include <types.h>
 
 #define MAX_BLOCKS 10

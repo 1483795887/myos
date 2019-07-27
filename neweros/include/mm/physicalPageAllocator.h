@@ -1,6 +1,6 @@
 #pragma once
-#include "../../types.h"
-#include "../zone.h"
+#include "../types.h"
+#include "zone.h"
 
 class PhysicalPageAllocator {
 public:

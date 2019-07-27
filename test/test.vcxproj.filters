@@ -5,6 +5,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="mm\mmTest.cpp" />
     <ClCompile Include="mm\physicalTest.cpp" />
+    <ClCompile Include="lib\CListTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

@@ -3,7 +3,7 @@
 #include "../types.h"
 #include "mm.h"
 #include "zone.h"
-#include "physicalPageAllocator/physicalPageAllocator.h"
+#include "physicalPageAllocator.h"
 
 #define PDE_SHIFT 22
 #define PTE_SHIFT 12
