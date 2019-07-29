@@ -45,8 +45,10 @@
   <ItemGroup>
     <ClInclude Include="include\fs\pe.h" />
     <ClInclude Include="include\klib\kememory.h" />
+    <ClInclude Include="include\lib\bitmap.h" />
     <ClInclude Include="include\lib\CList.h" />
     <ClInclude Include="include\lib\CListEntry.h" />
+    <ClInclude Include="include\mm\MemoryAllocator.h" />
     <ClInclude Include="include\mm\mm.h" />
     <ClInclude Include="include\mm\physicalPage.h" />
     <ClInclude Include="include\mm\physicalPageAllocator.h" />
@@ -59,7 +61,9 @@
     <ClCompile Include="kernel\main.cpp" />
     <ClCompile Include="klib\i386\kememory.cpp" />
     <ClCompile Include="lib\CList.cpp" />
+    <ClCompile Include="lib\bitmap.cpp" />
     <ClCompile Include="mm\physicalPage.cpp" />
+    <ClCompile Include="mm\Zone.cpp" />
     <ClCompile Include="setup\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
