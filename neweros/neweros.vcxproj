@@ -48,11 +48,11 @@
     <ClInclude Include="include\lib\bitmap.h" />
     <ClInclude Include="include\lib\CList.h" />
     <ClInclude Include="include\lib\CListEntry.h" />
-    <ClInclude Include="include\mm\MemoryAllocator.h" />
     <ClInclude Include="include\mm\mm.h" />
     <ClInclude Include="include\mm\physicalPage.h" />
     <ClInclude Include="include\mm\physicalPageAllocator.h" />
     <ClInclude Include="include\mm\zone.h" />
+    <ClInclude Include="include\status.h" />
     <ClInclude Include="include\types.h" />
     <ClInclude Include="setup\setup.h" />
   </ItemGroup>
@@ -63,7 +63,6 @@
     <ClCompile Include="lib\CList.cpp" />
     <ClCompile Include="lib\bitmap.cpp" />
     <ClCompile Include="mm\physicalPage.cpp" />
-    <ClCompile Include="mm\Zone.cpp" />
     <ClCompile Include="setup\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -45,23 +45,21 @@ TEST_F(CListTest, afterInsertTailThenFirstOther) {
 TEST_F(CListTest, twoWhenInsertTailThenThirdNextToSelf) {
     CList list;
     CListEntry entry, entry2;
-    entry.data = 1;
-    entry2.data = 2;
     list.insertHead(&entry);
     list.insertHead(&entry2);
-    CListEntry* head = list.getHead();
-    EXPECT_EQ(list.getHead(), head->next->next->next);
+	CListEntry* first = list.getFirst();
+	CListEntry* second = first->getNext();
+    EXPECT_EQ(list.getHead(), second->getNext());
 }
 
 TEST_F(CListTest, twoWhenInsertTailThenFirstPrevToSelf) {
     CList list;
     CListEntry entry, entry2;
-    entry.data = 1;
-    entry2.data = 2;
     list.insertHead(&entry);
     list.insertHead(&entry2);
     CListEntry* head = list.getHead();
-    EXPECT_EQ(list.getHead(), head->next->prev);
+	CListEntry* first = list.getFirst();
+    EXPECT_EQ(list.getHead(), first->getPrev());
 }
 
 TEST_F(CListTest, oneWhenRemoveThenCountZero) {

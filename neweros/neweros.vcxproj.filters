@@ -89,10 +89,10 @@
     <ClInclude Include="include\lib\CListEntry.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\mm\MemoryAllocator.h">
+    <ClInclude Include="include\lib\bitmap.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\lib\bitmap.h">
+    <ClInclude Include="include\status.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -113,9 +113,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="lib\CList.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="mm\Zone.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="lib\bitmap.cpp">

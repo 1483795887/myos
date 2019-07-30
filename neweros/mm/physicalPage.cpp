@@ -26,7 +26,7 @@ PhysicalPageManager::PhysicalPageManager(PD pd) {
 }
 
 PhysicalPageManager::PhysicalPageManager() {
-    this->pd = (PD)FAILED;
+    this->pd = (PD)NULL;
     this->allocator = NULL;
 }
 
@@ -37,21 +37,21 @@ void PhysicalPageManager::setPD(PD pd) {
 ULONG PhysicalPageManager::va2pa(ULONG vAddr) {
 	PDE pde = pd[getPDEIndex(vAddr)];
 	if (!(pde & Existence))
-		return PDNotExist;
+		return NULL;
 	PT pt = (PT)getAddressFromEntry(pde);
 	PTE pte = pt[getPTEIndex(vAddr)];
 	if (!(pte & Existence))
-		return PTNotExist;
+		return NULL;
     return getAddressFromEntry(pte);
 }
 
-MapPagesStatus PhysicalPageManager::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property) {
+Status PhysicalPageManager::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property) {
     pAddr = addressAlign(pAddr, PAGE_SIZE, FALSE);
     vAddr = addressAlign(vAddr, PAGE_SIZE, FALSE);
     size = addressAlign(size, PAGE_SIZE, TRUE);
     property = property & 0xfff;
     if (vAddr > vAddr + size)
-        return SizeTooBig;
+        return MemoryOverLimit;
     ULONG currentSize = 0;
     while (currentSize < size) {
         PDE pde = pd[getPDEIndex(vAddr)];
@@ -74,7 +74,7 @@ MapPagesStatus PhysicalPageManager::mapPages(ULONG pAddr, ULONG vAddr, ULONG siz
 		vAddr += PAGE_SIZE;
 		pAddr += PAGE_SIZE;
     }
-    return Succeed;
+    return Success;
 }
 
 void PhysicalPageManager::setZone(Zone zone) {

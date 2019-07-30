@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../types.h"
+#include "../status.h"
 #include "mm.h"
 #include "zone.h"
 #include "physicalPageAllocator.h"
@@ -16,21 +17,10 @@ typedef PDE*    PD;
 typedef ULONG   PTE;
 typedef PTE*    PT;
 
-typedef enum {
-	SizeTooBig,
-	PageAlreadyExist,
-	Succeed
-} MapPagesStatus;
-
-typedef enum {
+enum {
 	Existence = 1, 
 	Writable  = 2,
 	Supervisor= 4
-};
-
-typedef enum {
-	PDNotExist = 1,
-	PTNotExist
 };
 
 class PhysicalPageManager {
@@ -39,7 +29,7 @@ public:
     PhysicalPageManager();
     void setPD(PD pd);
 	ULONG va2pa(ULONG vAddr);
-	MapPagesStatus mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property);
+	Status mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property);
     void setZone(Zone zone);
     void setAllocator(PhysicalPageAllocator* allocator);
 private:

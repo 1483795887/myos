@@ -43,6 +43,7 @@
     <ClCompile Include="fs\pe.cpp" />
     <ClCompile Include="lib\bitmapTest.cpp" />
     <ClCompile Include="lib\CListTest.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="mm\mmTest.cpp" />
     <ClCompile Include="mm\physicalTest.cpp" />
     <ClCompile Include="pch.cpp">

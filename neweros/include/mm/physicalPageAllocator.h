@@ -5,4 +5,7 @@
 class PhysicalPageAllocator {
 public:
     virtual ULONG allocPages(Zone* zone, ULONG order) = 0;
+	virtual ~PhysicalPageAllocator() {
+
+	}
 };
