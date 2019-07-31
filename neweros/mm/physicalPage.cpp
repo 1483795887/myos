@@ -1,5 +1,4 @@
-#include <fs/pe.h>
-#include "..\include\mm\physicalPage.h"
+#include "..\include\mm\PhysicalPage.h"
 
 inline PDE getPDEIndex(ULONG address) {
     return address >> PDE_SHIFT;

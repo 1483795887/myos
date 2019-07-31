@@ -1,5 +1,5 @@
 #pragma once
-#include "../types.h"
+#include "../Types.h"
 
 #pragma pack(1)
 #define DOS_MAGIC 0x5a4d

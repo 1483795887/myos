@@ -1,5 +1,5 @@
 #pragma once
-#include "../types.h"
+#include "../Types.h"
 
 #define PAGE_SIZE 0x1000
 #define PAGE_MASK -PAGE_SIZE

@@ -1,10 +1,10 @@
 #pragma once
-#include "../types.h"
-#include "zone.h"
+#include "../Types.h"
+#include "Zone.h"
 
 class PhysicalPageAllocator {
 public:
-    virtual ULONG allocPages(Zone* zone, ULONG order) = 0;
+    virtual PBYTE allocPages(Zone* zone, ULONG order) = 0;
 	virtual ~PhysicalPageAllocator() {
 
 	}

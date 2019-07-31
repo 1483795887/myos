@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../types.h"
-#include "../status.h"
-#include "mm.h"
-#include "zone.h"
-#include "physicalPageAllocator.h"
+#include "../Types.h"
+#include "../Status.h"
+#include "Mm.h"
+#include "Zone.h"
+#include "PhysicalPageAllocator.h"
 
 #define PDE_SHIFT 22
 #define PTE_SHIFT 12

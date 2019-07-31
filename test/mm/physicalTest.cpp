@@ -2,47 +2,7 @@
 #include <mm/physicalPage.h>
 #include <mm/physicalPageAllocator.h>
 #include <types.h>
-
-#define MAX_BLOCKS 10
-class FakePhysicalPageAllocator : public PhysicalPageAllocator {
-public:
-    virtual ULONG allocPages(Zone* zone, ULONG order) {
-        ULONG number = 1 << order;
-        ULONG size = number * PAGE_SIZE;
-        if (currentBlock >= MAX_BLOCKS)
-            return FAILED;
-        ULONG buffer = (ULONG)_aligned_malloc(size, PAGE_SIZE);
-        memset((void*)buffer, 0, size);
-        blocks[currentBlock] = buffer;
-        currentBlock++;
-        return buffer;
-    }
-
-    ULONG getLastPage() {
-        if (currentBlock > 0)
-            return blocks[currentBlock - 1];
-        return FAILED;
-    }
-
-    FakePhysicalPageAllocator() {
-        currentBlock = 0;
-        for (int i = 0; i < MAX_BLOCKS; i++)
-            blocks[i] = NULL;
-    }
-
-    virtual ~FakePhysicalPageAllocator() {
-        for (int i = 0; i < MAX_BLOCKS; i++) {
-            if (blocks[i] != NULL) {
-                _aligned_free((void*)blocks[i]);
-                blocks[i] = NULL;
-            }
-
-        }
-    }
-private:
-    ULONG blocks[MAX_BLOCKS];
-    ULONG currentBlock;
-};
+#include "FakePhysicalPageAllocator.h"
 
 class PhysicalPageManagerTest : public testing::Test {
 public:

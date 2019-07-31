@@ -21,18 +21,14 @@
   <ItemGroup>
     <Text Include="boot\build\obji386\Placeholder.txt" />
     <Text Include="build\target\Placeholder.txt" />
-    <Text Include="fs\build\obji386\Placeholder.txt" />
-    <Text Include="include\asm\asm.inc" />
     <Text Include="kernel\build\obji386\Placeholder.txt" />
-    <Text Include="klib\build\obji386\Placeholder.txt" />
-    <Text Include="lib\build\obji386\Placeholder.txt" />
-    <Text Include="mm\build\obji386\Placeholder.txt" />
     <Text Include="Readme" />
     <Text Include="setup\build\obji386\Placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="boot\i386\bootmgr.asm" />
     <None Include="boot\i386\utils.inc" />
+    <None Include="include\asm\asm.inc" />
     <None Include="include\asm\fat32.inc" />
     <None Include="include\asm\systemdata.inc" />
     <None Include="include\asm\vga.inc" />
@@ -43,26 +39,27 @@
     <None Include="install\unmount.bat" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\fs\pe.h" />
-    <ClInclude Include="include\klib\kememory.h" />
-    <ClInclude Include="include\lib\bitmap.h" />
+    <ClInclude Include="include\fs\Pe.h" />
+    <ClInclude Include="include\klib\Kememory.h" />
+    <ClInclude Include="include\lib\Bitmap.h" />
     <ClInclude Include="include\lib\CList.h" />
     <ClInclude Include="include\lib\CListEntry.h" />
-    <ClInclude Include="include\mm\mm.h" />
-    <ClInclude Include="include\mm\physicalPage.h" />
-    <ClInclude Include="include\mm\physicalPageAllocator.h" />
-    <ClInclude Include="include\mm\zone.h" />
-    <ClInclude Include="include\status.h" />
-    <ClInclude Include="include\types.h" />
+    <ClInclude Include="include\mm\Mm.h" />
+    <ClInclude Include="include\mm\Page.h" />
+    <ClInclude Include="include\mm\PhysicalPage.h" />
+    <ClInclude Include="include\mm\PhysicalPageAllocator.h" />
+    <ClInclude Include="include\mm\Zone.h" />
+    <ClInclude Include="include\Status.h" />
+    <ClInclude Include="include\Types.h" />
     <ClInclude Include="setup\setup.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="fs\pe.cpp" />
     <ClCompile Include="kernel\main.cpp" />
-    <ClCompile Include="klib\i386\kememory.cpp" />
+    <ClCompile Include="klib\i386\Kememory.cpp" />
+    <ClCompile Include="lib\Bitmap.cpp" />
     <ClCompile Include="lib\CList.cpp" />
-    <ClCompile Include="lib\bitmap.cpp" />
-    <ClCompile Include="mm\physicalPage.cpp" />
+    <ClCompile Include="mm\PhysicalPage.cpp" />
+    <ClCompile Include="mm\Zone.cpp" />
     <ClCompile Include="setup\main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

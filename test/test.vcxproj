@@ -37,15 +37,16 @@
     <LibraryPath>$(SolutionDIr)neweros\build\target;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="mm\FakePhysicalPageAllocator.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="fs\pe.cpp" />
-    <ClCompile Include="lib\bitmapTest.cpp" />
     <ClCompile Include="lib\CListTest.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mm\mmTest.cpp" />
-    <ClCompile Include="mm\physicalTest.cpp" />
+    <ClCompile Include="mm\FakePhyscialPageAllocator.cpp" />
+    <ClCompile Include="mm\MmTest.cpp" />
+    <ClCompile Include="mm\PhysicalTest.cpp" />
+    <ClCompile Include="mm\ZoneTest.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

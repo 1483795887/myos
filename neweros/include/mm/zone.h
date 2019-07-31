@@ -1,18 +1,24 @@
 #pragma once
-#include "../types.h"
+#include "../Types.h"
+#include "../Status.h"
 #include <lib/CList.h>
 
 #define MAX_ORDER 10
 
 class FreeArea {
 public:
-	CList freeList;
-	PBYTE map;
+    Status LinkFreePages(PBYTE start, ULONG size);
+    CList* getList() {
+        return &freeList;
+    }
+private:
+    CList freeList;
+    PBYTE map;
 };
 
 class Zone {
 public:
 private:
-	ULONG start;
-	ULONG size;
+    ULONG start;
+    ULONG size;
 };

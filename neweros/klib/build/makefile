@@ -1,4 +1,4 @@
-asobjs = $(OBJ)\kememory.obj
+asobjs = $(OBJ)\Kememory.obj
 
 library = $(toptarget)\klib.lib 
 target = $(library)

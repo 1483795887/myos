@@ -1,4 +1,4 @@
-#include <lib/bitmap.h>
+#include <lib/Bitmap.h>
 
 BOOL Bitmap::checkBit(ULONG no) {
     ULONG byte = no / 8;

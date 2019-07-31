@@ -16,34 +16,17 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Readme" />
-    <Text Include="include\asm\asm.inc" />
     <Text Include="boot\build\obji386\Placeholder.txt" />
     <Text Include="build\target\Placeholder.txt" />
     <Text Include="setup\build\obji386\Placeholder.txt" />
     <Text Include="kernel\build\obji386\Placeholder.txt" />
-    <Text Include="klib\build\obji386\Placeholder.txt" />
-    <Text Include="fs\build\obji386\Placeholder.txt" />
-    <Text Include="mm\build\obji386\Placeholder.txt" />
-    <Text Include="lib\build\obji386\Placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="include\asm\x86Common.inc">
-      <Filter>头文件</Filter>
-    </None>
     <None Include="boot\i386\utils.inc">
       <Filter>头文件</Filter>
     </None>
     <None Include="boot\i386\bootmgr.asm">
       <Filter>源文件</Filter>
-    </None>
-    <None Include="include\asm\fat32.inc">
-      <Filter>头文件</Filter>
-    </None>
-    <None Include="include\asm\vga.inc">
-      <Filter>头文件</Filter>
-    </None>
-    <None Include="include\asm\systemdata.inc">
-      <Filter>头文件</Filter>
     </None>
     <None Include="install\install.bat">
       <Filter>源文件</Filter>
@@ -57,30 +40,33 @@
     <None Include="install\unmount.bat">
       <Filter>源文件</Filter>
     </None>
+    <None Include="include\asm\asm.inc">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="include\asm\fat32.inc">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="include\asm\systemdata.inc">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="include\asm\vga.inc">
+      <Filter>头文件</Filter>
+    </None>
+    <None Include="include\asm\x86Common.inc">
+      <Filter>头文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\types.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="setup\setup.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\fs\pe.h">
+    <ClInclude Include="include\klib\Kememory.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\klib\kememory.h">
+    <ClInclude Include="include\fs\Pe.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\mm\physicalPage.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\mm\mm.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\mm\zone.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\mm\physicalPageAllocator.h">
+    <ClInclude Include="include\lib\Bitmap.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\lib\CList.h">
@@ -89,10 +75,25 @@
     <ClInclude Include="include\lib\CListEntry.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\lib\bitmap.h">
+    <ClInclude Include="include\mm\PhysicalPageAllocator.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\status.h">
+    <ClInclude Include="include\mm\Zone.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mm\PhysicalPage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mm\Mm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Status.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Types.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mm\Page.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -103,19 +104,19 @@
     <ClCompile Include="setup\main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="fs\pe.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="klib\i386\kememory.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="mm\physicalPage.cpp">
+    <ClCompile Include="lib\Bitmap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="lib\CList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="lib\bitmap.cpp">
+    <ClCompile Include="klib\i386\Kememory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mm\PhysicalPage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mm\Zone.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
