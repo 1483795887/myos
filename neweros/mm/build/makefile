@@ -1,4 +1,4 @@
-ccobjs = $(OBJ)\PhysicalPage.obj $(OBJ)\Zone.obj
+ccobjs = $(OBJ)\PhysicalPage.obj $(OBJ)\Zone.obj $(OBJ)\NaivePool.obj
 
 library = $(toptarget)\mm.lib 
 target = $(library)

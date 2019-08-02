@@ -13,6 +13,7 @@ typedef unsigned int	DWORD;
 
 typedef unsigned char* PBYTE;
 
+typedef DWORD SIZE;
 typedef DWORD ULONG;
 
 typedef enum {

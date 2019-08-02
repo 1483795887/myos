@@ -96,6 +96,12 @@
     <ClInclude Include="include\mm\Page.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\mm\Pool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mm\NaivePool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kernel\main.cpp">
@@ -117,6 +123,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="mm\Zone.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\New.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mm\NaivePool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

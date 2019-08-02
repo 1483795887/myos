@@ -45,19 +45,23 @@
     <ClInclude Include="include\lib\CList.h" />
     <ClInclude Include="include\lib\CListEntry.h" />
     <ClInclude Include="include\mm\Mm.h" />
+    <ClInclude Include="include\mm\NaivePool.h" />
     <ClInclude Include="include\mm\Page.h" />
     <ClInclude Include="include\mm\PhysicalPage.h" />
     <ClInclude Include="include\mm\PhysicalPageAllocator.h" />
+    <ClInclude Include="include\mm\Pool.h" />
     <ClInclude Include="include\mm\Zone.h" />
     <ClInclude Include="include\Status.h" />
     <ClInclude Include="include\Types.h" />
     <ClInclude Include="setup\setup.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="lib\New.cpp" />
     <ClCompile Include="kernel\main.cpp" />
     <ClCompile Include="klib\i386\Kememory.cpp" />
     <ClCompile Include="lib\Bitmap.cpp" />
     <ClCompile Include="lib\CList.cpp" />
+    <ClCompile Include="mm\NaivePool.cpp" />
     <ClCompile Include="mm\PhysicalPage.cpp" />
     <ClCompile Include="mm\Zone.cpp" />
     <ClCompile Include="setup\main.cpp" />

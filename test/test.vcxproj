@@ -38,13 +38,16 @@
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="mm\FakePhysicalPageAllocator.h" />
+    <ClInclude Include="mm\FakePool.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\CListTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mm\FakePhyscialPageAllocator.cpp" />
+    <ClCompile Include="mm\FakePool.cpp" />
     <ClCompile Include="mm\MmTest.cpp" />
+    <ClCompile Include="mm\NaivePoolTest.cpp" />
     <ClCompile Include="mm\PhysicalTest.cpp" />
     <ClCompile Include="mm\ZoneTest.cpp" />
     <ClCompile Include="pch.cpp">

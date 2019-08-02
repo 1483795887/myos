@@ -8,10 +8,13 @@
     <ClCompile Include="mm\MmTest.cpp" />
     <ClCompile Include="mm\PhysicalTest.cpp" />
     <ClCompile Include="mm\ZoneTest.cpp" />
+    <ClCompile Include="mm\NaivePoolTest.cpp" />
+    <ClCompile Include="mm\FakePool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="mm\FakePhysicalPageAllocator.h" />
+    <ClInclude Include="mm\FakePool.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

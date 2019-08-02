@@ -1,6 +1,6 @@
 #include "pch.h"
-#include <mm/mm.h>
-#include <types.h>
+#include <mm/Mm.h>
+#include <Types.h>
 
 ULONG pageAlign(ULONG address) {
 	return addressAlign(address, PAGE_SIZE, TRUE);
