@@ -1,19 +1,24 @@
 #include "pch.h"
 #include <types.h>
 #include <lib/bitmap.h>
+#include <global/OS.h>
+#include "../mm/FakePool.h"
+
 
 class BitmapTest : public testing::Test {
 public:
 	virtual void SetUp() {
-		map = (PBYTE)malloc(100);
-		memset(map, 0, 100);
-		bitmap.init(map, 100);
+		
+		fakePool = new FakePool(1024);
+		os->pool = fakePool;
+		bitmap = Bitmap(100);
 	}
 	virtual void TearDown() {
-
+		delete fakePool;
 	}
 	Bitmap bitmap;
-	PBYTE map;
+
+	FakePool* fakePool;
 };
 
 TEST_F(BitmapTest, emptyBitmapWhenCheckBitThenFalse) {

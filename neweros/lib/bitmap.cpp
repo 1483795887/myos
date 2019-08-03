@@ -1,4 +1,14 @@
+#include <global/OS.h>
 #include <lib/Bitmap.h>
+
+
+Bitmap::Bitmap(ULONG maxNo)
+{
+	maxNo = ulAlign(maxNo, 8, TRUE);
+
+	//Bitmap* bitmap = New Bitmap(10);
+	map = New BYTE[maxNo];
+}
 
 BOOL Bitmap::checkBit(ULONG no) {
     ULONG byte = no / 8;

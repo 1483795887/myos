@@ -3,7 +3,7 @@
 #include <Types.h>
 
 ULONG pageAlign(ULONG address) {
-	return addressAlign(address, PAGE_SIZE, TRUE);
+	return ulAlign(address, PAGE_SIZE, TRUE);
 }
 TEST(MMTest, pageAlignWhenAddressIsAlignedThenSame) {
 	ULONG address = PAGE_SIZE * 3;

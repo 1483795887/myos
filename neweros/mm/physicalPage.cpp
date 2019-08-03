@@ -45,9 +45,9 @@ ULONG PhysicalPageManager::va2pa(ULONG vAddr) {
 }
 
 Status PhysicalPageManager::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property) {
-    pAddr = addressAlign(pAddr, PAGE_SIZE, FALSE);
-    vAddr = addressAlign(vAddr, PAGE_SIZE, FALSE);
-    size = addressAlign(size, PAGE_SIZE, TRUE);
+    pAddr = ulAlign(pAddr, PAGE_SIZE, FALSE);
+    vAddr = ulAlign(vAddr, PAGE_SIZE, FALSE);
+    size = ulAlign(size, PAGE_SIZE, TRUE);
     property = property & 0xfff;
     if (vAddr > vAddr + size)
         return MemoryOverLimit;

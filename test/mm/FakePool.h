@@ -6,7 +6,7 @@ class FakePool : public Pool {
 public:
 	virtual PBYTE allocate(SIZE size);
 
-	FakePool();
+	FakePool(SIZE size);
 
 	virtual ~FakePool();
 private:

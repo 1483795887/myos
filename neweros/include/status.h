@@ -4,5 +4,7 @@ enum Status{
 	Success = 0,
 	AddressNotAligned,
 	MemoryOverLimit,
-	PageAlreadyExist		//映射页面时页面已存在
+	PageAlreadyExist,		//映射页面时页面已存在
+	NullPointer,
+	PoolNotEnough,
 };

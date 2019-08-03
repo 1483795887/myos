@@ -5,7 +5,7 @@
 class NaivePoolTest :public testing::Test {
 public:
 	virtual void SetUp() {
-		fakePool = new FakePool();
+		fakePool = new FakePool(1024);
 		mPool = fakePool->allocate(1024);
 	}
 

@@ -20,9 +20,9 @@ typedef enum {
 	FALSE = 0 ,TRUE = 1
 }BOOL;
 
-inline ULONG addressAlign(ULONG address, ULONG size, BOOL upper) {
-	ULONG alignedAddress = address & (-size);
-	if (alignedAddress < address && upper)
+inline ULONG ulAlign(ULONG ul, ULONG size, BOOL upper) {
+	ULONG alignedAddress = ul & (-size);
+	if (alignedAddress < ul && upper)
 		alignedAddress += size;
 	return alignedAddress;
 }

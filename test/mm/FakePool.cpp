@@ -14,11 +14,11 @@ PBYTE FakePool::allocate(SIZE size) {
     }
 }
 
-FakePool::FakePool() {
-    pool = (PBYTE)malloc(MAX_POOL_SIZE);
-    memset(pool, 0, MAX_POOL_SIZE);
+FakePool::FakePool(SIZE size) {
+    pool = (PBYTE)malloc(size);
+    memset(pool, 0, size);
     current = pool;
-    remainSize = MAX_POOL_SIZE;
+    remainSize = size;
 }
 
 FakePool::~FakePool() {

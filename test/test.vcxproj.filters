@@ -10,6 +10,7 @@
     <ClCompile Include="mm\ZoneTest.cpp" />
     <ClCompile Include="mm\NaivePoolTest.cpp" />
     <ClCompile Include="mm\FakePool.cpp" />
+    <ClCompile Include="lib\BitmapTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
