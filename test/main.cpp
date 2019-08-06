@@ -2,9 +2,6 @@
 #include <global/OS.h>
 using namespace testing;
 
-
-OS* os = NULL;
-
 int main(int argc, char** argv) {
 	os = new OS();
 

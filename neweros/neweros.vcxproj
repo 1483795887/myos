@@ -57,6 +57,7 @@
     <ClInclude Include="setup\setup.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="global\OS.cpp" />
     <ClCompile Include="kernel\main.cpp" />
     <ClCompile Include="klib\i386\Kememory.cpp" />
     <ClCompile Include="lib\Bitmap.cpp" />

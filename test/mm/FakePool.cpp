@@ -1,11 +1,14 @@
 #include "pch.h"
 #include "FakePool.h"
+#include <global/OS.h>
 
 #define MAX_POOL_SIZE 1024
 
 PBYTE FakePool::allocate(SIZE size) {
-    if (remainSize < size)
-        return NULL;
+	if (remainSize < size) {
+		os->setLastStatus(PoolNotEnough);
+		return NULL;
+	}
     else {
         PBYTE result = current;
         current += size;

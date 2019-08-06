@@ -3,3 +3,4 @@
 
 #define PAGE_SIZE 0x1000
 #define PAGE_MASK -PAGE_SIZE
+#define LOG2_PAGE_SIZE 12

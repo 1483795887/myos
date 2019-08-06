@@ -131,5 +131,8 @@
     <ClCompile Include="mm\NaivePool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="global\OS.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

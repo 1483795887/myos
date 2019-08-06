@@ -1,21 +1,25 @@
+#include <global/OS.h>
 #include <mm/Mm.h>
 #include <mm/Zone.h>
 #include <mm/Page.h>
 
-Status FreeArea::LinkFreePages(PBYTE start, ULONG size) {
-	ULONG address = (ULONG)start;
-	if (address & 0x3ff != 0)
-		return AddressNotAligned;
-	if ((size & 0x3ff) != 0)
-		return AddressNotAligned;
-	if (address > address + size)
-		return MemoryOverLimit;
-	ULONG offset = 0;
-	for (offset = 0; offset < size; offset++) {
-		Page* page = (Page*)(start + offset);
-		page->setData(start + offset);
-		freeList.insertHead(page);
-		offset += PAGE_SIZE;
-	}
-    return Success;
+Status FreeArea::init(ULONG order, ULONG memorySize) {
+    Status status;
+    if (order > MAX_ORDER) {
+        status = ValueNotInRange;
+        os->setLastStatus(status);
+        return status;
+    }
+    this->order = order;
+
+    map.init(memorySize >> (order + LOG2_PAGE_SIZE));
+    return os->getLastStatus();
+}
+
+Status Zone::init(PBYTE start, ULONG memorySize) {
+    return os->getLastStatus();
+}
+
+ULONG Zone::getFreePages() {
+    return 0;
 }

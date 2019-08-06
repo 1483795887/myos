@@ -6,32 +6,37 @@
 
 class OS {
 public:
-	Status lastStatus;
-	Pool* pool;
+    Pool* pool;
 
-	OS() {
-		lastStatus = Success;
-		pool = NULL;
-	}
+    Status getLastStatus();
+    void setLastStatus(Status status);
+
+    OS() {
+        lastStatus = Success;
+        pool = NULL;
+    }
+
+private:
+	Status lastStatus;
 };
 
 extern OS* os;
 
 #define New new(os->pool)
 
-inline void* _cdecl operator new(SIZE size, Pool* pool) {
-	if (pool == NULL) {
-		os->lastStatus = NullPointer;
-		return NULL;
-	}
-	return pool->allocate(size);
+inline void* _cdecl operator new (SIZE size, Pool* pool) {
+    if (pool == NULL) {
+		os->setLastStatus(NullPointer);
+        return NULL;
+    }
+    return pool->allocate(size);
 }
 
 inline void* _cdecl operator new[](SIZE size, Pool* pool) {
-	if (pool == NULL) {
-		os->lastStatus = NullPointer;
-		return NULL;
-	}
-		
-	return pool->allocate(size);
+    if (pool == NULL) {
+		os->setLastStatus(NullPointer);
+        return NULL;
+    }
+
+    return pool->allocate(size);
 }

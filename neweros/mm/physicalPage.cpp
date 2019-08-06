@@ -1,3 +1,4 @@
+#include <global/OS.h>
 #include "..\include\mm\PhysicalPage.h"
 
 inline PDE getPDEIndex(ULONG address) {
@@ -34,13 +35,13 @@ void PhysicalPageManager::setPD(PD pd) {
 }
 
 ULONG PhysicalPageManager::va2pa(ULONG vAddr) {
-	PDE pde = pd[getPDEIndex(vAddr)];
-	if (!(pde & Existence))
-		return NULL;
-	PT pt = (PT)getAddressFromEntry(pde);
-	PTE pte = pt[getPTEIndex(vAddr)];
-	if (!(pte & Existence))
-		return NULL;
+    PDE pde = pd[getPDEIndex(vAddr)];
+    if (!(pde & Existence))
+        return NULL;
+    PT pt = (PT)getAddressFromEntry(pde);
+    PTE pte = pt[getPTEIndex(vAddr)];
+    if (!(pte & Existence))
+        return NULL;
     return getAddressFromEntry(pte);
 }
 
@@ -49,31 +50,36 @@ Status PhysicalPageManager::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG
     vAddr = ulAlign(vAddr, PAGE_SIZE, FALSE);
     size = ulAlign(size, PAGE_SIZE, TRUE);
     property = property & 0xfff;
-    if (vAddr > vAddr + size)
-        return MemoryOverLimit;
+    Status status = Success;
+    if (vAddr > vAddr + size) {
+        status = MemoryOverLimit;
+        os->setLastStatus(status);
+        return status;
+    }
     ULONG currentSize = 0;
     while (currentSize < size) {
         PDE pde = pd[getPDEIndex(vAddr)];
         if (pde & Existence) {
             PT pt = (PT)getAddressFromEntry(pde);
             PTE pte = pt[getPTEIndex(vAddr)];
-            if (pte & Existence)
-                return PageAlreadyExist;
-            else {
-				pte = pAddr | property;
-				pt[getPTEIndex(vAddr)] = pte;
+            if (pte & Existence) {
+                status = PageAlreadyExist;
+                os->setLastStatus(status);
+                return status;
+            } else {
+                pte = pAddr | property;
+                pt[getPTEIndex(vAddr)] = pte;
             }
-
-        } else { 
-			PT pt = (PT)allocator->allocPages(&zone, 0);
-			pd[getPDEIndex(vAddr)] = (PDE)((ULONG)pt | property);
-			continue;
+        } else {
+            PT pt = (PT)allocator->allocPages(&zone, 0);
+            pd[getPDEIndex(vAddr)] = (PDE)((ULONG)pt | property);
+            continue;
         }
         currentSize += PAGE_SIZE;
-		vAddr += PAGE_SIZE;
-		pAddr += PAGE_SIZE;
+        vAddr += PAGE_SIZE;
+        pAddr += PAGE_SIZE;
     }
-    return Success;
+    return status;
 }
 
 void PhysicalPageManager::setZone(Zone zone) {

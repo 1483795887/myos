@@ -7,4 +7,6 @@ enum Status{
 	PageAlreadyExist,		//映射页面时页面已存在
 	NullPointer,
 	PoolNotEnough,
+	ValueNotInRange,
+	FreePageNotEnough
 };
