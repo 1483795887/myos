@@ -6,7 +6,7 @@ PBYTE FakePhysicalPageAllocator::allocPages(Zone* zone, ULONG order) {
     ULONG size = number * PAGE_SIZE;
     if (currentBlock >= MAX_BLOCKS)
         return (PBYTE)NULL;
-	PBYTE buffer = (PBYTE)_aligned_malloc(size, PAGE_SIZE);
+	PBYTE buffer = (PBYTE)_aligned_malloc(size, size);
     memset((void*)buffer, 0, size);
     blocks[currentBlock] = buffer;
     currentBlock++;

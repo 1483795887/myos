@@ -4,13 +4,13 @@
 
 class FakePool : public Pool {
 public:
-	virtual PBYTE allocate(SIZE size);
+    virtual PBYTE allocate(SIZE size);
 
-	FakePool(SIZE size);
+    FakePool(SIZE size);
 
-	virtual ~FakePool();
+    virtual ~FakePool();
 private:
-	PBYTE pool;
-	PBYTE current;
-	ULONG remainSize;
+    PBYTE pool;
+    PBYTE current;
+    ULONG remainSize;
 };

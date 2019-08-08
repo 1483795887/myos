@@ -47,8 +47,8 @@ TEST_F(CListTest, twoWhenInsertTailThenThirdNextToSelf) {
     CListEntry entry, entry2;
     list.insertHead(&entry);
     list.insertHead(&entry2);
-	CListEntry* first = list.getFirst();
-	CListEntry* second = first->getNext();
+    CListEntry* first = list.getFirst();
+    CListEntry* second = first->getNext();
     EXPECT_EQ(list.getHead(), second->getNext());
 }
 
@@ -58,7 +58,7 @@ TEST_F(CListTest, twoWhenInsertTailThenFirstPrevToSelf) {
     list.insertHead(&entry);
     list.insertHead(&entry2);
     CListEntry* head = list.getHead();
-	CListEntry* first = list.getFirst();
+    CListEntry* first = list.getFirst();
     EXPECT_EQ(list.getHead(), first->getPrev());
 }
 
@@ -101,18 +101,18 @@ TEST_F(CListTest, notListEntryWhenRemoveThenNothingHappened) {
 }
 
 TEST_F(CListTest, deleteDeletedWhenRemoveThenCountRight) {
-	CList list;
-	CListEntry entry, entry1;
-	list.insertHead(&entry);
-	list.insertHead(&entry1);
-	list.remove(&entry1);
-	list.remove(&entry1);
+    CList list;
+    CListEntry entry, entry1;
+    list.insertHead(&entry);
+    list.insertHead(&entry1);
+    list.remove(&entry1);
+    list.remove(&entry1);
 
-	EXPECT_EQ(list.getCount(), 1);
+    EXPECT_EQ(list.getCount(), 1);
 }
 
 TEST_F(CListTest, emptyWhenRemoveThenNothingHappened) {
-	CList list;
-	list.remove(list.getHead());
-	EXPECT_EQ(list.getCount(), 0);
+    CList list;
+    list.remove(list.getHead());
+    EXPECT_EQ(list.getCount(), 0);
 }

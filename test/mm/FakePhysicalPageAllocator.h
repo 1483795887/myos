@@ -17,4 +17,5 @@ public:
 private:
     PBYTE blocks[MAX_BLOCKS];
     ULONG currentBlock;
+
 };

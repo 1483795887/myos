@@ -4,15 +4,15 @@
 
 PBYTE NaivePool::allocate(SIZE size) {
     if (remainedSize < size) {
-		os->setLastStatus(PoolNotEnough);
+        os->setLastStatus(PoolNotEnough);
         return NULL;
-    }else {
+    } else {
         PBYTE result = nextAddress;
-		if (((ULONG)result) + size < (ULONG)result) { //超出最大内存
-			os->setLastStatus(MemoryOverLimit);
-			return NULL;
-		}
-            
+        if (((ULONG)result) + size < (ULONG)result) { //超出最大内存
+            os->setLastStatus(MemoryOverLimit);
+            return NULL;
+        }
+
         remainedSize -= size;
         nextAddress += size;
         return result;

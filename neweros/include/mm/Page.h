@@ -4,12 +4,15 @@
 
 class Page : public CListEntry {
 public:
-    PBYTE getData() {
-        return address;
+    PBYTE getAddress() {
+        return (PBYTE)this;
     }
-    void setData(PBYTE data) {
-        this->address = data;
-    }
+	ULONG getOrder() {
+		return order;
+	}
+	void setOrder(ULONG order) {
+		this->order = order;
+	}
 private:
-    PBYTE address;
+	ULONG order;
 };

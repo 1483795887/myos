@@ -9,6 +9,7 @@ public:
 	BOOL checkBit(ULONG no);
 	void setBit(ULONG no);
 	void notBit(ULONG no);
+	void revBit(ULONG no);
 private:
 	ULONG maxno;
 	PBYTE map;

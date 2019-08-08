@@ -3,14 +3,14 @@
 using namespace testing;
 
 int main(int argc, char** argv) {
-	os = new OS();
+    os = new OS();
 
-	InitGoogleTest(&argc, argv);
-	//FLAGS_gtest_filter = "NaivePoolTest.*";
+    InitGoogleTest(&argc, argv);
+    //FLAGS_gtest_filter = "NaivePoolTest.*";
 
-	int result = RUN_ALL_TESTS();
+    int result = RUN_ALL_TESTS();
 
-	delete os;
+    delete os;
 
-	return result;
+    return result;
 }

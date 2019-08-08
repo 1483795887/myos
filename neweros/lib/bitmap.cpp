@@ -6,7 +6,7 @@ BOOL Bitmap::checkBit(ULONG no) {
         return FALSE;
     ULONG byte = no / 8;
     BYTE bit = no % 8;
-    return (BOOL)(map[byte] & (1 << bit));
+    return (BOOL)((map[byte] & (1 << bit)) != 0);
 }
 
 Status Bitmap::init(ULONG maxNo) {
@@ -28,5 +28,13 @@ void Bitmap::notBit(ULONG no) {
         ULONG byte = no / 8;
         BYTE bit = no % 8;
         map[byte] &= ~(1 << bit);
+    }
+}
+
+void Bitmap::revBit(ULONG no) {
+    if (no <= maxno) {
+        ULONG byte = no / 8;
+        BYTE bit = no % 8;
+        map[byte] ^= (1 << bit);
     }
 }
