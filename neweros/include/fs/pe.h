@@ -9,6 +9,12 @@ typedef struct {
 	DWORD lfanew;
 }DosHeader;
 
+#define SECTION_FLAG_CONTAIN_CODE				0x20
+#define SECTION_FLAG_CONTAIN_INITAILIZED_DATA	0x40
+#define SECTION_FLAG_EXECUTABLE					0x20000000
+#define SECTION_FLAG_READABLE					0x40000000
+
+
 #define NT_SIGNATURE 0x4550
 typedef struct {
 	DWORD signature;

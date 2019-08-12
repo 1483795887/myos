@@ -1,5 +1,6 @@
 #include <global/OS.h>
-#include "..\include\mm\PhysicalPage.h"
+#include <mm/PhysicalPageAllocatorImpl.h>
+#include <mm/PhysicalPage.h>
 
 inline PDE getPDEIndex(ULONG address) {
     return address >> PDE_SHIFT;
@@ -21,13 +22,23 @@ inline BOOL checkPageAddressValid(ULONG address) {
     return TRUE;
 }
 
-PhysicalPageManager::PhysicalPageManager(PD pd) {
-    this->pd = pd;
-}
-
 PhysicalPageManager::PhysicalPageManager() {
     this->pd = (PD)NULL;
     this->allocator = NULL;
+}
+
+void PhysicalPageManager::init(PBYTE start, SIZE memorySize) {
+	ULONG pageCount = memorySize >> LOG2_PAGE_SIZE;
+    memMap = New Page[pageCount];
+	for (int i = 0; i < pageCount; i++) {
+		memMap[i].setAddress(start + i * PAGE_SIZE);
+	}
+
+	zone.init(start, memorySize, memMap);
+	zone.putAllPages();
+	allocator = New PhysicalPageAllocatorImpl;
+	PD pd = (PD)allocator->allocPages(&zone, 0);
+	setPD(pd);
 }
 
 void PhysicalPageManager::setPD(PD pd) {

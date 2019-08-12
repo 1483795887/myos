@@ -11,6 +11,7 @@
     <ClCompile Include="mm\NaivePoolTest.cpp" />
     <ClCompile Include="mm\FakePool.cpp" />
     <ClCompile Include="lib\BitmapTest.cpp" />
+    <ClCompile Include="mm\PhysicalPageImplTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

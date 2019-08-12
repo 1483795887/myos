@@ -10,10 +10,12 @@ AS = ml.exe /nologo
 AFLAGS = $(aopts) $(incs) /c /Foobj$(targ)\ 
 
 CC = cl.exe /nologo
-CFLAGS = $(incs) /X /Gz /Zl /c /Foobj$(targ)\ 
+CFLAGS = $(incs) /X /Gz /Zl /c /utf-8 /GR- /Foobj$(targ)\ 
+
+# /X忽略包含标准目录 /Gz默认使用stdcall /Zl从.obj中移除默认库名
 
 LINK = link.exe /nologo
-targopts = /subsystem:native /driver
+targopts = /subsystem:native /driver /nodefaultlib
 
 LINKFLAGS = $(targopts) /MAP $(particularopts)
 

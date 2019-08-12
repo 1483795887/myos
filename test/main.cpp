@@ -6,7 +6,7 @@ int main(int argc, char** argv) {
     os = new OS();
 
     InitGoogleTest(&argc, argv);
-    //FLAGS_gtest_filter = "NaivePoolTest.*";
+    FLAGS_gtest_filter = "ZoneTest.*";
 
     int result = RUN_ALL_TESTS();
 

@@ -105,6 +105,9 @@
     <ClInclude Include="include\global\OS.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\mm\PhysicalPageAllocatorImpl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kernel\main.cpp">
@@ -119,9 +122,6 @@
     <ClCompile Include="lib\CList.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="klib\i386\Kememory.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="mm\PhysicalPage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -132,6 +132,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="global\OS.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mm\PhysicalPageAllocatorImpl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="klib\delete.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="klib\Kememory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

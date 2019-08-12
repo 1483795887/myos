@@ -14,6 +14,7 @@ public:
     void insert(Page* page);
     void remove(Page* page);
     BOOL canMerge(PBYTE offset);
+	Page* getFirst();
 private:
     ULONG order;
     CList freeList;
@@ -25,15 +26,22 @@ private:
 
 class Zone {
 public:
-    Status init(PBYTE start, ULONG memorySize);
+    Status init(PBYTE start, ULONG memorySize, Page* pages);
     ULONG getFreePages();
-    Status putPages(Page* page);
-
+	Status putPage(PBYTE start);
+	Status putAllPages();
     ULONG getFreePagesForOrder(int order);
+
+	PBYTE getPages(ULONG order);
+
+	Page* getPageByAddress(PBYTE address);
 private:
     PBYTE start;
     ULONG size;
     FreeArea freeAreas[MAX_ORDER + 1];
+	Page* memMap;
 
     void mergePage(Page* page);
+	PBYTE dividePage(ULONG order);
+	
 };

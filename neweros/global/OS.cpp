@@ -9,3 +9,11 @@ Status OS::getLastStatus() {
 void OS::setLastStatus(Status status) {
     this->lastStatus = status;
 }
+
+PhysicalPageManager* OS::getPhysicalPageManager() {
+    return this->ppm;
+}
+
+void OS::setPhysicalPageManager(PhysicalPageManager* ppm) {
+    this->ppm = ppm;
+}

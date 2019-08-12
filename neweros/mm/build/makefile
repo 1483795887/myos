@@ -1,5 +1,4 @@
-ccobjs = $(OBJ)\PhysicalPage.obj $(OBJ)\Zone.obj $(OBJ)\NaivePool.obj
-
+ccobjs = $(OBJ)\PhysicalPage.obj $(OBJ)\Zone.obj $(OBJ)\NaivePool.obj $(OBJ)\PhysicalPageAllocatorImpl.obj
 library = $(toptarget)\mm.lib 
 target = $(library)
 

@@ -19,8 +19,9 @@ PBYTE NaivePool::allocate(SIZE size) {
     }
 }
 
-NaivePool::NaivePool(PBYTE start, ULONG size) {
-    ULONG addr = (ULONG)start;
-    this->nextAddress = start;
-    this->remainedSize = size;
+NaivePool::NaivePool(PBYTE start, SIZE size)
+{
+	ULONG addr = (ULONG)start;
+	this->nextAddress = start;
+	this->remainedSize = size;
 }

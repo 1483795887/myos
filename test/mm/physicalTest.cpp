@@ -13,7 +13,8 @@ public:
 
         allocator = new FakePhysicalPageAllocator();
         pd = (PD)allocator->allocPages(NULL, 0);
-        ppm = new PhysicalPageManager(pd);
+        ppm = new PhysicalPageManager;
+		ppm->setPD(pd);
         ppm->setAllocator(allocator);
     }
     virtual void TearDown() {

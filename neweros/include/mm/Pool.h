@@ -3,7 +3,9 @@
 
 class Pool {
 public:
-    virtual PBYTE allocate(SIZE size) = 0;
+    virtual PBYTE allocate(SIZE size) {
+        return NULL;
+    };
     virtual ~Pool() {
 
     }
