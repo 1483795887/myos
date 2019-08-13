@@ -37,14 +37,15 @@
     <None Include="install\MakeVHD.bat" />
     <None Include="install\mount.bat" />
     <None Include="install\unmount.bat" />
+    <None Include="klib\i386\Atomic.asm" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\fs\Pe.h" />
     <ClInclude Include="include\global\OS.h" />
-    <ClInclude Include="include\klib\Kememory.h" />
     <ClInclude Include="include\lib\Bitmap.h" />
     <ClInclude Include="include\lib\CList.h" />
     <ClInclude Include="include\lib\CListEntry.h" />
+    <ClInclude Include="include\klib\Memory.h" />
     <ClInclude Include="include\mm\Mm.h" />
     <ClInclude Include="include\mm\NaivePool.h" />
     <ClInclude Include="include\mm\Page.h" />
@@ -54,14 +55,16 @@
     <ClInclude Include="include\mm\Pool.h" />
     <ClInclude Include="include\mm\Zone.h" />
     <ClInclude Include="include\Status.h" />
+    <ClInclude Include="include\synchron\Atomic.h" />
     <ClInclude Include="include\Types.h" />
     <ClInclude Include="setup\setup.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="global\OS.cpp" />
     <ClCompile Include="kernel\main.cpp" />
+    <ClCompile Include="klib\AtomicC.cpp" />
     <ClCompile Include="klib\delete.cpp" />
-    <ClCompile Include="klib\Kememory.cpp" />
+    <ClCompile Include="klib\Memory.cpp" />
     <ClCompile Include="lib\Bitmap.cpp" />
     <ClCompile Include="lib\CList.cpp" />
     <ClCompile Include="mm\NaivePool.cpp" />

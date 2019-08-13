@@ -1,6 +1,6 @@
 #include <types.h>
 #include <fs/pe.h>
-#include <klib/kememory.h>
+#include <klib/Memory.h>
 #include <global/OS.h>
 #include <mm/Mm.h>
 #include <mm/NaivePool.h>
@@ -61,7 +61,7 @@ void copyKernel() {
 SIZE getPoolSize(SIZE memorySize) {
 	SIZE totalSize = 0;
 	SIZE mapSize = memorySize >> (LOG2_PAGE_SIZE + 3);
-	SIZE pageArrSize = memorySize >> (LOG2_PAGE_SIZE) * sizeof(Page);
+	SIZE pageArrSize = (memorySize >> (LOG2_PAGE_SIZE)) * sizeof(Page);
 	SIZE otherSize = PAGE_SIZE * 4;
 	totalSize = mapSize + pageArrSize + otherSize;
 	totalSize = ulAlign(totalSize, PAGE_SIZE, TRUE);

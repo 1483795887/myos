@@ -1,4 +1,4 @@
-#include <klib/Kememory.h>
+#include <klib/Memory.h>
 
 void _cdecl memcpy(PBYTE from, PBYTE to, SIZE size) {
 	PBYTE pFrom = (PBYTE)from;

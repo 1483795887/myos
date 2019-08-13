@@ -55,12 +55,12 @@
     <None Include="include\asm\x86Common.inc">
       <Filter>头文件</Filter>
     </None>
+    <None Include="klib\i386\Atomic.asm">
+      <Filter>源文件</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="setup\setup.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\klib\Kememory.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\fs\Pe.h">
@@ -108,6 +108,12 @@
     <ClInclude Include="include\mm\PhysicalPageAllocatorImpl.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\synchron\Atomic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\klib\Memory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kernel\main.cpp">
@@ -140,7 +146,10 @@
     <ClCompile Include="klib\delete.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="klib\Kememory.cpp">
+    <ClCompile Include="klib\AtomicC.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="klib\Memory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

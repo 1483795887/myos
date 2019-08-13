@@ -2,6 +2,7 @@
 #include <mm/Mm.h>
 #include <mm/Zone.h>
 #include <mm/Page.h>
+#include <klib/Memory.h>
 
 Status FreeArea::init(PBYTE address, ULONG order, ULONG memorySize) {
     Status status;
@@ -64,6 +65,8 @@ Status Zone::init(PBYTE start, ULONG memorySize, Page* pages) {
     }
 
     this->memMap = pages;
+	for (int i = 0; i < size >> LOG2_PAGE_SIZE; i++)
+		memMap[i].setCount(1);
 
     return os->getLastStatus();
 }
@@ -86,7 +89,13 @@ Status Zone::putPage(PBYTE address) {
     }
     Page* page = getPageByAddress(address);
     page->setAddress(address);//防止地址没有初始化
-    mergePage(page);
+	if (page->getCount() <= 0) 
+		os->setLastStatus(PageAlreadyFreeed);
+	else {
+		page->decCount();
+		if (page->getCount() == 0)
+			mergePage(page);
+	}
     return os->getLastStatus();
 }
 
@@ -106,6 +115,15 @@ ULONG Zone::getFreePagesForOrder(int order) {
     return freeAreas[order].getCount();
 }
 
+void Zone::addCountAndClear(PBYTE addr, ULONG order) {
+    PBYTE lastAddr = addr + getPageSizeByOrder(order) ;
+    for (PBYTE curr = addr; curr < lastAddr; curr += PAGE_SIZE) {
+        Page* page = getPageByAddress(curr);
+        page->setCount(1);
+		memset(curr, 0, PAGE_SIZE);
+    }
+}
+
 PBYTE Zone::getPages(ULONG order) {
     if (order > MAX_ORDER) {
         os->setLastStatus(ValueNotInRange);
@@ -113,6 +131,7 @@ PBYTE Zone::getPages(ULONG order) {
     }
     if (freeAreas[order].getCount() != 0) {
         Page* page = freeAreas[order].getFirst();
+        addCountAndClear(page->getAddress(), order);
         return page->getAddress();
     }
     return dividePage(order);
@@ -125,7 +144,10 @@ void Zone::mergePage(Page* page) {
 
     freeAreas[currentOrder].insert(currentPage);
 
-    while (currentOrder < MAX_ORDER && freeAreas[currentOrder].canMerge(currentPage->getAddress())) {
+    while (currentOrder < MAX_ORDER &&
+		getPageSizeByOrder(currentOrder) <= size / 2 &&
+		freeAreas[currentOrder].canMerge(currentPage->getAddress())
+		) {
 
         currentPage = getPageByAddress((PBYTE)ulAlign((ULONG)currentPage->getAddress(), pageSize << 1, FALSE));
         freeAreas[currentOrder].remove(currentPage);
@@ -138,23 +160,25 @@ void Zone::mergePage(Page* page) {
     }
 }
 
-PBYTE Zone::dividePage(ULONG order)
-{
-	PBYTE address = NULL;
-	Page* page = NULL;
-	ULONG i;
-	for (i = order + 1; i <= MAX_ORDER; i++) {
-		if (freeAreas[i].getCount() != 0) {
-			page = freeAreas[i].getFirst();
-			break;
-		}
-	}
-	for (; i > order && page != NULL; i--) {
-		address = page->getAddress() + getPageSizeByOrder(i - 1);
-		Page* higherPage = getPageByAddress(address);
-		freeAreas[i - 1].insert(higherPage);
-	}
-	return address;
+PBYTE Zone::dividePage(ULONG order) {
+    Page* page = NULL;
+    ULONG i;
+    for (i = order + 1; i <= MAX_ORDER; i++) {
+        if (freeAreas[i].getCount() != 0) {
+            page = freeAreas[i].getFirst();
+            break;
+        }
+    }
+    for (; i > order && page != NULL; i--) {
+        PBYTE higherAddress = page->getAddress() + getPageSizeByOrder(i - 1);
+        Page* higherPage = getPageByAddress(higherAddress);
+        freeAreas[i - 1].insert(higherPage);
+    }
+    if (page != NULL) {
+        addCountAndClear(page->getAddress(), order);
+        return page->getAddress();
+    }
+    return NULL;
 }
 
 Page* Zone::getPageByAddress(PBYTE address) {

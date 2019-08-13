@@ -12,11 +12,13 @@
     <ClCompile Include="mm\FakePool.cpp" />
     <ClCompile Include="lib\BitmapTest.cpp" />
     <ClCompile Include="mm\PhysicalPageImplTest.cpp" />
+    <ClCompile Include="asychron\FakeAtomic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="mm\FakePhysicalPageAllocator.h" />
     <ClInclude Include="mm\FakePool.h" />
+    <ClInclude Include="asychron\FakeAtomic.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

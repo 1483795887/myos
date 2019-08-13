@@ -10,4 +10,5 @@ enum Status {
     ValueNotInRange,
     FreePageNotEnough,
     InvalidPage,
+	PageAlreadyFreeed
 };

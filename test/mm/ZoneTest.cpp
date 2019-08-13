@@ -181,3 +181,55 @@ TEST_F(ZoneTest, oneOrderTwoPageFromOneOrderOnePageWhenGetPagesThenReturnNull) {
 	initZone(1);
 	EXPECT_EQ(zone->getPages(2), (PBYTE)NULL);
 }
+
+TEST_F(ZoneTest, onePageWhenGetPagesThenCountOne) {
+	PBYTE address = initZone(3);
+	Page* page = zone->getPageByAddress(zone->getPages(0));
+	EXPECT_EQ(page->getCount(), 1);
+}
+
+TEST_F(ZoneTest, multiplyPagesWhenGetPagesThenLastCountOne) {
+	PBYTE address = initZone(3);
+	Page* page = zone->getPageByAddress(zone->getPages(3) + 7 * PAGE_SIZE);
+	EXPECT_EQ(page->getCount(), 1);
+}
+
+TEST_F(ZoneTest, whenPutPageThenCountZero) {
+	PBYTE address = initZone(3);
+	Page* page = zone->getPageByAddress(zone->getPages(3) + 7 * PAGE_SIZE);
+	zone->putPage(page->getAddress());
+	EXPECT_EQ(page->getCount(), 0);
+}
+
+TEST_F(ZoneTest, whenGetPagesThenContentEmpty) {
+	initZone(3);
+	PBYTE addr = zone->getPages(0);
+	addr[0] = 12;
+
+	zone->putPage(addr);
+	addr = zone->getPages(0);
+
+	EXPECT_EQ(addr[0], 0);
+}
+
+TEST_F(ZoneTest, usedWhenPutPagesThenRelatedOrderNotChange) {
+	initZone(3);
+	PBYTE addr = zone->getPages(0);
+	int count = zone->getFreePagesForOrder(0);
+	Page* page = zone->getPageByAddress(addr);
+	page->incCount();
+	zone->putPage(addr);
+
+	EXPECT_EQ(zone->getFreePagesForOrder(0), count);
+}
+
+TEST_F(ZoneTest, putedWhenPutPagesThenCountIsStillZero) {
+	initZone(3);
+	PBYTE addr = zone->getPages(0);
+	zone->putPage(addr);
+	zone->putPage(addr);
+
+	Page* page = zone->getPageByAddress(addr);
+
+	EXPECT_EQ(page->getCount(), 0);
+}

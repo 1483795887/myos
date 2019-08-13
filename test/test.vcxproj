@@ -37,11 +37,13 @@
     <LibraryPath>$(SolutionDIr)neweros\build\target;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemGroup>
+    <ClInclude Include="asychron\FakeAtomic.h" />
     <ClInclude Include="mm\FakePhysicalPageAllocator.h" />
     <ClInclude Include="mm\FakePool.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="asychron\FakeAtomic.cpp" />
     <ClCompile Include="lib\BitmapTest.cpp" />
     <ClCompile Include="lib\CListTest.cpp" />
     <ClCompile Include="main.cpp" />

@@ -11,6 +11,10 @@ endm
 	.text ends
 endm
 
-.jmp232 macro seg,offset
-    db 
+.code32 macro
+    .text segment
+endm
+
+.endcode32 macro
+	.text ends
 endm
