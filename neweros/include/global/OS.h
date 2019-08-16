@@ -4,6 +4,7 @@
 #include <Status.h>
 #include <mm/Pool.h>
 #include <mm/PhysicalPage.h>
+#include <graphic/Graphic.h>
 
 
 class OS {
@@ -19,6 +20,8 @@ public:
 	SIZE dataSize;
 
 	ULONG entryPoint;
+
+	Graphic* graphic;
 
     Status getLastStatus();
     void setLastStatus(Status status);

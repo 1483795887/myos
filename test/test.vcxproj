@@ -38,12 +38,16 @@
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="asychron\FakeAtomic.h" />
+    <ClInclude Include="graphic\FakeFont.h" />
     <ClInclude Include="mm\FakePhysicalPageAllocator.h" />
     <ClInclude Include="mm\FakePool.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="asychron\FakeAtomic.cpp" />
+    <ClCompile Include="graphic\FakeFont.cpp" />
+    <ClCompile Include="graphic\ConsoleTest.cpp" />
+    <ClCompile Include="graphic\GraphicTest.cpp" />
     <ClCompile Include="lib\BitmapTest.cpp" />
     <ClCompile Include="lib\CListTest.cpp" />
     <ClCompile Include="main.cpp" />
@@ -83,7 +87,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>mm.lib;lib.lib;global.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mm.lib;lib.lib;global.lib;graphic.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

@@ -20,6 +20,7 @@
     <Text Include="build\target\Placeholder.txt" />
     <Text Include="setup\build\obji386\Placeholder.txt" />
     <Text Include="kernel\build\obji386\Placeholder.txt" />
+    <Text Include="graphic\build\obji386\Placeholder.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="boot\i386\utils.inc">
@@ -114,6 +115,24 @@
     <ClInclude Include="include\klib\Memory.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\graphic\Graphic.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphic\Font.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphic\DotFont.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphic\Container.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphic\Rect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphic\Console.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kernel\main.cpp">
@@ -150,6 +169,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="klib\Memory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="graphic\Graphic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="graphic\DotFont.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="graphic\Console.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
