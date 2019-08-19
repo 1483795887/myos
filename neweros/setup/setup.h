@@ -2,9 +2,11 @@
 
 #include <Types.h>
 
-#define KernelImageBase 0xc0100000
+#define GraphicInfo		0x00002200
+#define MemoryInfo		0x00002300
+#define DotFontMap		0x00004000
 #define KernelTempBase  0x00050000
-#define MemoryInfo		0x00023000
+#define KernelImageBase 0xc0100000
 
 typedef struct {
 	DWORD baseAddrLow;

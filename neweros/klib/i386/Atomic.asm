@@ -1,15 +1,18 @@
 include asm.inc
 
-.code32
+.code
 
-public _atoAdd
+public atomicAdd
 
-_atoAdd proc C _val, _par
+atomicAdd proc C _val, _par
+    push eax
+    push ebx
     mov eax, _par
     mov ebx, _val
     lock add dword ptr ds:[ebx], eax
+    pop ebx
+    pop eax
     ret
-_atoAdd endp
+atomicAdd endp
 
-.endcode32
 end

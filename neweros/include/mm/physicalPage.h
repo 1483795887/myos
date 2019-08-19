@@ -32,9 +32,12 @@ public:
 	Status mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property);
     void setZone(Zone zone);
     void setAllocator(PhysicalPageAllocator* allocator);
+
+	void changePD();
 private:
     PD pd;
     Zone zone;
     PhysicalPageAllocator* allocator;
 	Page* memMap;
 };
+

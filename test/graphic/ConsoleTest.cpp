@@ -1,6 +1,7 @@
 #include "pch.h"
 #include <graphic/Graphic.h>
 #include <graphic/Console.h>
+#include <global/OS.h>
 #include "FakeFont.h"
 
 #define MAX_COL 16

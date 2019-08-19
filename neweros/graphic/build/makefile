@@ -1,5 +1,5 @@
 
-ccobjs = $(OBJ)\Graphic.obj $(OBJ)\DotFont.obj $(OBJ)\Console.obj
+ccobjs = $(OBJ)\Graphic.obj $(OBJ)\DotFont.obj $(OBJ)\Console.obj $(OBJ)\Container.obj
 
 library = $(toptarget)\graphic.lib 
 target = $(library)

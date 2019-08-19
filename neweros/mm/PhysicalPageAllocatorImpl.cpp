@@ -2,5 +2,5 @@
 #include <mm/PhysicalPageAllocatorImpl.h>
 
 PBYTE PhysicalPageAllocatorImpl::allocPages(Zone* zone, ULONG order) {
-	return NULL;
+	return zone->getPages(order);
 }

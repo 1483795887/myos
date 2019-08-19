@@ -110,6 +110,12 @@ getactivedivision:
     mov si, 0
     call readfile
 
+    mov di, offset bootFontName
+    mov ax, FONTSEG
+    mov es, ax
+    mov si, 0
+    call readfile
+
     jmp enterIntoPM
 
     jmp $
@@ -236,6 +242,7 @@ NameLen = 11
 rootName            db "ROOT       "
 setupName           db "SETUP   EXE"
 kernelName          db "KERNEL  EXE"
+bootFontName        db "BOOT    FNT"
 
 startSect           dd 0
 sectorsPerCluster   db 0
@@ -411,6 +418,7 @@ gmisuccess:
 
     mov ds:[setupoffset], eax
     
+    
     in al,92h
 	or al,00000010b
 	out 92h,al
@@ -418,6 +426,13 @@ gmisuccess:
     mov eax, cr0
     or eax, 1
     mov cr0, eax
+
+    mov eax, KERNEL_DATA
+    mov ds, ax
+    mov es, ax
+    mov ss, ax
+
+    mov esp, BOOTBASE - 4
 
 longjmp             db 066h,0eah
 setupoffset         dd 0

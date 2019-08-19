@@ -13,6 +13,7 @@ typedef struct {
 #define SECTION_FLAG_CONTAIN_INITAILIZED_DATA	0x40
 #define SECTION_FLAG_EXECUTABLE					0x20000000
 #define SECTION_FLAG_READABLE					0x40000000
+#define SECTION_FLAG_WRITABLE					0x80000000
 
 
 #define NT_SIGNATURE 0x4550
@@ -55,7 +56,6 @@ typedef struct {
 	DWORD numberOfRvaAndSizes;
 }OptionalHeader;
 
-
 typedef struct {
 	char  name[8];
 	DWORD virtualSize;
@@ -64,8 +64,8 @@ typedef struct {
 	DWORD rawAddress;
 	DWORD relocAddress;
 	DWORD lineNumbers;
-	DWORD relocationsNumber;
-	DWORD lineNumbersNumber;
+	WORD relocationsNumber;
+	WORD lineNumbersNumber;
 	DWORD characteristics;
 }Section;
 

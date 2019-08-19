@@ -21,6 +21,7 @@
     <Text Include="setup\build\obji386\Placeholder.txt" />
     <Text Include="kernel\build\obji386\Placeholder.txt" />
     <Text Include="graphic\build\obji386\Placeholder.txt" />
+    <Text Include="klib\i386\CPUA.asm" />
   </ItemGroup>
   <ItemGroup>
     <None Include="boot\i386\utils.inc">
@@ -57,6 +58,9 @@
       <Filter>头文件</Filter>
     </None>
     <None Include="klib\i386\Atomic.asm">
+      <Filter>源文件</Filter>
+    </None>
+    <None Include="mm\i386\Page.asm">
       <Filter>源文件</Filter>
     </None>
   </ItemGroup>
@@ -133,6 +137,9 @@
     <ClInclude Include="include\graphic\Console.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\klib\CPU.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kernel\main.cpp">
@@ -178,6 +185,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="graphic\Console.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="graphic\Container.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="klib\CPU.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

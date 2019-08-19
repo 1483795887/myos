@@ -53,7 +53,7 @@ ULONG FreeArea::getPageNoByAddress(PBYTE address) {
 }
 
 Status Zone::init(PBYTE start, ULONG memorySize, Page* pages) {
-    this->start = start;
+    this->start = (PBYTE)ulAlign((ULONG)start, getPageSizeByOrder(MAX_ORDER), TRUE);
     this->size = ulAlign(memorySize, PAGE_SIZE, FALSE);
 
     ULONG pageSize = PAGE_SIZE;
@@ -100,7 +100,6 @@ Status Zone::putPage(PBYTE address) {
 }
 
 Status Zone::putAllPages() {
-    Page* page = (Page*)start;
     ULONG currentSize;
     for (currentSize = 0; currentSize < size; currentSize += PAGE_SIZE) {
         if (putPage(start + currentSize) != Success)

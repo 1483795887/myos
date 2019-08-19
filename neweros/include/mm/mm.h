@@ -10,6 +10,10 @@ inline ULONG getPAFromVA(ULONG va) {
 	return va - KERNEL_BASE;
 }
 
+inline ULONG getVAFromPA(ULONG pa) {
+	return pa + KERNEL_BASE;
+}
+
 inline ULONG getPageSizeByOrder(ULONG order) {
     return 1 << (order + LOG2_PAGE_SIZE);
 }

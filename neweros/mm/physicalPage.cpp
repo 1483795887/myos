@@ -28,17 +28,15 @@ PhysicalPageManager::PhysicalPageManager() {
 }
 
 void PhysicalPageManager::init(PBYTE start, SIZE memorySize) {
-	ULONG pageCount = memorySize >> LOG2_PAGE_SIZE;
+    ULONG pageCount = memorySize >> LOG2_PAGE_SIZE;
     memMap = New Page[pageCount];
-	for (int i = 0; i < pageCount; i++) {
-		memMap[i].setAddress(start + i * PAGE_SIZE);
-	}
+    for (int i = 0; i < pageCount; i++)
+        memMap[i].setAddress(start + i * PAGE_SIZE);
 
-	zone.init(start, memorySize, memMap);
-	zone.putAllPages();
-	allocator = New PhysicalPageAllocatorImpl;
-	PD pd = (PD)allocator->allocPages(&zone, 0);
-	setPD(pd);
+    zone.init(start, memorySize, memMap);
+    zone.putAllPages();
+    allocator = New PhysicalPageAllocatorImpl;
+    this->pd = (PD)allocator->allocPages(&zone, 0);
 }
 
 void PhysicalPageManager::setPD(PD pd) {
@@ -99,4 +97,10 @@ void PhysicalPageManager::setZone(Zone zone) {
 
 void PhysicalPageManager::setAllocator(PhysicalPageAllocator* allocator) {
     this->allocator = allocator;
+}
+
+extern "C" void _cdecl setPageDirectory(PD pd);
+
+void PhysicalPageManager::changePD() {
+    setPageDirectory(pd);
 }

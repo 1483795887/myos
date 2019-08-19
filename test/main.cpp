@@ -6,7 +6,7 @@ int main(int argc, char** argv) {
     os = new OS();
 
     InitGoogleTest(&argc, argv);
-    FLAGS_gtest_filter = "ConsoleTest.*";
+    //FLAGS_gtest_filter = "ConsoleTest.*";
 
     int result = RUN_ALL_TESTS();
 

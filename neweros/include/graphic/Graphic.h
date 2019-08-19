@@ -11,6 +11,7 @@ typedef struct {
 } RGB;
 
 #define BLACK {0,0,0,0}
+#define WHITE {255,255,255}
 #define DEFAULT_COLOR BLACK
 
 class Graphic {

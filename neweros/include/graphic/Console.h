@@ -8,6 +8,7 @@ public:
 	Console(Rect* rect):Container(rect) {
 		col = 0;
 		row = 0;
+		font = NULL;
 	}
 	void print(char* str);
 	void setRow(ULONG row);

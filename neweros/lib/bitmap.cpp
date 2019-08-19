@@ -11,7 +11,7 @@ BOOL Bitmap::checkBit(ULONG no) {
 
 Status Bitmap::init(ULONG maxNo) {
     this->maxno = ulAlign(maxNo, 8, TRUE);
-    map = New BYTE[maxNo];
+    map = New BYTE[maxNo >> 3];
     return os->getLastStatus();
 }
 

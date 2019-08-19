@@ -1,5 +1,7 @@
 #include <synchron/Atomic.h>
 
-aAdd atoAdd;
+extern "C" void _cdecl aAdd(int*, int par);
 
-aAdd atomicAdd = atoAdd;
+void atomicAdd(int* val, int par) {
+	aAdd(val, par);
+}

@@ -6,6 +6,8 @@
 #include <mm/NaivePool.h>
 #include <mm/PhysicalPage.h>
 #include <mm/PhysicalPageAllocatorImpl.h>
+#include <graphic/DotFont.h>
+#include <klib/CPU.h>
 #include "setup.h"
 
 void copyKernel() {
@@ -25,47 +27,66 @@ void copyKernel() {
     address += ntHeader->sizeOfOptionalHeader;
     Section* sections = (Section*)address;
 
-	memcpy((PBYTE)KernelTempBase, (PBYTE)getPAFromVA(KernelImageBase), sections[0].rawAddress);
+    ULONG kernelBase = getPAFromVA(KernelImageBase);
 
-    ULONG kernelStart = 0;
+    memcpy((PBYTE)KernelTempBase, (PBYTE)kernelBase, sections[0].rawAddress);
+
+    ULONG kernelStart = 0; //物理地址
+
+    ULONG codeStart, codeSize, dataStart, dataSize, rdataStart, rdataSize;//虚拟地址
 
     for (int i = 0; i < numberOfSections; i++) {
-        if (sections[i].virtualAddress + sections[i].virtualSize > kernelStart)
-            kernelStart = sections[i].virtualAddress + sections[i].virtualSize;
-        if (sections[i].characteristics & SECTION_FLAG_CONTAIN_CODE) {      //kernel只有两个段，code与data
-            os->codeStart = sections[i].virtualAddress;
-            os->codeSize = sections[i].virtualSize;
+        if (sections->virtualAddress + sections->virtualSize + kernelBase > kernelStart)
+            kernelStart = sections->virtualAddress + sections->virtualSize + kernelBase;
+        if (sections->characteristics & SECTION_FLAG_CONTAIN_CODE) {
+            codeStart = sections->virtualAddress + KernelImageBase;
+            codeSize = sections->virtualSize;
         }
-        if (sections[i].characteristics & SECTION_FLAG_CONTAIN_INITAILIZED_DATA) {
-            os->dataStart = sections[i].virtualAddress;
-            os->dataSize = sections[i].virtualSize;
+        if (sections->characteristics & SECTION_FLAG_CONTAIN_INITAILIZED_DATA) {
+            if (sections->characteristics & SECTION_FLAG_WRITABLE) {
+                dataStart = sections->virtualAddress + KernelImageBase;
+                dataSize = sections->virtualSize;
+            } else {
+                rdataStart = sections->virtualAddress + KernelImageBase;
+                rdataSize = sections->virtualSize;
+
+            }
         }
-		memcpy(
-            (PBYTE)(KernelTempBase + sections[i].rawAddress),
-            (PBYTE)(getPAFromVA(sections[i].virtualAddress)),
-            sections[i].rawSize);
+        memcpy(
+            (PBYTE)(KernelTempBase + sections->rawAddress),
+            (PBYTE)(sections->virtualAddress + getPAFromVA(KernelImageBase)),
+            sections->rawSize);
+        sections++;
     }
 
-    PBYTE physicalAddress = (PBYTE)getPAFromVA(kernelStart);
-
-    NaivePool* pool = (NaivePool*)physicalAddress;
+    NaivePool oriPool(0, 0);
+    NaivePool* pool = (NaivePool*)kernelStart;
+    memcpy((PBYTE)&oriPool, (PBYTE)pool, sizeof(NaivePool));//要虚函数表，但pool没有，所以复制局部变量的，反正都一样
     pool->setStart((PBYTE)pool + sizeof(NaivePool));
     pool->setSize(sizeof(OS)); //暂时存os之后再扩展
-    os = New OS();
+    os = (OS*)pool->allocate(sizeof(OS));
+    os->setLastStatus(Success);
     os->pool = pool;
 
-	os->entryPoint = optionalHeader->addressOfEntryPoint + os->codeStart;
+    os->codeStart = codeStart;
+    os->codeSize = codeSize;
+    os->dataStart = dataStart;
+    os->dataSize = dataSize;
+    os->rdataStart = rdataStart;
+    os->rdataSize = rdataSize;
+
+    os->entryPoint = optionalHeader->addressOfEntryPoint + KernelImageBase;
 
 }
 
 SIZE getPoolSize(SIZE memorySize) {
-	SIZE totalSize = 0;
-	SIZE mapSize = memorySize >> (LOG2_PAGE_SIZE + 3);
-	SIZE pageArrSize = (memorySize >> (LOG2_PAGE_SIZE)) * sizeof(Page);
-	SIZE otherSize = PAGE_SIZE * 4;
-	totalSize = mapSize + pageArrSize + otherSize;
-	totalSize = ulAlign(totalSize, PAGE_SIZE, TRUE);
-	return totalSize;
+    SIZE totalSize = 0;
+    SIZE mapSize = memorySize >> (LOG2_PAGE_SIZE + 3);
+    SIZE pageArrSize = (memorySize >> (LOG2_PAGE_SIZE)) * sizeof(Page);
+    SIZE otherSize = PAGE_SIZE * 4;
+    totalSize = mapSize + pageArrSize + otherSize;
+    totalSize = ulAlign(totalSize, PAGE_SIZE, TRUE);
+    return totalSize;
 }
 
 void getMemorySize() {
@@ -78,47 +99,77 @@ void getMemorySize() {
             usableMemoryLength = memInfo->ranges[i].lengthLow;
         }
     }
-    os->end = KERNEL_BASE + usableMemoryLength;
-	SIZE poolSize = getPoolSize(usableMemoryLength);
-	os->start = (ULONG)os->pool + poolSize;
-	((NaivePool*)os->pool)->setSize(poolSize);
+    os->end = usableMemoryLength;
+    SIZE poolSize = getPoolSize(usableMemoryLength);
+    os->start = ulAlign((ULONG)os->pool + poolSize, getPageSizeByOrder(MAX_ORDER), TRUE);
+    ((NaivePool*)os->pool)->setSize(poolSize);
 }
 
-typedef void(*KernelEntry)(OS*);
+void initGraphic() {
+    Graphic* graphic = New Graphic();
+    Rect rect;
+    WORD* graphicInfos = (WORD*)GraphicInfo;
+    rect.width = graphicInfos[0];
+    rect.height = graphicInfos[1];
+    graphic->init(&rect, *(PBYTE*)&graphicInfos[2]);
+    os->graphic = graphic;
+
+    DotFont* font = New DotFont((PBYTE)DotFontMap, 8, 16);
+	font->setColor(WHITE);
+
+    Console* console = New Console(&rect);
+    console->setFont(font);
+    os->console = console;
+
+}
 
 void initMemory() {
-	/*Zone* zone = New Zone;
-    zone->init((PBYTE)os->start, os->end - os->start);
-    zone->putAllPages();
-
-	PhysicalPageAllocator* allocator = New PhysicalPageAllocatorImpl;
-    PD pd = (PD)allocator->allocPages(zone, 0);*/
     PhysicalPageManager* ppm = New PhysicalPageManager;
-	ppm->init((PBYTE)os->start, os->end - os->start);
+    ppm->init((PBYTE)os->start, os->end - os->start);
 
     os->setPhysicalPageManager(ppm);
 
-    ppm->mapPages(0, KERNEL_BASE, 
-		KernelImageBase - KERNEL_BASE, 
-		Writable | Supervisor | Existence);
-    ppm->mapPages(getPAFromVA(os->codeStart), 
-		os->codeStart, 
-		os->codeSize, 
-		Supervisor | Existence);
-    ppm->mapPages(getPAFromVA(os->dataStart), 
-		os->dataStart, 
-		os->end - os->dataStart, 
-		Writable | Supervisor | Existence);
+    ppm->mapPages(0, 0,
+                  os->start,
+                  Writable | Supervisor | Existence);
+    ppm->mapPages(getPAFromVA(os->codeStart),
+                  os->codeStart,
+                  os->codeSize,
+                  Supervisor | Existence);
+    ppm->mapPages(getPAFromVA(os->rdataStart),
+                  os->rdataStart,
+                  os->rdataSize,
+                  Supervisor | Existence);
+    ppm->mapPages(getPAFromVA(os->dataStart),
+                  os->dataStart,
+                  os->end - getPAFromVA(os->dataStart),
+                  Writable | Supervisor | Existence);
 
-	KernelEntry kernelEntry = (KernelEntry)os->entryPoint;
-	kernelEntry(os);		
+    ULONG* graphicInfos = (ULONG*)GraphicInfo;
+    ULONG width = graphicInfos[0] & 0xffff;
+    ULONG height = graphicInfos[0] >> 16;
+    ULONG vam = (ULONG)graphicInfos[1];
+
+    ppm->mapPages((ULONG)vam,
+                  (ULONG)vam,
+                  width * height * sizeof(RGB),
+                  Writable | Supervisor | Existence);
+
+    ppm->changePD();
+    CPU::openPageMode();
 }
+
+typedef void(*KernelEntry)(OS*);
 
 void main() {
 
     copyKernel();
     getMemorySize();
-	initMemory();
+    initGraphic();
+    initMemory();
+
+    KernelEntry kernelEntry = (KernelEntry)os->entryPoint;
+    kernelEntry(os);
 
     for (;;);
 }

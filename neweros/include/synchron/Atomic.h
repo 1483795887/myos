@@ -2,9 +2,7 @@
 
 #include "../Types.h"
 
-typedef void(_cdecl *aAdd)(int*, int);
-
-extern "C" aAdd atomicAdd;
+extern "C" void _cdecl atomicAdd(int* value, int par);
 
 class Atomic {
 public:

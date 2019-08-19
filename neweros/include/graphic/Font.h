@@ -7,14 +7,16 @@ class Font {
 public:
 	Font() {
 		color = DEFAULT_COLOR;
+		width = 1;
+		height = 1;
 	}
     virtual void Draw(Graphic* graphic, char ch, ULONG x, ULONG y) {
     };
     ULONG getFontHeight() {
-        return 1;
+        return height;
     }
     ULONG getFontWidth() {
-        return 1;
+        return width;
     }
 	void setColor(RGB rgb) {
 		this->color = rgb;
@@ -24,4 +26,6 @@ public:
 	}
 protected:
 	RGB color;
+	ULONG width;
+	ULONG height;
 };

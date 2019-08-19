@@ -1,5 +1,5 @@
-#include <global/OS.h>
 #include <graphic/Graphic.h>
+#include <global/OS.h>
 
 Status Graphic::init(Rect* rect, PBYTE vam) {
     this->rect = *rect;

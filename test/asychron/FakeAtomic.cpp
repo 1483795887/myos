@@ -1,10 +1,6 @@
 #include "pch.h"
-#include "FakeAtomic.h"
+#include <synchron/Atomic.h>
 
-static void(*oldAdd)(int*, int);
-
-aAdd atomicAdd = fakeAdd;
-
-void fakeAdd(int* val, int par) {
+void atomicAdd(int* val, int par) {
 	*val += par;
 }
