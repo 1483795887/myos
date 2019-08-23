@@ -10,10 +10,21 @@ void OS::setLastStatus(Status status) {
     this->lastStatus = status;
 }
 
-PhysicalPageManager* OS::getPhysicalPageManager() {
-    return this->ppm;
+void* _cdecl operator new (SIZE size, Pool* pool) {
+	if (pool == NULL) {
+		os->setLastStatus(NullPointer);
+		return NULL;
+	}
+	os->setLastStatus(Success);
+	return pool->allocate(size);
 }
 
-void OS::setPhysicalPageManager(PhysicalPageManager* ppm) {
-    this->ppm = ppm;
+void* _cdecl operator new[](SIZE size, Pool* pool) {
+	if (pool == NULL) {
+		os->setLastStatus(NullPointer);
+		return NULL;
+	}
+	os->setLastStatus(Success);
+	return pool->allocate(size);
 }
+

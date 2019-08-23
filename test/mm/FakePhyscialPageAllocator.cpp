@@ -1,15 +1,16 @@
 #include "pch.h"
 #include "FakePhysicalPageAllocator.h"
 
-PBYTE FakePhysicalPageAllocator::allocPages(Zone* zone, ULONG order) {
+PBYTE FakePhysicalPageAllocator::allocPages(ULONG order) {
     ULONG number = 1 << order;
     ULONG size = number * PAGE_SIZE;
-    if (currentBlock >= MAX_BLOCKS)
+    if (currentBlock >= MAX_BLOCKS || ( remainPages < number))
         return (PBYTE)NULL;
-	PBYTE buffer = (PBYTE)_aligned_malloc(size, size);
+    PBYTE buffer = (PBYTE)_aligned_malloc(size, size);
     memset((void*)buffer, 0, size);
     blocks[currentBlock] = buffer;
     currentBlock++;
+	remainPages -= number;
     return buffer;
 }
 
@@ -19,8 +20,13 @@ PBYTE FakePhysicalPageAllocator::getLastPage() {
     return (PBYTE)NULL;
 }
 
+void FakePhysicalPageAllocator::setRemainPages(ULONG remainPages) {
+    this->remainPages = remainPages;
+}
+
 FakePhysicalPageAllocator::FakePhysicalPageAllocator() {
     currentBlock = 0;
+	remainPages = -1;
     for (int i = 0; i < MAX_BLOCKS; i++)
         blocks[i] = NULL;
 }

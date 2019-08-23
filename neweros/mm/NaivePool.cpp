@@ -15,6 +15,7 @@ PBYTE NaivePool::allocate(SIZE size) {
 
         remainedSize -= size;
         nextAddress += size;
+		os->setLastStatus(Success);
         return result;
     }
 }

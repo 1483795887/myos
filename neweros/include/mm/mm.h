@@ -19,5 +19,5 @@ inline ULONG getPageSizeByOrder(ULONG order) {
 }
 
 inline ULONG getOrderByPageSize(ULONG size) {
-    return size >> (LOG2_PAGE_SIZE);
+    return size >> (LOG2_PAGE_SIZE + 1);
 }

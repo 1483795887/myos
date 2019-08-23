@@ -4,9 +4,12 @@
 
 class PhysicalPageAllocator {
 public:
-	virtual PBYTE allocPages(Zone* zone, ULONG order) {
+	virtual PBYTE allocPages(ULONG order) {
 		return NULL;
 	};
+	virtual void putPage(PBYTE page) {
+
+	}
 	virtual ~PhysicalPageAllocator() {
 	};
 };

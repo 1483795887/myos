@@ -15,10 +15,6 @@ public:
 		remainedSize = size;
 	}
 
-	virtual ~NaivePool() {
-
-	}
-
 private:
 	PBYTE nextAddress;
 	SIZE remainedSize;

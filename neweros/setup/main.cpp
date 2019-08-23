@@ -124,10 +124,15 @@ void initGraphic() {
 }
 
 void initMemory() {
-    PhysicalPageManager* ppm = New PhysicalPageManager;
-    ppm->init((PBYTE)os->start, os->end - os->start);
+	PhysicalPageAllocatorImpl* allocator = New PhysicalPageAllocatorImpl;
+	allocator->init((PBYTE)os->start, os->end - os->start);
+	os->allocator = allocator;
 
-    os->setPhysicalPageManager(ppm);
+    PhysicalPageManager* ppm = New PhysicalPageManager;
+	ppm->setAllocator(allocator);
+	ppm->init();
+    //ppm->init((PBYTE)os->start, os->end - os->start);
+	os->ppm = ppm;
 
     ppm->mapPages(0, 0,
                   os->start,

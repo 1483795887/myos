@@ -26,18 +26,18 @@ enum {
 class PhysicalPageManager {
 public:
     PhysicalPageManager();
-	void init(PBYTE start, SIZE memorySize);
+	void init();
     void setPD(PD pd);
 	ULONG va2pa(ULONG vAddr);
 	Status mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property);
-    void setZone(Zone zone);
     void setAllocator(PhysicalPageAllocator* allocator);
+
+	PBYTE allocatePage(ULONG order);
+	void putPage(PBYTE page);
 
 	void changePD();
 private:
     PD pd;
-    Zone zone;
     PhysicalPageAllocator* allocator;
-	Page* memMap;
 };
 

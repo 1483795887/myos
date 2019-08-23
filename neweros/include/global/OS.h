@@ -7,7 +7,6 @@
 #include <graphic/Graphic.h>
 #include <graphic/Console.h>
 
-
 class OS {
 public:
     Pool* pool;
@@ -30,8 +29,8 @@ public:
     Status getLastStatus();
     void setLastStatus(Status status);
 
-    PhysicalPageManager* getPhysicalPageManager();
-    void setPhysicalPageManager(PhysicalPageManager* ppm);
+	PhysicalPageAllocator* allocator;
+	PhysicalPageManager* ppm;
 
     OS() {
         lastStatus = Success;
@@ -40,26 +39,13 @@ public:
 
 private:
     Status lastStatus;
-    PhysicalPageManager* ppm;
+    
 };
 
 extern OS* os;
 
+void* _cdecl operator new (SIZE size, Pool* pool);
+void* _cdecl operator new[](SIZE size, Pool* pool);
+
+
 #define New new(os->pool)
-
-inline void* operator new (SIZE size, Pool* pool) {
-    if (pool == NULL) {
-        os->setLastStatus(NullPointer);
-        return NULL;
-    }
-    return pool->allocate(size);
-}
-
-inline void* operator new[](SIZE size, Pool* pool) {
-    if (pool == NULL) {
-        os->setLastStatus(NullPointer);
-        return NULL;
-    }
-
-    return pool->allocate(size);
-}

@@ -3,22 +3,21 @@
 
 class CListEntry {
 public:
-	CListEntry() {
-		prev = this;
-		next = this;
-	}
-    CListEntry* getPrev() {
+	CListEntry(); 
+	CListEntry* getPrev() {
         return prev;
     }
-    CListEntry* getNext() {
+	CListEntry* getNext() {
 		return next;
     }
-	void setPrev(CListEntry* prev) {
+	void setPrev(CListEntry* prev){
 		this->prev = prev;
 	}
 	void setNext(CListEntry* next) {
 		this->next = next;
 	}
+	void insertNext(CListEntry* entry);
+	void removeThis(); 
 private:
     CListEntry* prev;
     CListEntry* next;

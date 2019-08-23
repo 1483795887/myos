@@ -10,6 +10,7 @@ public:
 	void remove(CListEntry* entry);
 	CListEntry *getHead();
 	CListEntry *getFirst();
+	BOOL isEmpty();
 private:
 	ULONG count;
 	CListEntry head;

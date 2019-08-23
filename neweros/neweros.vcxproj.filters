@@ -140,6 +140,9 @@
     <ClInclude Include="include\klib\CPU.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\mm\BucketPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kernel\main.cpp">
@@ -191,6 +194,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="klib\CPU.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mm\BucketPool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\CListEntry.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

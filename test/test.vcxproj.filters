@@ -11,11 +11,11 @@
     <ClCompile Include="mm\NaivePoolTest.cpp" />
     <ClCompile Include="mm\FakePool.cpp" />
     <ClCompile Include="lib\BitmapTest.cpp" />
-    <ClCompile Include="mm\PhysicalPageImplTest.cpp" />
     <ClCompile Include="asychron\FakeAtomic.cpp" />
     <ClCompile Include="graphic\GraphicTest.cpp" />
     <ClCompile Include="graphic\ConsoleTest.cpp" />
     <ClCompile Include="graphic\FakeFont.cpp" />
+    <ClCompile Include="mm\BucketPoolTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

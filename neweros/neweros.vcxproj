@@ -56,6 +56,7 @@
     <ClInclude Include="include\lib\CList.h" />
     <ClInclude Include="include\lib\CListEntry.h" />
     <ClInclude Include="include\klib\Memory.h" />
+    <ClInclude Include="include\mm\BucketPool.h" />
     <ClInclude Include="include\mm\Mm.h" />
     <ClInclude Include="include\mm\NaivePool.h" />
     <ClInclude Include="include\mm\Page.h" />
@@ -82,6 +83,8 @@
     <ClCompile Include="klib\Memory.cpp" />
     <ClCompile Include="lib\Bitmap.cpp" />
     <ClCompile Include="lib\CList.cpp" />
+    <ClCompile Include="lib\CListEntry.cpp" />
+    <ClCompile Include="mm\BucketPool.cpp" />
     <ClCompile Include="mm\NaivePool.cpp" />
     <ClCompile Include="mm\PhysicalPageAllocatorImpl.cpp" />
     <ClCompile Include="mm\PhysicalPage.cpp" />

@@ -11,5 +11,7 @@ enum Status {
 	FreePageNotEnough,
 	InvalidPage,
 	PageAlreadyFreeed,
-	ArrayBounds
+	ArrayBounds,
+	SizeTooBig,
+	ParameterError
 };

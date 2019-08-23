@@ -7,9 +7,11 @@
 #define MAX_BLOCKS 10
 class FakePhysicalPageAllocator : public PhysicalPageAllocator {
 public:
-    virtual PBYTE allocPages(Zone* zone, ULONG order);
+    virtual PBYTE allocPages(ULONG order);
 
     PBYTE getLastPage();
+
+	void setRemainPages(ULONG remainPages);
 
     FakePhysicalPageAllocator();
 
@@ -17,5 +19,5 @@ public:
 private:
     PBYTE blocks[MAX_BLOCKS];
     ULONG currentBlock;
-
+	ULONG remainPages;
 };

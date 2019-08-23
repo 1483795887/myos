@@ -27,16 +27,8 @@ PhysicalPageManager::PhysicalPageManager() {
     this->allocator = NULL;
 }
 
-void PhysicalPageManager::init(PBYTE start, SIZE memorySize) {
-    ULONG pageCount = memorySize >> LOG2_PAGE_SIZE;
-    memMap = New Page[pageCount];
-    for (int i = 0; i < pageCount; i++)
-        memMap[i].setAddress(start + i * PAGE_SIZE);
-
-    zone.init(start, memorySize, memMap);
-    zone.putAllPages();
-    allocator = New PhysicalPageAllocatorImpl;
-    this->pd = (PD)allocator->allocPages(&zone, 0);
+void PhysicalPageManager::init() {
+    this->pd = (PD)allocator->allocPages(0);
 }
 
 void PhysicalPageManager::setPD(PD pd) {
@@ -80,7 +72,7 @@ Status PhysicalPageManager::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG
                 pt[getPTEIndex(vAddr)] = pte;
             }
         } else {
-            PT pt = (PT)allocator->allocPages(&zone, 0);
+            PT pt = (PT)allocator->allocPages(0);
             pd[getPDEIndex(vAddr)] = (PDE)((ULONG)pt | property);
             continue;
         }
@@ -88,15 +80,20 @@ Status PhysicalPageManager::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG
         vAddr += PAGE_SIZE;
         pAddr += PAGE_SIZE;
     }
+    os->setLastStatus(status);
     return status;
-}
-
-void PhysicalPageManager::setZone(Zone zone) {
-    this->zone = zone;
 }
 
 void PhysicalPageManager::setAllocator(PhysicalPageAllocator* allocator) {
     this->allocator = allocator;
+}
+
+PBYTE PhysicalPageManager::allocatePage(ULONG order) {
+    return allocator->allocPages(order);
+}
+
+void PhysicalPageManager::putPage(PBYTE page) {
+	allocator->putPage((PBYTE)va2pa((ULONG)page));
 }
 
 extern "C" void _cdecl setPageDirectory(PD pd);

@@ -10,11 +10,7 @@ ULONG CList::getCount() {
 
 void CList::insertHead(CListEntry* entry) {
     if (entry != NULL) {
-        CListEntry* oldNext = head.getNext();
-        head.setNext(entry);
-        entry->setNext(oldNext);
-        entry->setPrev(&head);
-        oldNext->setPrev(entry);
+		head.insertNext(entry);
         count++;
     }
 }
@@ -29,10 +25,7 @@ void CList::remove(CListEntry* entry) {
             }
         }
         if (find) {
-            CListEntry* oldPrev = entry->getPrev();
-            CListEntry* oldNext = entry->getNext();
-            oldPrev->setNext(oldNext);
-            oldNext->setPrev(oldPrev);
+			entry->removeThis();
             count--;
         }
     }
@@ -44,4 +37,8 @@ CListEntry* CList::getHead() {
 
 CListEntry* CList::getFirst() {
     return head.getNext();
+}
+
+BOOL CList::isEmpty() {
+    return (BOOL)(getFirst() == getHead());
 }

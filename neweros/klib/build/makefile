@@ -1,4 +1,4 @@
-ccobjs = $(OBJ)\delete.obj $(OBJ)\Memory.obj $(OBJ)\CPU.obj
+ccobjs = $(OBJ)\Memory.obj $(OBJ)\CPU.obj $(OBJ)\delete.obj
 asobjs = $(OBJ)\Atomic.obj $(OBJ)\CPUA.obj
 
 library = $(toptarget)\klib.lib 

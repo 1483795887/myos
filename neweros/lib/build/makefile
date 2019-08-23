@@ -1,4 +1,4 @@
-ccobjs = $(OBJ)\CList.obj $(OBJ)\Bitmap.obj
+ccobjs = $(OBJ)\CList.obj $(OBJ)\Bitmap.obj $(OBJ)\CListEntry.obj
 
 library = $(toptarget)\lib.lib 
 target = $(library)
