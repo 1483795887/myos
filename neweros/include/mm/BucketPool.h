@@ -18,6 +18,7 @@ class BucketDirectory {
 public:
 	void setSize(SIZE size);
 	SIZE getSize();
+	BucketEntry* getEntry(PBYTE ptr);
 	CList list;
 	BucketEntry* getFreeBucketEntry();
 private:
@@ -35,7 +36,6 @@ public:
     virtual PBYTE allocate(SIZE size);
     virtual void free(PBYTE addr);
     virtual BOOL isInPool(PBYTE ptr);
-
 	
     void setAllocator(PhysicalPageAllocator* allocator);
     BucketPool();

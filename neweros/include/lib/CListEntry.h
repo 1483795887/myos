@@ -16,6 +16,10 @@ public:
 	void setNext(CListEntry* next) {
 		this->next = next;
 	}
+	void setAddress(PBYTE ptr){
+		prev = (CListEntry*)ptr;
+		next = (CListEntry*)ptr;
+	}
 	void insertNext(CListEntry* entry);
 	void removeThis(); 
 private:

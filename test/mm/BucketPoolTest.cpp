@@ -75,3 +75,43 @@ TEST_F(BucketPoolTest, useUpOfDirMemoryWhenAllocateThenReturnStatus) {
 	pool->allocate(PAGE_SIZE);
 	EXPECT_EQ(os->getLastStatus(), PoolNotEnough);
 }
+
+TEST_F(BucketPoolTest, notEverAllocatedWhenCheckInPoolThenFalse) {
+	EXPECT_FALSE(pool->isInPool(0x0));
+}
+
+TEST_F(BucketPoolTest, notSamePageWhenCheckInPoolThenFalse) {
+	PBYTE ptr = pool->allocate(16);
+	EXPECT_FALSE(pool->isInPool(0x0));
+}
+
+TEST_F(BucketPoolTest, onlyOnePoolWhenCheckInPoolThenTrue) {
+	PBYTE ptr = pool->allocate(16);
+	EXPECT_TRUE(pool->isInPool(ptr));
+}
+
+TEST_F(BucketPoolTest, multiplyPoolsOfSameSizeInOnePageWhenCheckInPoolThenTrue) {
+	PBYTE ptr;
+	for (int i = 0; i < 16; i++) {
+		ptr = pool->allocate(16);
+	}
+	EXPECT_TRUE(pool->isInPool(ptr));
+}
+
+TEST_F(BucketPoolTest, multiplyPoolsOfDifferentSizeWhenCheckInPoolThenTrue) {
+	PBYTE ptr;
+	for (int i = 0; i < MAX_POOL_ORDER; i++) {
+		ptr = pool->allocate(16 << i);
+		ptr = pool->allocate(16 << i);
+	}
+	EXPECT_TRUE(pool->isInPool(ptr));
+}
+
+TEST_F(BucketPoolTest, multiplyPoolsOfSameSizeInMoreThanOnePageWhenCheckInPoolThenTrue) {
+	PBYTE ptr;
+	for (int i = 0; i < PAGE_SIZE / 16; i++) {
+		ptr = pool->allocate(16);
+	}
+
+	EXPECT_TRUE(pool->isInPool(pool->allocate(16)));
+}

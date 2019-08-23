@@ -9,6 +9,21 @@ SIZE BucketDirectory::getSize() {
     return size;
 }
 
+BucketEntry* BucketDirectory::getEntry(PBYTE ptr) {
+    if (list.getCount() == 0)
+        return NULL;
+    BucketEntry* result = NULL;
+    BucketEntry* entry = (BucketEntry*)list.getFirst();
+    while (entry != list.getHead()) {
+        if ((PBYTE)ulAlign((ULONG)entry->nextPtr, PAGE_SIZE, FALSE) == ptr) {
+            result = entry;
+            break;
+        } else
+            entry = (BucketEntry*)entry->getNext();
+    }
+    return result;
+}
+
 BucketEntry* BucketDirectory::getFreeBucketEntry() {
     if (list.isEmpty())
         return NULL;
@@ -55,14 +70,18 @@ PBYTE BucketPool::allocate(SIZE size) {
 
     BucketEntry* entry = direcories[order].getFreeBucketEntry();
     if (entry == NULL) {//没有空的entry，尝试申请一个
-		entry = allocateBucketEntry(currentSize);
-		if (entry == NULL)
-			return NULL;
-		direcories[order].list.insertHead(entry);
+        entry = allocateBucketEntry(currentSize);
+        if (entry == NULL)
+            return NULL;
+        direcories[order].list.insertHead(entry);
     }
 
     PBYTE ptr = (PBYTE)entry->nextPtr;
-    entry->nextPtr = entry->nextPtr->getNext();
+	if (entry->nextPtr->getNext() != entry->nextPtr){
+		entry->nextPtr->removeThis();
+		entry->nextPtr = entry->nextPtr->getNext();
+	}
+    
     entry->refCount++;
 
     os->setLastStatus(Success);
@@ -72,8 +91,18 @@ PBYTE BucketPool::allocate(SIZE size) {
 void BucketPool::free(PBYTE addr) {
 }
 
-BOOL BucketPool::isInPool(PBYTE ptr) {
-    return FALSE;
+BOOL BucketPool::isInPool(PBYTE ptr) {	//同一个页就行，之后再判断
+    BOOL result = FALSE;
+	PBYTE alignedPtr = (PBYTE)ulAlign((ULONG)ptr, PAGE_SIZE, FALSE);
+    BucketEntry* entry = NULL;
+    for (int i = 0; i < MAX_POOL_ORDER; i++) {
+        entry = direcories[i].getEntry(alignedPtr);
+        if (entry) {
+            result = TRUE;
+			break;
+        }
+    }
+    return result;
 }
 
 BOOL BucketPool::init() {
@@ -107,10 +136,10 @@ PBYTE BucketPool::getNewPoolPage(SIZE size) {
     }
     ULONG countOfPools = PAGE_SIZE / size;
     CListEntry* prev = (CListEntry*)ptr;
-    *prev = CListEntry();
+	prev->setAddress((PBYTE)prev);
     CListEntry* next = (CListEntry*)((PBYTE)prev + size);
     for (int i = 1; i < countOfPools; i++) {
-        *next = CListEntry();
+		next->setAddress((PBYTE)next);
         prev->insertNext(next);
         prev = (CListEntry*)((PBYTE)prev + size);
         next = (CListEntry*)((PBYTE)next + size);
@@ -133,7 +162,7 @@ BucketEntry* BucketPool::allocateBucketEntry(SIZE size) {
     }
     entry->nextPtr = (CListEntry*)poolPage;
     entry->refCount = 0;
-	return entry;
+    return entry;
 }
 
 void BucketPool::setAllocator(PhysicalPageAllocator* allocator) {
