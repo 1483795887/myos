@@ -21,3 +21,7 @@ inline ULONG getPageSizeByOrder(ULONG order) {
 inline ULONG getOrderByPageSize(ULONG size) {
     return size >> (LOG2_PAGE_SIZE + 1);
 }
+
+inline PBYTE addressPageAlign(PBYTE address) {
+	return (PBYTE)ulAlign((ULONG)address, PAGE_SIZE, FALSE);
+}

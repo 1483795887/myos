@@ -115,3 +115,54 @@ TEST_F(BucketPoolTest, multiplyPoolsOfSameSizeInMoreThanOnePageWhenCheckInPoolTh
 
 	EXPECT_TRUE(pool->isInPool(pool->allocate(16)));
 }
+
+TEST_F(BucketPoolTest, fullPoolWhenFreeThenNotFull) {
+	allocator->setRemainPages(MAX_POOL_PAGES + 1);
+	PBYTE ptr = NULL;
+	for (int i = 0; i < PAGE_SIZE / MIN_POOL_SIZE; i++) {
+		ptr = pool->allocate(MIN_POOL_SIZE);
+	}
+	pool->free(ptr);
+	EXPECT_NE(pool->allocate(MIN_POOL_SIZE), (PBYTE)NULL);
+}
+
+TEST_F(BucketPoolTest, fullPoolFreeMemNotInPageWhenFreeThenStillFull) {
+	allocator->setRemainPages(MAX_POOL_PAGES + 1);
+	PBYTE ptr = NULL;
+	for (int i = 0; i < PAGE_SIZE / MIN_POOL_SIZE; i++) {
+		ptr = pool->allocate(MIN_POOL_SIZE);
+	}
+	pool->free(0x0);
+	EXPECT_EQ(pool->allocate(MIN_POOL_SIZE), (PBYTE)NULL);
+}
+
+TEST_F(BucketPoolTest, fullPoolFreeMemInPageButNotInPoolWhenFreeThenStillFull) {
+	allocator->setRemainPages(MAX_POOL_PAGES + 1);
+	PBYTE ptr = NULL;
+	for (int i = 0; i < PAGE_SIZE / MIN_POOL_SIZE; i++) {
+		ptr = pool->allocate(MIN_POOL_SIZE);
+	}
+	pool->free(ptr);
+	pool->free(ptr);
+	pool->allocate(MIN_POOL_SIZE);
+	pool->allocate(MIN_POOL_SIZE);
+	EXPECT_EQ(pool->allocate(MIN_POOL_SIZE), (PBYTE)NULL);
+}
+
+TEST_F(BucketPoolTest, freeLastPoolInPageWhenFreeThenEntryFree) {
+	allocator->setRemainPages(MAX_POOL_PAGES + 1);
+	PBYTE ptr = NULL;
+	ptr = pool->allocate(MIN_POOL_SIZE);
+	pool->free(ptr);
+	EXPECT_NE(pool->allocate(MIN_POOL_SIZE * 2), (PBYTE)NULL);
+}
+
+TEST_F(BucketPoolTest, freeLastPoolInPageWhenFreeThenCanStillAllocateSameSize) {
+	PBYTE ptr = NULL;
+
+	pool->allocate(PAGE_SIZE);
+	ptr = pool->allocate(PAGE_SIZE);
+	pool->allocate(PAGE_SIZE);
+	pool->free(ptr);
+	EXPECT_NE(pool->allocate(PAGE_SIZE), (PBYTE)NULL);
+}

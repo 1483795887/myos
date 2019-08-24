@@ -44,6 +44,8 @@ private:
 	PBYTE getNewPoolPage(SIZE size);
 	BucketEntry* allocateBucketEntry(SIZE size);
 
+	BucketEntry* getEntry(PBYTE ptr, BucketDirectory* directory);
+
     PhysicalPageAllocator* allocator;
     BucketDirectory direcories[MAX_POOL_ORDER + 1];
 	CList entryList;

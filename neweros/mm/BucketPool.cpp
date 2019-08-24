@@ -1,4 +1,5 @@
 #include <global/OS.h>
+#include <klib/Memory.h>
 #include <mm/BucketPool.h>
 
 void BucketDirectory::setSize(SIZE size) {
@@ -12,12 +13,18 @@ SIZE BucketDirectory::getSize() {
 BucketEntry* BucketDirectory::getEntry(PBYTE ptr) {
     if (list.getCount() == 0)
         return NULL;
+    PBYTE alignedPtr = addressPageAlign(ptr);
+    CListEntry* ptrEntry = (CListEntry*)ptr;
     BucketEntry* result = NULL;
     BucketEntry* entry = (BucketEntry*)list.getFirst();
     while (entry != list.getHead()) {
-        if ((PBYTE)ulAlign((ULONG)entry->nextPtr, PAGE_SIZE, FALSE) == ptr) {
-            result = entry;
-            break;
+        if (addressPageAlign((PBYTE)entry->nextPtr) == alignedPtr) {
+            if (addressPageAlign((PBYTE)ptrEntry->getNext()) == alignedPtr &&   //如果在同一个页但不在已申请的池子中，
+                    addressPageAlign((PBYTE)ptrEntry->getPrev()) == alignedPtr) //这里用next和prev进行判断，在申请后
+                result = NULL;                                                  //会清空申请的内存，原来的链表指针会被
+            else                                                                //清掉，极低概率这块内存刚好写的两个
+                result = entry;                                                 //都是池子内存页内，可以认为如果都是
+            break;                                                              //就是同页面中尚未申请的内存
         } else
             entry = (BucketEntry*)entry->getNext();
     }
@@ -77,32 +84,42 @@ PBYTE BucketPool::allocate(SIZE size) {
     }
 
     PBYTE ptr = (PBYTE)entry->nextPtr;
-	if (entry->nextPtr->getNext() != entry->nextPtr){
-		entry->nextPtr->removeThis();
-		entry->nextPtr = entry->nextPtr->getNext();
-	}
-    
+    if (entry->nextPtr->getNext() != entry->nextPtr) {  //如果不是最后一个
+        entry->nextPtr->removeThis();
+        entry->nextPtr = entry->nextPtr->getNext();
+    }
+
+    memset(ptr, 0, currentSize);
+
     entry->refCount++;
 
     os->setLastStatus(Success);
     return ptr;
 }
 
+/*
+    当池子里一个都没有的时候nextptr就指的是addr
+    对addr内作为链表项进行初始化连入自己，
+    当只有一个项的时候连入自己就相当于什么事都没有发生
+    但为了和有项的时候保持一致，在空的时候也连入
+*/
 void BucketPool::free(PBYTE addr) {
+    BucketDirectory* directory = NULL;
+    BucketEntry* entry = getEntry(addr, directory);
+    if (entry == NULL)
+        return;
+    CListEntry* listPtr = (CListEntry*)addr;
+    listPtr->setAddress(addr);
+    entry->nextPtr->insertNext(listPtr);
+    entry->refCount--;
+    if (entry->refCount == 0) {
+        allocator->putPage((PBYTE)entry->nextPtr);
+        entry->removeThis();
+    }
 }
 
-BOOL BucketPool::isInPool(PBYTE ptr) {	//同一个页就行，之后再判断
-    BOOL result = FALSE;
-	PBYTE alignedPtr = (PBYTE)ulAlign((ULONG)ptr, PAGE_SIZE, FALSE);
-    BucketEntry* entry = NULL;
-    for (int i = 0; i < MAX_POOL_ORDER; i++) {
-        entry = direcories[i].getEntry(alignedPtr);
-        if (entry) {
-            result = TRUE;
-			break;
-        }
-    }
-    return result;
+BOOL BucketPool::isInPool(PBYTE ptr) {
+    return (BOOL)(getEntry(ptr, NULL) != NULL);
 }
 
 BOOL BucketPool::init() {
@@ -136,10 +153,10 @@ PBYTE BucketPool::getNewPoolPage(SIZE size) {
     }
     ULONG countOfPools = PAGE_SIZE / size;
     CListEntry* prev = (CListEntry*)ptr;
-	prev->setAddress((PBYTE)prev);
+    prev->setAddress((PBYTE)prev);
     CListEntry* next = (CListEntry*)((PBYTE)prev + size);
     for (int i = 1; i < countOfPools; i++) {
-		next->setAddress((PBYTE)next);
+        next->setAddress((PBYTE)next);
         prev->insertNext(next);
         prev = (CListEntry*)((PBYTE)prev + size);
         next = (CListEntry*)((PBYTE)next + size);
@@ -162,6 +179,22 @@ BucketEntry* BucketPool::allocateBucketEntry(SIZE size) {
     }
     entry->nextPtr = (CListEntry*)poolPage;
     entry->refCount = 0;
+    return entry;
+}
+
+/*
+    directory输出entry所在在的目录
+    以返回值是否为空来判断是否找到，
+    返回值为空时directory无意义
+*/
+BucketEntry* BucketPool::getEntry(PBYTE ptr, BucketDirectory* directory) {
+    BucketEntry* entry = NULL;
+    directory = direcories;
+    for (int i = 0; i < MAX_POOL_ORDER; i++, directory++) {
+        entry = directory->getEntry(ptr);
+        if (entry)
+            break;
+    }
     return entry;
 }
 

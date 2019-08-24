@@ -4,14 +4,18 @@
 PBYTE FakePhysicalPageAllocator::allocPages(ULONG order) {
     ULONG number = 1 << order;
     ULONG size = number * PAGE_SIZE;
-    if (currentBlock >= MAX_BLOCKS || ( remainPages < number))
+    if (currentBlock >= MAX_BLOCKS || (remainPages < number))
         return (PBYTE)NULL;
     PBYTE buffer = (PBYTE)_aligned_malloc(size, size);
     memset((void*)buffer, 0, size);
     blocks[currentBlock] = buffer;
     currentBlock++;
-	remainPages -= number;
+    remainPages -= number;
     return buffer;
+}
+
+void FakePhysicalPageAllocator::putPage(PBYTE page) {
+    remainPages ++;
 }
 
 PBYTE FakePhysicalPageAllocator::getLastPage() {
@@ -26,7 +30,7 @@ void FakePhysicalPageAllocator::setRemainPages(ULONG remainPages) {
 
 FakePhysicalPageAllocator::FakePhysicalPageAllocator() {
     currentBlock = 0;
-	remainPages = -1;
+    remainPages = -1;
     for (int i = 0; i < MAX_BLOCKS; i++)
         blocks[i] = NULL;
 }
