@@ -24,6 +24,8 @@ private:
 	void sizeTwice();
 	void init(const char* str);
 
+	void itos(int i, ULONG radix);
+
     char* buf;
     int len;
     int maxLen;

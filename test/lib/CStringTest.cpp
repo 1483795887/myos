@@ -131,3 +131,52 @@ TEST_F(CStringTest, allConstStringWhenFormatThenRight) {
 	str.format("test");
 	EXPECT_STREQ(str.getBuf(), "test");
 }
+
+TEST_F(CStringTest, sOfConstStringWhenFormatThenRight) {
+	CString str;
+	str.format("%s", "test");
+	EXPECT_STREQ(str.getBuf(), "test");
+}
+
+TEST_F(CStringTest, dOfZeroIntegerWhenFormatThenRight) {
+	CString str;
+	str.format("%d", 0);
+	EXPECT_STREQ(str.getBuf(), "0");
+}
+
+TEST_F(CStringTest, dOfOneIntegerWhenFormatThenRight) {
+	CString str;
+	str.format("%d", 1);
+	EXPECT_STREQ(str.getBuf(), "1");
+}
+
+TEST_F(CStringTest, dOfHundredIntegerWhenFormatThenRight) {
+	CString str;
+	str.format("%d", 100);
+	EXPECT_STREQ(str.getBuf(), "100");
+}
+
+TEST_F(CStringTest, dOfRandomIntegerWhenFormatThenRight) {
+	CString str;
+	str.format("%d", 1234);
+	EXPECT_STREQ(str.getBuf(), "1234");
+}
+
+TEST_F(CStringTest, dOfMinuxIntegerWhenFormatThenRight) {
+	CString str;
+	str.format("%d", -1234);
+	EXPECT_STREQ(str.getBuf(), "-1234");
+}
+
+TEST_F(CStringTest, xOfHexWhenFormatThenRight) {
+	CString str;
+	str.format("the number is :%x hello", 0xabc574);
+	EXPECT_STREQ(str.getBuf(), "the number is :abc574 hello");
+}
+
+TEST_F(CStringTest, tOfCStringWhenFormatThenRight) {
+	CString str;
+	CString str1("hello world");
+	str.format("%t", &str1);
+	EXPECT_STREQ(str.getBuf(), "hello world");
+}

@@ -11,6 +11,36 @@ void CString::init(const char* str) {
     memcpy(buf, str, len);
 }
 
+void CString::itos(int i, ULONG radix) {    //radix可能是10或是16
+    int number = 1;
+    int abs = i;
+    int digit = 1;
+	if (i < 0) {
+		abs = -abs;
+		if(radix != 16)
+			appendChar('-');
+	}
+        
+    while (number * radix <= abs) {
+        number *= radix;
+        digit++;
+    }
+    while (digit != 0) {
+        int d = abs / number;
+        char c;
+        if (d < 10)
+            c = d + '0';
+        else
+            c = d - 10 + 'a';
+        appendChar(c);
+        abs = abs % number;
+        number /= radix;
+		digit--;
+    }
+
+
+}
+
 CString::CString(const char* str) {
     init(str);
 }
@@ -33,7 +63,43 @@ int CString::getLen() {
 }
 
 void CString::format(const char* fmt, ...) {
+	delete buf;
+	init(NULL);
+    char** args = (char**)&fmt;
+    char* p = (char*)fmt;
+    int par = 1;
+    CString* temp;
+    BOOL translate = FALSE;
+    while (*p) {
+        if (*p == '%') {
+            translate = TRUE;
+            p++;
+            continue;
+        }
+        if (translate) {
+            switch (*p) {
+            case 's':
+                appendString(args[par]);
+                break;
+            case 'd':
+                itos((int)args[par], 10);
+                break;
+			case 'x':
+				itos((int)args[par], 16);
+				break;
+			case 't':
+				temp = (CString*)args[par];
+				appendString(temp->getBuf());
+            default:
+                break;
+            }
+            par++;
+            translate = FALSE;
+        } else
+            appendChar(*p);
 
+        p++;
+    }
 }
 
 void CString::appendChar(char ch) {
@@ -43,7 +109,7 @@ void CString::appendChar(char ch) {
 }
 
 void CString::appendString(char* str) {
-	int size = strlen(str);
+    int size = strlen(str);
     while (maxLen < len + size && maxLen < PAGE_SIZE)
         sizeTwice();
     memcpy(buf + len, str, size);
@@ -82,10 +148,10 @@ void CString::sizeTwice() {
     if ((maxLen << 1) >= PAGE_SIZE)
         return;
     char* newbuf = New char[maxLen * 2];
-	memcpy(newbuf, buf, maxLen);
-	maxLen <<= 1;
-	delete buf;
-	buf = newbuf;
+    memcpy(newbuf, buf, maxLen);
+    maxLen <<= 1;
+    delete buf;
+    buf = newbuf;
 }
 
 SIZE _cdecl strlen(const char* str) {

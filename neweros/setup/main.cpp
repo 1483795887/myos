@@ -131,7 +131,6 @@ void initMemory() {
     PhysicalPageManager* ppm = New PhysicalPageManager;
     ppm->setAllocator(allocator);
     ppm->init();
-    //ppm->init((PBYTE)os->start, os->end - os->start);
     os->ppm = ppm;
 
     ppm->mapPages(0, 0,
@@ -162,6 +161,7 @@ void initMemory() {
 
     ppm->changePD();
     CPU::openPageMode();
+	((PhysicalPageAllocatorImpl*)os->allocator)->startVirtualMemory();
 }
 
 typedef void(*KernelEntry)(OS*);

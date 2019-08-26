@@ -201,17 +201,6 @@ TEST_F(ZoneTest, whenPutPageThenCountZero) {
 	EXPECT_EQ(page->getCount(), 0);
 }
 
-TEST_F(ZoneTest, whenGetPagesThenContentEmpty) {
-	initZone(3);
-	PBYTE addr = zone->getPages(0);
-	addr[0] = 12;
-
-	zone->putPage(addr);
-	addr = zone->getPages(0);
-
-	EXPECT_EQ(addr[0], 0);
-}
-
 TEST_F(ZoneTest, usedWhenPutPagesThenRelatedOrderNotChange) {
 	initZone(3);
 	PBYTE addr = zone->getPages(0);

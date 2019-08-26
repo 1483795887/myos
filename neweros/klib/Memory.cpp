@@ -1,4 +1,5 @@
 #include <lib/Memory.h>
+#include <mm/Mm.h>
 
 void _cdecl memcpy(void* dst, const void* src, SIZE size) {
 	PBYTE pFrom = (PBYTE)src;

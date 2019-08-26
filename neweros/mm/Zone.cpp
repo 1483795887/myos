@@ -2,7 +2,6 @@
 #include <mm/Mm.h>
 #include <mm/Zone.h>
 #include <mm/Page.h>
-#include <lib/Memory.h>
 
 Status FreeArea::init(PBYTE address, ULONG order, ULONG memorySize) {
     Status status;
@@ -114,12 +113,11 @@ ULONG Zone::getFreePagesForOrder(int order) {
     return freeAreas[order].getCount();
 }
 
-void Zone::addCountAndClear(PBYTE addr, ULONG order) {
+void Zone::addCount(PBYTE addr, ULONG order) {
     PBYTE lastAddr = addr + getPageSizeByOrder(order) ;
     for (PBYTE curr = addr; curr < lastAddr; curr += PAGE_SIZE) {
         Page* page = getPageByAddress(curr);
         page->setCount(1);
-		memset(curr, 0, PAGE_SIZE);
     }
 }
 
@@ -130,7 +128,7 @@ PBYTE Zone::getPages(ULONG order) {
     }
     if (freeAreas[order].getCount() != 0) {
         Page* page = freeAreas[order].getFirst();
-        addCountAndClear(page->getAddress(), order);
+        addCount(page->getAddress(), order);
         return page->getAddress();
     }
     return dividePage(order);
@@ -174,7 +172,7 @@ PBYTE Zone::dividePage(ULONG order) {
         freeAreas[i - 1].insert(higherPage);
     }
     if (page != NULL) {
-        addCountAndClear(page->getAddress(), order);
+        addCount(page->getAddress(), order);
         return page->getAddress();
     }
     return NULL;

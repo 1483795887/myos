@@ -93,7 +93,7 @@ PBYTE PhysicalPageManager::allocatePage(ULONG order) {
 }
 
 void PhysicalPageManager::putPage(PBYTE page) {
-	allocator->putPage((PBYTE)va2pa((ULONG)page));
+	allocator->putPage(page);
 }
 
 extern "C" void _cdecl setPageDirectory(PD pd);

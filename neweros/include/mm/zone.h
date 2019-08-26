@@ -43,6 +43,6 @@ private:
 
     void mergePage(Page* page);
 	PBYTE dividePage(ULONG order);
-	void addCountAndClear(PBYTE addr, ULONG order);
+	void addCount(PBYTE addr, ULONG order);
 	
 };
