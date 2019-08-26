@@ -26,9 +26,8 @@ void operator delete(void* ptr) {
 
 int main(int argc, char** argv) {
     os = new OS();
-
     InitGoogleTest(&argc, argv);
-    FLAGS_gtest_filter = "BucketPoolTest.*";
+    FLAGS_gtest_filter = "CStringTest.*";
 
     int result = RUN_ALL_TESTS();
 

@@ -1,6 +1,6 @@
 #include <types.h>
 #include <fs/pe.h>
-#include <klib/Memory.h>
+#include <lib/Memory.h>
 #include <global/OS.h>
 #include <mm/Mm.h>
 #include <mm/NaivePool.h>
@@ -29,7 +29,7 @@ void copyKernel() {
 
     ULONG kernelBase = getPAFromVA(KernelImageBase);
 
-    memcpy((PBYTE)KernelTempBase, (PBYTE)kernelBase, sections[0].rawAddress);
+    memcpy((PBYTE)kernelBase, (PBYTE)KernelTempBase,  sections[0].rawAddress);
 
     ULONG kernelStart = 0; //物理地址
 
@@ -53,15 +53,15 @@ void copyKernel() {
             }
         }
         memcpy(
-            (PBYTE)(KernelTempBase + sections->rawAddress),
             (PBYTE)(sections->virtualAddress + getPAFromVA(KernelImageBase)),
+            (PBYTE)(KernelTempBase + sections->rawAddress),
             sections->rawSize);
         sections++;
     }
 
     NaivePool oriPool(0, 0);
     NaivePool* pool = (NaivePool*)kernelStart;
-    memcpy((PBYTE)&oriPool, (PBYTE)pool, sizeof(NaivePool));//要虚函数表，但pool没有，所以复制局部变量的，反正都一样
+    memcpy((PBYTE)pool, (PBYTE)&oriPool, sizeof(NaivePool));//要虚函数表，但pool没有，所以复制局部变量的，反正都一样
     pool->setStart((PBYTE)pool + sizeof(NaivePool));
     pool->setSize(sizeof(OS)); //暂时存os之后再扩展
     os = (OS*)pool->allocate(sizeof(OS));
@@ -115,7 +115,7 @@ void initGraphic() {
     os->graphic = graphic;
 
     DotFont* font = New DotFont((PBYTE)DotFontMap, 8, 16);
-	font->setColor(WHITE);
+    font->setColor(WHITE);
 
     Console* console = New Console(&rect);
     console->setFont(font);
@@ -124,15 +124,15 @@ void initGraphic() {
 }
 
 void initMemory() {
-	PhysicalPageAllocatorImpl* allocator = New PhysicalPageAllocatorImpl;
-	allocator->init((PBYTE)os->start, os->end - os->start);
-	os->allocator = allocator;
+    PhysicalPageAllocatorImpl* allocator = New PhysicalPageAllocatorImpl;
+    allocator->init((PBYTE)os->start, os->end - os->start);
+    os->allocator = allocator;
 
     PhysicalPageManager* ppm = New PhysicalPageManager;
-	ppm->setAllocator(allocator);
-	ppm->init();
+    ppm->setAllocator(allocator);
+    ppm->init();
     //ppm->init((PBYTE)os->start, os->end - os->start);
-	os->ppm = ppm;
+    os->ppm = ppm;
 
     ppm->mapPages(0, 0,
                   os->start,

@@ -16,6 +16,7 @@
     <ClCompile Include="graphic\ConsoleTest.cpp" />
     <ClCompile Include="graphic\FakeFont.cpp" />
     <ClCompile Include="mm\BucketPoolTest.cpp" />
+    <ClCompile Include="lib\CStringTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

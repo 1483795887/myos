@@ -2,7 +2,7 @@
 #include <mm/Mm.h>
 #include <mm/Zone.h>
 #include <mm/Page.h>
-#include <klib/Memory.h>
+#include <lib/Memory.h>
 
 Status FreeArea::init(PBYTE address, ULONG order, ULONG memorySize) {
     Status status;

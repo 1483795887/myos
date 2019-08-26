@@ -1,5 +1,5 @@
 #include <global/OS.h>
-#include <klib/Memory.h>
+#include <lib/Memory.h>
 #include <mm/BucketPool.h>
 
 void BucketDirectory::setSize(SIZE size) {

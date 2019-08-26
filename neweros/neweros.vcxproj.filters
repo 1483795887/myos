@@ -116,9 +116,6 @@
     <ClInclude Include="include\synchron\Atomic.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="include\klib\Memory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="include\graphic\Graphic.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -141,6 +138,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\mm\BucketPool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\lib\CString.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\lib\Memory.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -178,9 +181,6 @@
     <ClCompile Include="klib\AtomicC.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="klib\Memory.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="graphic\Graphic.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -200,6 +200,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="lib\CListEntry.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\CString.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="klib\Memory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

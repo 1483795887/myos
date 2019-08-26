@@ -28,3 +28,9 @@ FakePool::~FakePool() {
     remainSize = 0;
     current = NULL;
 }
+
+BOOL FakePool::isInPool(PBYTE ptr)
+{
+	SIZE size = (SIZE)(current - pool) + remainSize;
+	return (BOOL)(ptr < size + pool && ptr >= pool);
+}

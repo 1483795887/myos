@@ -9,6 +9,7 @@ public:
     FakePool(SIZE size);
 
     virtual ~FakePool();
+	virtual BOOL isInPool(PBYTE ptr);
 private:
     PBYTE pool;
     PBYTE current;
