@@ -7,7 +7,7 @@
 #include <mm/PhysicalPage.h>
 #include <mm/PhysicalPageAllocatorImpl.h>
 #include <graphic/DotFont.h>
-#include <klib/CPU.h>
+#include <arch/CPU.h>
 #include "setup.h"
 
 void copyKernel() {

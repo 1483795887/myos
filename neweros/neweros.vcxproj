@@ -43,6 +43,7 @@
     <None Include="mm\i386\Page.asm" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\arch\i386\Descritpor.h" />
     <ClInclude Include="include\fs\Pe.h" />
     <ClInclude Include="include\global\OS.h" />
     <ClInclude Include="include\graphic\Console.h" />
@@ -51,7 +52,9 @@
     <ClInclude Include="include\graphic\Font.h" />
     <ClInclude Include="include\graphic\Graphic.h" />
     <ClInclude Include="include\graphic\Rect.h" />
-    <ClInclude Include="include\klib\CPU.h" />
+    <ClInclude Include="include\interrupt\Interrrupt.h" />
+    <ClInclude Include="include\arch\CPU.h" />
+    <ClInclude Include="include\arch\KernelTables.h" />
     <ClInclude Include="include\lib\Bitmap.h" />
     <ClInclude Include="include\lib\CList.h" />
     <ClInclude Include="include\lib\CListEntry.h" />
@@ -81,6 +84,7 @@
     <ClCompile Include="klib\AtomicC.cpp" />
     <ClCompile Include="klib\CPU.cpp" />
     <ClCompile Include="klib\delete.cpp" />
+    <ClCompile Include="klib\i386\SystemTables.cpp" />
     <ClCompile Include="klib\Memory.cpp" />
     <ClCompile Include="lib\Bitmap.cpp" />
     <ClCompile Include="lib\CList.cpp" />
