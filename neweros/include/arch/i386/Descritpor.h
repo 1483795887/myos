@@ -24,6 +24,13 @@
 #define	DA_32			0x4000	
 #define	DA_LIMIT_4K		0x8000	
 
+typedef enum {
+	KernelCodeSel = 0x08,
+	KernelDataSel = 0x10,
+	UserCodeSel  = 0x18 | 0x3,
+	UserDataSel = 0x20 | 0x3
+}Selector;
+
 class Descriptor {
 public:
 	Descriptor(ULONG start, ULONG limit, ULONG flags);
@@ -34,4 +41,15 @@ private:
 	BYTE  attr1;
 	BYTE  limitHighAttr2;
 	BYTE  baseHigh;
+};
+
+class Gate {
+public:
+	Gate(ULONG handlerAddress, BYTE flags, Selector selector);
+private:
+	WORD handlerAddressLow;
+	WORD selector;
+	BYTE count;
+	BYTE flags;
+	WORD handlerAddressHigh;
 };

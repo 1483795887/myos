@@ -7,6 +7,7 @@
 #include <graphic/Graphic.h>
 #include <graphic/Console.h>
 #include <arch/KernelTables.h>
+#include <interrupt/Interrrupt.h>
 
 class OS {
 public:
@@ -33,8 +34,7 @@ public:
     PhysicalPageAllocator* allocator;
     PhysicalPageManager* ppm;
 
-    GlobalDescriptorTable gdt;
-    InterruptVectorTable ivt;
+    GlobalDescriptorTable* gdt;
 
     OS() {
         lastStatus = Success;

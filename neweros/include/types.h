@@ -20,6 +20,11 @@ typedef enum {
     FALSE = 0, TRUE = 1
 } BOOL;
 
+typedef enum {
+	Kernel = 0,
+	User = 3
+} Privilege;
+
 inline BOOL NOT(BOOL val) {
     if (val)
         return FALSE;

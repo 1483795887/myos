@@ -18,3 +18,8 @@ endm
 .endcode32 macro
 	.text ends
 endm
+
+KernelCode = 008h
+KernelData = 010h
+UserCode = 01bh
+UserData = 023h

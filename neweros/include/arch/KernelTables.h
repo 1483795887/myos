@@ -17,14 +17,9 @@ typedef enum {
 	TSS
 } DescriptorType;
 
-typedef enum {
-	Kernel = 0,
-	User = 3
-} Privilege;
-
 class GlobalDescriptorTable {
 public:
-	void setTable(PBYTE table) {
+	GlobalDescriptorTable(PBYTE table) {
 		this->table = table;
 	}
 	void setDescriptor(ULONG n, PBYTE start, ULONG limit, DescriptorType type, Privilege privilege);
@@ -32,17 +27,14 @@ private:
 	PBYTE table;
 };
 
-typedef enum {
-	Interrupt,
-	Trap
-} InterruptType;
-
-class InterruptVectorTable {
+/*class InterruptVectorTable {
 public:
 	void setTable(PBYTE table) {
 		this->table = table;
 	}
-	void setInterruptVector(IntType vec, InterruptRoutine routine, InterruptType type, Privilege privilege);
+	void initDefaultTrap(TrapHandler* handler);
+	void initInterrupt(InterruptHandler* handler);
+	void initSyscall(SyscallHandler* handler);
 private:
 	PBYTE table;
-};
+};*/

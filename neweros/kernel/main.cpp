@@ -7,12 +7,12 @@
 void initGdt() {
 	PBYTE globalDescriptorTable = os->ppm->allocatePage(0);
 	
-	os->gdt.setTable(globalDescriptorTable);
+	os->gdt = New GlobalDescriptorTable(globalDescriptorTable);
 
-	os->gdt.setDescriptor(KernelCode, 0, 4 * G - 1, Code, Kernel);
-	os->gdt.setDescriptor(KernelData, 0, 4 * G - 1, Data, Kernel);
-	os->gdt.setDescriptor(UserCode, 0, 4 * G - 1, Code, User);
-	os->gdt.setDescriptor(UserData, 0, 4 * G - 1, Data, User);
+	os->gdt->setDescriptor(KernelCode, 0, 4 * G - 1, Code, Kernel);
+	os->gdt->setDescriptor(KernelData, 0, 4 * G - 1, Data, Kernel);
+	os->gdt->setDescriptor(UserCode, 0, 4 * G - 1, Code, User);
+	os->gdt->setDescriptor(UserData, 0, 4 * G - 1, Data, User);
 
 	CPU::setGlobalDescriptorTable(globalDescriptorTable);
 }
@@ -21,6 +21,17 @@ void main(OS* theOs) {
 	os = theOs;
 
 	initGdt();
+	initInterrupt();
+
+	/*测试一下trap*/
+
+	int i = 10;
+	int b = 10;
+	int c = 10;
+	c -= b;
+	i /= c;
+
+	/**/
 
 	BucketPool* pool = New BucketPool;	//在naivepool中
 	pool->setAllocator(os->allocator);

@@ -50,6 +50,7 @@ doSetInterruptVectorTable proc C table
     mov ds:[IdtAddr], eax
     lidt fword ptr ds:[IdtPtr]
     pop eax
+    ret
 doSetInterruptVectorTable endp
 
 .data
