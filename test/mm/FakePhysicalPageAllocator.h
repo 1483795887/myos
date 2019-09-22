@@ -6,7 +6,7 @@
 #define MAX_BLOCKS 10
 class FakePhysicalPageAllocator : public PhysicalPageAllocator {
 public:
-    virtual PBYTE allocPages(ULONG order, PBYTE address);
+    virtual PBYTE allocPages(ULONG order);
 	virtual void putPage(PBYTE page);
 
     PBYTE getLastPage();

@@ -3,33 +3,13 @@
 #include <mm/PageMapper.h>
 #include <arch/CPU.h>
 
-/*inline PDE getPDEIndex(ULONG address) {
-    return address >> PDE_SHIFT;
-}
-
-inline PTE getPTEIndex(ULONG address) {
-    address = address << PDE_BITS;
-    address = address >> PDE_BITS;
-    return address >> PTE_SHIFT;
-}
-
-inline ULONG getAddressFromEntry(ULONG entry) {
-    return entry & ~0xfff;
-}
-
-inline BOOL checkPageAddressValid(ULONG address) {
-    if (((ULONG)address) > 4 * G - K)
-        return FALSE;
-    return TRUE;
-}
-*/
 PageMapper::PageMapper() {
     this->pd = (PD)NULL;
     this->allocator = NULL;
 }
 
 void PageMapper::init() {
-    this->pd = (PD)allocator->allocPages(0, NOT_ASSIGNED);
+    this->pd = (PD)allocator->allocPages(0);
 }
 
 void PageMapper::setPD(PD pd) {
@@ -72,7 +52,7 @@ Status PageMapper::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property
                 pt[getPTEIndex(vAddr)] = pte;
             }
         } else {
-            PT pt = (PT)allocator->allocPages(0, NOT_ASSIGNED);
+            PT pt = (PT)allocator->allocPages(0);
 			pd[getPDEIndex(vAddr)] = makePDE((ULONG)pt, property);
             continue;
         }

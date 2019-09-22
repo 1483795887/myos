@@ -2,7 +2,7 @@
 #include <mm/PhysicalPageAllocatorImpl.h>
 #include <lib/Memory.h>
 
-PBYTE PhysicalPageAllocatorImpl::allocPages(ULONG order, ULONG address) {
+PBYTE PhysicalPageAllocatorImpl::allocPages(ULONG order) {
     PBYTE result = zone->getPages(order);
     memset(result, 0, getPageSizeByOrder(order));
     return result;

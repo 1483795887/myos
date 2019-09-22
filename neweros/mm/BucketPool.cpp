@@ -124,7 +124,7 @@ BOOL BucketPool::isInPool(PBYTE ptr) {
 
 BOOL BucketPool::init() {
     BucketEntry* entries = (BucketEntry*)allocator->allocPages(
-		getOrderByPageSize(MAX_POOL_PAGES * PAGE_SIZE), NOT_ASSIGNED);
+		getOrderByPageSize(MAX_POOL_PAGES * PAGE_SIZE));
     if (entries == NULL) {
         os->setLastStatus(StatusPoolNotEnough);
         return FALSE;
@@ -147,7 +147,7 @@ PBYTE BucketPool::getNewPoolPage(SIZE size) {
         os->setLastStatus(StatusParameterError);
         return NULL;
     }
-    PBYTE ptr = allocator->allocPages(0, NOT_ASSIGNED);
+    PBYTE ptr = allocator->allocPages(0);
     if (ptr == NULL) {
         os->setLastStatus(StatusPoolNotEnough);
         return NULL;

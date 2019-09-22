@@ -2,11 +2,9 @@
 #include "../Types.h"
 #include "Zone.h"
 
-#define NOT_ASSIGNED (PBYTE)0
-
 class PhysicalPageAllocator {
 public:
-	virtual PBYTE allocPages(ULONG order, PBYTE address) {
+	virtual PBYTE allocPages(ULONG order) {
 		return NULL;
 	};
 	virtual void putPage(PBYTE page) {
