@@ -2,21 +2,13 @@
 #include <mm/PhysicalPageAllocatorImpl.h>
 #include <lib/Memory.h>
 
-PhysicalPageAllocatorImpl::PhysicalPageAllocatorImpl() {
-    virtualMemory = FALSE;
-}
-
-PBYTE PhysicalPageAllocatorImpl::allocPages(ULONG order) {
-	PBYTE result = zone->getPages(order);
-	if (virtualMemory)
-		result = (PBYTE)getVAFromPA((ULONG)result);
-	memset(result, 0, getPageSizeByOrder(order));
-	return result;
+PBYTE PhysicalPageAllocatorImpl::allocPages(ULONG order, ULONG address) {
+    PBYTE result = zone->getPages(order);
+    memset(result, 0, getPageSizeByOrder(order));
+    return result;
 }
 
 void PhysicalPageAllocatorImpl::putPage(PBYTE page) {
-	if (virtualMemory)
-		page = (PBYTE)getPAFromVA((ULONG)page);
     zone->putPage(page);
 }
 
@@ -29,8 +21,4 @@ void PhysicalPageAllocatorImpl::init(PBYTE start, SIZE memorySize) {
     zone = New Zone();
     zone->init(start, memorySize, memMap);
     zone->putAllPages();
-}
-
-void PhysicalPageAllocatorImpl::startVirtualMemory() {
-    virtualMemory = TRUE;
 }

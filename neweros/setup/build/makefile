@@ -1,6 +1,6 @@
 ccobjs = $(OBJ)\main.obj
 
-lib = $(toptarget)\klib.lib $(toptarget)\mm.lib $(toptarget)\lib.lib $(toptarget)\global.lib $(toptarget)\graphic.lib
+lib = $(toptarget)\klib.lib $(toptarget)\mm.lib $(toptarget)\lib.lib
 
 executable = $(toptarget)\setup.exe
 target = $(executable)

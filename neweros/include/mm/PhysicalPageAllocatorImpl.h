@@ -4,14 +4,10 @@
 
 class PhysicalPageAllocatorImpl : public PhysicalPageAllocator {
 public:
-	PhysicalPageAllocatorImpl();
-
-    virtual PBYTE allocPages(ULONG order);
+    virtual PBYTE allocPages(ULONG order, ULONG address);
     virtual void putPage(PBYTE page);
     void init(PBYTE start, SIZE size);
-	void startVirtualMemory();
 private:
-	BOOL virtualMemory;
     Zone* zone;
     Page* memMap;
 };

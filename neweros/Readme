@@ -25,7 +25,7 @@ klib.lib是仅限于内核使用，不能用于测试
                             实现可移植，所以bootmgr从头读起，反正不在乎内存了
                             读取kernel，用于设置idt、gdt，设置显卡，进入保护模式，跳转到setup，
 
-00030000~00005000 setup 从此开始就是全32位的代码，初始化各种东西，包括内存分页，按照页将kernel读入
+00030000~00005000 setup 将kernel加载到对应内存中并且映射内存，然后进入kernel
 00050000~00100000 kernel暂存
 00100000~00xxxxxx kernel 
 c0100000~ffffffff kernel 内存

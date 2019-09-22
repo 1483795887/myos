@@ -6,7 +6,7 @@
 Status FreeArea::init(PBYTE address, ULONG order, ULONG memorySize) {
     Status status;
     if (order > MAX_ORDER) {
-        status = ValueNotInRange;
+        status = StatusValueNotInRange;
         os->setLastStatus(status);
         return status;
     }
@@ -58,14 +58,14 @@ Status Zone::init(PBYTE start, ULONG memorySize, Page* pages) {
     ULONG pageSize = PAGE_SIZE;
     for (int i = 0; i < MAX_ORDER + 1; i++) {
         ULONG alignedSize = ulAlign(memorySize, pageSize, FALSE);
-        if (alignedSize == 0 || freeAreas[i].init((PBYTE)ulAlign((ULONG)start, pageSize, TRUE), i, alignedSize) != Success)
+        if (alignedSize == 0 || freeAreas[i].init((PBYTE)ulAlign((ULONG)this->start, pageSize, TRUE), i, alignedSize) != StatusSuccess)
             break;
         pageSize <<= 1;
     }
 
     this->memMap = pages;
-	for (int i = 0; i < size >> LOG2_PAGE_SIZE; i++)
-		memMap[i].setCount(1);
+    for (int i = 0; i < size >> LOG2_PAGE_SIZE; i++)
+        memMap[i].setCount(1);
 
     return os->getLastStatus();
 }
@@ -75,33 +75,33 @@ ULONG Zone::getFreePages() {
 }
 
 Status Zone::putPage(PBYTE address) {
-    Status status = Success;
+    Status status = StatusSuccess;
     if (!checkAligned((ULONG)address, PAGE_SIZE)) {
-        status = InvalidPage;
+        status = StatusInvalidPage;
         os->setLastStatus(status);
         return status;
     }
     if (address < start || address >= start + size) {
-        status = InvalidPage;
+        status = StatusInvalidPage;
         os->setLastStatus(status);
         return status;
     }
     Page* page = getPageByAddress(address);
     page->setAddress(address);//防止地址没有初始化
-	if (page->getCount() <= 0) 
-		os->setLastStatus(PageAlreadyFreeed);
-	else {
-		page->decCount();
-		if (page->getCount() == 0)
-			mergePage(page);
-	}
+    if (page->getCount() <= 0)
+        os->setLastStatus(StatusPageAlreadyFreeed);
+    else {
+        page->decCount();
+        if (page->getCount() == 0)
+            mergePage(page);
+    }
     return os->getLastStatus();
 }
 
 Status Zone::putAllPages() {
     ULONG currentSize;
     for (currentSize = 0; currentSize < size; currentSize += PAGE_SIZE) {
-        if (putPage(start + currentSize) != Success)
+        if (putPage(start + currentSize) != StatusSuccess)
             break;
     }
     return os->getLastStatus();
@@ -123,7 +123,7 @@ void Zone::addCount(PBYTE addr, ULONG order) {
 
 PBYTE Zone::getPages(ULONG order) {
     if (order > MAX_ORDER) {
-        os->setLastStatus(ValueNotInRange);
+        os->setLastStatus(StatusValueNotInRange);
         return NULL;
     }
     if (freeAreas[order].getCount() != 0) {
@@ -142,9 +142,9 @@ void Zone::mergePage(Page* page) {
     freeAreas[currentOrder].insert(currentPage);
 
     while (currentOrder < MAX_ORDER &&
-		getPageSizeByOrder(currentOrder) <= size / 2 &&
-		freeAreas[currentOrder].canMerge(currentPage->getAddress())
-		) {
+            getPageSizeByOrder(currentOrder) <= size / 2 &&
+            freeAreas[currentOrder].canMerge(currentPage->getAddress())
+          ) {
 
         currentPage = getPageByAddress((PBYTE)ulAlign((ULONG)currentPage->getAddress(), pageSize << 1, FALSE));
         freeAreas[currentOrder].remove(currentPage);

@@ -60,10 +60,10 @@
     <None Include="klib\i386\Atomic.asm">
       <Filter>源文件</Filter>
     </None>
-    <None Include="mm\i386\Page.asm">
+    <None Include="kernel\i386\InterruptA.asm">
       <Filter>源文件</Filter>
     </None>
-    <None Include="kernel\i386\InterruptA.asm">
+    <None Include="mm\i386\Page.asm">
       <Filter>源文件</Filter>
     </None>
   </ItemGroup>
@@ -87,9 +87,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\mm\Zone.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="include\mm\PhysicalPage.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="include\mm\Mm.h">
@@ -161,6 +158,15 @@
     <ClInclude Include="include\interrupt\i386\i386Interrupt.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="kernel\Kernel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\global\BootParam.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\mm\PageMapper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kernel\main.cpp">
@@ -173,9 +179,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="lib\CList.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="mm\PhysicalPage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="mm\Zone.cpp">
@@ -230,6 +233,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="kernel\i386\trap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mm\i386\PageMapping.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mm\PageMapper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

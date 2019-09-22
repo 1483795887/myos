@@ -23,17 +23,23 @@ enum {
 	Supervisor= 4
 };
 
-class PhysicalPageManager {
+PDE getPDEIndex(ULONG address);
+PTE getPTEIndex(ULONG address);
+ULONG getAddressFromEntry(ULONG entry);
+PDE makePDE(ULONG address, ULONG flags);
+PTE makePTE(ULONG address, ULONG flags);
+BOOL isPageExist(ULONG entry);
+
+extern "C" void _cdecl setPageDirectory(PD pd);
+
+class PageMapper {
 public:
-    PhysicalPageManager();
+    PageMapper();
 	void init();
     void setPD(PD pd);
 	ULONG va2pa(ULONG vAddr);
 	Status mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property);
     void setAllocator(PhysicalPageAllocator* allocator);
-
-	PBYTE allocatePage(ULONG order);
-	void putPage(PBYTE page);
 
 	void changePD();
 private:

@@ -31,7 +31,7 @@ void initSyscall(InterruptVectorTable* ivt) {
 }
 
 void initInterrupt() {
-	PBYTE table = os->allocator->allocPages(0);
+	PBYTE table = os->allocator->allocPages(0, NOT_ASSIGNED);
 	InterruptVectorTable* ivt = New InterruptVectorTable(table);
 
 	initTrap(ivt);

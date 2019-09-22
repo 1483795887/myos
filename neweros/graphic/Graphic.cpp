@@ -6,15 +6,15 @@ Status Graphic::init(Rect* rect, PBYTE vam) {
     this->vam = vam;
 	this->father = NULL;
     if (vam == NULL)
-        os->setLastStatus(NullPointer);
+        os->setLastStatus(StatusNullPointer);
     if (rect->width == 0 || rect->height == 0)
-        os->setLastStatus(ValueNotInRange);
+        os->setLastStatus(StatusValueNotInRange);
     return os->getLastStatus();
 }
 
 Status Graphic::putPixel(ULONG x, ULONG y, RGB rgb) {
     if (!isPositionValid(x, y))
-        return ArrayBounds; //不会对系统产生任何影响，也不用检测这个，只是为了方便测试
+        return StatusArrayBounds; //不会对系统产生任何影响，也不用检测这个，只是为了方便测试
 	if (father != NULL)
 		return father->putPixel(x + rect.x, y + rect.y, rgb);
     ULONG offset = (y * rect.width + x) * 3;
@@ -22,7 +22,7 @@ Status Graphic::putPixel(ULONG x, ULONG y, RGB rgb) {
     data[0] = rgb.b;
     data[1] = rgb.g;
     data[2] = rgb.r;
-    return Success;
+    return StatusSuccess;
 }
 
 RGB Graphic::getPixel(ULONG x, ULONG y) {

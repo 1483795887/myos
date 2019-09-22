@@ -25,13 +25,13 @@ public:
 TEST_F(BitmapTest, noPoolWhenCheckBitThenError) {
     Bitmap bitmap;
     os->pool = NULL;
-    EXPECT_EQ(bitmap.init(100), NullPointer);
+    EXPECT_EQ(bitmap.init(100), StatusNullPointer);
 }
 
 TEST_F(BitmapTest, poolNotEnoughWhenCheckBitThenError) {
     Bitmap bitmap;
     os->pool = new FakePool(10);
-    EXPECT_EQ(bitmap.init(100), PoolNotEnough);
+    EXPECT_EQ(bitmap.init(100), StatusPoolNotEnough);
     delete os->pool;
 }
 

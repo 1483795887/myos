@@ -46,6 +46,7 @@
   <ItemGroup>
     <ClInclude Include="include\arch\i386\Descritpor.h" />
     <ClInclude Include="include\fs\Pe.h" />
+    <ClInclude Include="include\global\BootParam.h" />
     <ClInclude Include="include\global\OS.h" />
     <ClInclude Include="include\graphic\Console.h" />
     <ClInclude Include="include\graphic\Container.h" />
@@ -66,7 +67,7 @@
     <ClInclude Include="include\mm\Mm.h" />
     <ClInclude Include="include\mm\NaivePool.h" />
     <ClInclude Include="include\mm\Page.h" />
-    <ClInclude Include="include\mm\PhysicalPage.h" />
+    <ClInclude Include="include\mm\PageMapper.h" />
     <ClInclude Include="include\mm\PhysicalPageAllocator.h" />
     <ClInclude Include="include\mm\PhysicalPageAllocatorImpl.h" />
     <ClInclude Include="include\mm\Pool.h" />
@@ -74,6 +75,7 @@
     <ClInclude Include="include\Status.h" />
     <ClInclude Include="include\synchron\Atomic.h" />
     <ClInclude Include="include\Types.h" />
+    <ClInclude Include="kernel\Kernel.h" />
     <ClInclude Include="setup\setup.h" />
   </ItemGroup>
   <ItemGroup>
@@ -95,9 +97,10 @@
     <ClCompile Include="lib\CListEntry.cpp" />
     <ClCompile Include="lib\CString.cpp" />
     <ClCompile Include="mm\BucketPool.cpp" />
+    <ClCompile Include="mm\i386\PageMapping.cpp" />
     <ClCompile Include="mm\NaivePool.cpp" />
     <ClCompile Include="mm\PhysicalPageAllocatorImpl.cpp" />
-    <ClCompile Include="mm\PhysicalPage.cpp" />
+    <ClCompile Include="mm\PageMapper.cpp" />
     <ClCompile Include="mm\Zone.cpp" />
     <ClCompile Include="setup\main.cpp" />
   </ItemGroup>

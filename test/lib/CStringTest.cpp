@@ -10,7 +10,7 @@ public:
     virtual void SetUp() {
 		fakePool = new FakePool(4096);
 		os->pool = fakePool;
-		os->setLastStatus(Success);
+		os->setLastStatus(StatusSuccess);
     }
 	virtual void TearDown() {
 		delete fakePool;

@@ -1,5 +1,6 @@
 #pragma once
 #include "../types.h"
+#include <mm/PageMapper.h>
 
 class CPU {
 public:

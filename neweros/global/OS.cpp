@@ -12,19 +12,19 @@ void OS::setLastStatus(Status status) {
 
 void* _cdecl operator new (SIZE size, Pool* pool) {
 	if (pool == NULL) {
-		os->setLastStatus(NullPointer);
+		os->setLastStatus(StatusNullPointer);
 		return NULL;
 	}
-	os->setLastStatus(Success);
+	os->setLastStatus(StatusSuccess);
 	return pool->allocate(size);
 }
 
 void* _cdecl operator new[](SIZE size, Pool* pool) {
 	if (pool == NULL) {
-		os->setLastStatus(NullPointer);
+		os->setLastStatus(StatusNullPointer);
 		return NULL;
 	}
-	os->setLastStatus(Success);
+	os->setLastStatus(StatusSuccess);
 	return pool->allocate(size);
 }
 

@@ -1,8 +1,9 @@
 #include <global/OS.h>
 #include <mm/PhysicalPageAllocatorImpl.h>
-#include <mm/PhysicalPage.h>
+#include <mm/PageMapper.h>
+#include <arch/CPU.h>
 
-inline PDE getPDEIndex(ULONG address) {
+/*inline PDE getPDEIndex(ULONG address) {
     return address >> PDE_SHIFT;
 }
 
@@ -13,7 +14,7 @@ inline PTE getPTEIndex(ULONG address) {
 }
 
 inline ULONG getAddressFromEntry(ULONG entry) {
-    return entry & ~0xfff;;
+    return entry & ~0xfff;
 }
 
 inline BOOL checkPageAddressValid(ULONG address) {
@@ -21,21 +22,21 @@ inline BOOL checkPageAddressValid(ULONG address) {
         return FALSE;
     return TRUE;
 }
-
-PhysicalPageManager::PhysicalPageManager() {
+*/
+PageMapper::PageMapper() {
     this->pd = (PD)NULL;
     this->allocator = NULL;
 }
 
-void PhysicalPageManager::init() {
-    this->pd = (PD)allocator->allocPages(0);
+void PageMapper::init() {
+    this->pd = (PD)allocator->allocPages(0, NOT_ASSIGNED);
 }
 
-void PhysicalPageManager::setPD(PD pd) {
+void PageMapper::setPD(PD pd) {
     this->pd = pd;
 }
 
-ULONG PhysicalPageManager::va2pa(ULONG vAddr) {
+ULONG PageMapper::va2pa(ULONG vAddr) {
     PDE pde = pd[getPDEIndex(vAddr)];
     if (!(pde & Existence))
         return NULL;
@@ -46,34 +47,33 @@ ULONG PhysicalPageManager::va2pa(ULONG vAddr) {
     return getAddressFromEntry(pte);
 }
 
-Status PhysicalPageManager::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property) {
+Status PageMapper::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property) {
     pAddr = ulAlign(pAddr, PAGE_SIZE, FALSE);
     vAddr = ulAlign(vAddr, PAGE_SIZE, FALSE);
     size = ulAlign(size, PAGE_SIZE, TRUE);
-    property = property & 0xfff;
-    Status status = Success;
+    Status status = StatusSuccess;
     if (vAddr > vAddr + size) {
-        status = MemoryOverLimit;
+        status = StatusMemoryOverLimit;
         os->setLastStatus(status);
         return status;
     }
     ULONG currentSize = 0;
     while (currentSize < size) {
         PDE pde = pd[getPDEIndex(vAddr)];
-        if (pde & Existence) {
+        if (isPageExist(pde)) {
             PT pt = (PT)getAddressFromEntry(pde);
             PTE pte = pt[getPTEIndex(vAddr)];
-            if (pte & Existence) {
-                status = PageAlreadyExist;
+            if (isPageExist(pte)) {
+                status = StatusPageAlreadyExist;
                 os->setLastStatus(status);
                 return status;
             } else {
-                pte = pAddr | property;
+				pte = makePTE(pAddr, property);
                 pt[getPTEIndex(vAddr)] = pte;
             }
         } else {
-            PT pt = (PT)allocator->allocPages(0);
-            pd[getPDEIndex(vAddr)] = (PDE)((ULONG)pt | property);
+            PT pt = (PT)allocator->allocPages(0, NOT_ASSIGNED);
+			pd[getPDEIndex(vAddr)] = makePDE((ULONG)pt, property);
             continue;
         }
         currentSize += PAGE_SIZE;
@@ -84,20 +84,10 @@ Status PhysicalPageManager::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG
     return status;
 }
 
-void PhysicalPageManager::setAllocator(PhysicalPageAllocator* allocator) {
+void PageMapper::setAllocator(PhysicalPageAllocator* allocator) {
     this->allocator = allocator;
 }
 
-PBYTE PhysicalPageManager::allocatePage(ULONG order) {
-    return allocator->allocPages(order);
-}
-
-void PhysicalPageManager::putPage(PBYTE page) {
-	allocator->putPage(page);
-}
-
-extern "C" void _cdecl setPageDirectory(PD pd);
-
-void PhysicalPageManager::changePD() {
-    setPageDirectory(pd);
+void PageMapper::changePD() {
+	setPageDirectory(pd);
 }

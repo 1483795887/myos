@@ -1,5 +1,4 @@
 include asm.inc
-
 .code
 
 public setPageDirectory

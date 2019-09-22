@@ -1,5 +1,5 @@
 #include <arch/CPU.h>
-#include <mm/physicalPage.h>
+#include <mm/PageMapper.h>
 
 extern "C" void _cdecl doOpenPageMode();
 extern "C" void _cdecl doSetGlobalDescriptorTable(PBYTE table);

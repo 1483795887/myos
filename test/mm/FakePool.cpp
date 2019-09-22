@@ -6,7 +6,7 @@
 
 PBYTE FakePool::allocate(SIZE size) {
     if (remainSize < size) {
-        os->setLastStatus(PoolNotEnough);
+        os->setLastStatus(StatusPoolNotEnough);
         return NULL;
     } else {
         PBYTE result = current;

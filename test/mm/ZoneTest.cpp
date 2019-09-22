@@ -13,7 +13,7 @@ public:
     virtual void SetUp() {
         fakePool = new FakePool(PAGE_SIZE * 32);
         os->pool = fakePool;
-        os->setLastStatus(Success);
+        os->setLastStatus(StatusSuccess);
         allocator = new FakePhysicalPageAllocator();
         zone = new Zone();
 
@@ -28,7 +28,7 @@ public:
     }
 
     PBYTE initZone(ULONG order) {
-        PBYTE address = allocator->allocPages(MAX_ORDER);
+        PBYTE address = allocator->allocPages(MAX_ORDER, 0);
         zone->init(address, getPageSizeByOrder(order), pages);
         zone->putAllPages();
         return address;
@@ -42,50 +42,50 @@ public:
 
 TEST_F(ZoneTest, orderNotInRangeWhenInitFreeAreaThenError) {
     FreeArea freeArea;
-    EXPECT_EQ(freeArea.init(0, 1111, 10), ValueNotInRange);
+    EXPECT_EQ(freeArea.init(0, 1111, 10), StatusValueNotInRange);
 }
 
 TEST_F(ZoneTest, emptyZoneWhenGetFreePagesThenZero) {
     Zone zone;
-    zone.init(allocator->allocPages(MAX_ORDER), 0, pages);
+    zone.init(allocator->allocPages(MAX_ORDER, NOT_ASSIGNED), 0, pages);
     EXPECT_EQ(zone.getFreePages(), 0);
 }
 
 TEST_F(ZoneTest, pageNotInZoneWhenPutPagesThenReturnStatus) {
     Zone zone;
-    PBYTE address = allocator->allocPages(MAX_ORDER);
+    PBYTE address = allocator->allocPages(MAX_ORDER, NOT_ASSIGNED);
     zone.init(address, PAGE_SIZE, pages);
 
-    EXPECT_EQ(zone.putPage(0), InvalidPage);
+    EXPECT_EQ(zone.putPage(0), StatusInvalidPage);
 }
 
 TEST_F(ZoneTest, onePageAddressNotAlignedWhenPutPagesThenReturnStatus) {
     Zone zone;
-    PBYTE address = allocator->allocPages(MAX_ORDER);
+    PBYTE address = allocator->allocPages(MAX_ORDER, NOT_ASSIGNED);
     zone.init(address, PAGE_SIZE, pages);
 
-    EXPECT_EQ(zone.putPage((PBYTE)16), InvalidPage);
+    EXPECT_EQ(zone.putPage((PBYTE)16), StatusInvalidPage);
 }
 
 TEST_F(ZoneTest, onePageOrderLowerThanRangeWhenPutPagesThenReturnStatus) {
     Zone zone;
-    PBYTE address = allocator->allocPages(MAX_ORDER);
+    PBYTE address = allocator->allocPages(MAX_ORDER, NOT_ASSIGNED);
     zone.init(address, PAGE_SIZE, pages);
 
-    EXPECT_EQ(zone.putPage((PBYTE)0), InvalidPage);
+    EXPECT_EQ(zone.putPage((PBYTE)0), StatusInvalidPage);
 }
 
 TEST_F(ZoneTest, onePageOrderOverThanRangeWhenPutPagesThenReturnStatus) {
     Zone zone;
-    PBYTE address = allocator->allocPages(MAX_ORDER);
+    PBYTE address = allocator->allocPages(MAX_ORDER, NOT_ASSIGNED);
     zone.init(address, PAGE_SIZE, pages);
 
-    EXPECT_EQ(zone.putPage(address + PAGE_SIZE), InvalidPage);
+    EXPECT_EQ(zone.putPage(address + PAGE_SIZE), StatusInvalidPage);
 }
 
 TEST_F(ZoneTest, onePageWhenPutPagesThenRelatedAreaCountOne) {
     Zone zone;
-    PBYTE address = allocator->allocPages(MAX_ORDER);
+    PBYTE address = allocator->allocPages(MAX_ORDER, NOT_ASSIGNED);
     zone.init(address, PAGE_SIZE, pages);
 
     zone.putPage(address);
@@ -95,7 +95,7 @@ TEST_F(ZoneTest, onePageWhenPutPagesThenRelatedAreaCountOne) {
 
 TEST_F(ZoneTest, twoNeighborOnePagesFirstLowThenHighWhenPutPagesThenUpperAreaCountOne) {
     Zone zone;
-    PBYTE address = allocator->allocPages(MAX_ORDER);
+    PBYTE address = allocator->allocPages(MAX_ORDER, NOT_ASSIGNED);
     zone.init(address, PAGE_SIZE * 2, pages);
 
     zone.putPage(address);
@@ -106,7 +106,7 @@ TEST_F(ZoneTest, twoNeighborOnePagesFirstLowThenHighWhenPutPagesThenUpperAreaCou
 
 TEST_F(ZoneTest, twoNeighborOnePagesFirstHighThenLowWhenPutPagesThenCurrentAreaCountZero) {
     Zone zone;
-    PBYTE address = allocator->allocPages(MAX_ORDER);
+    PBYTE address = allocator->allocPages(MAX_ORDER, NOT_ASSIGNED);
     zone.init(address, PAGE_SIZE * 2, pages);
 
     zone.putPage(address + PAGE_SIZE);
@@ -117,7 +117,7 @@ TEST_F(ZoneTest, twoNeighborOnePagesFirstHighThenLowWhenPutPagesThenCurrentAreaC
 
 TEST_F(ZoneTest, twoNotNeighborOnePagesWhenPutPagesThenAreaOneCountTwo) {
     Zone zone;
-    PBYTE address = allocator->allocPages(MAX_ORDER);
+    PBYTE address = allocator->allocPages(MAX_ORDER, NOT_ASSIGNED);
     zone.init(address, PAGE_SIZE * 4, pages);
 
     zone.putPage(address);
@@ -128,7 +128,7 @@ TEST_F(ZoneTest, twoNotNeighborOnePagesWhenPutPagesThenAreaOneCountTwo) {
 
 TEST_F(ZoneTest, fourNeighborOnePagesWhenPutPagesThenAreaTwoCountOne) {
     Zone zone;
-    PBYTE address = allocator->allocPages(MAX_ORDER);
+    PBYTE address = allocator->allocPages(MAX_ORDER, NOT_ASSIGNED);
     zone.init(address, PAGE_SIZE * 4, pages);
 
     zone.putPage(address);

@@ -7,6 +7,7 @@ public doOpenPageMode
 public doSetGlobalDescriptorTable
 public doSetInterruptVectorTable
 
+
 doOpenPageMode proc C 
     push eax
 
@@ -52,6 +53,8 @@ doSetInterruptVectorTable proc C table
     pop eax
     ret
 doSetInterruptVectorTable endp
+
+
 
 .data
 

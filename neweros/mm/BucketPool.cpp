@@ -63,7 +63,7 @@ PBYTE BucketPool::allocate(SIZE size) {
             return NULL;
     }
     if (size > (MIN_POOL_SIZE << MAX_POOL_ORDER)) {
-        os->setLastStatus(SizeTooBig);
+        os->setLastStatus(StatusSizeTooBig);
         return NULL;
     }
 
@@ -93,7 +93,7 @@ PBYTE BucketPool::allocate(SIZE size) {
 
     entry->refCount++;
 
-    os->setLastStatus(Success);
+    os->setLastStatus(StatusSuccess);
     return ptr;
 }
 
@@ -123,9 +123,10 @@ BOOL BucketPool::isInPool(PBYTE ptr) {
 }
 
 BOOL BucketPool::init() {
-    BucketEntry* entries = (BucketEntry*)allocator->allocPages(getOrderByPageSize(MAX_POOL_PAGES * PAGE_SIZE));
+    BucketEntry* entries = (BucketEntry*)allocator->allocPages(
+		getOrderByPageSize(MAX_POOL_PAGES * PAGE_SIZE), NOT_ASSIGNED);
     if (entries == NULL) {
-        os->setLastStatus(PoolNotEnough);
+        os->setLastStatus(StatusPoolNotEnough);
         return FALSE;
     }
     for (int i = 0; i < PAGE_SIZE * MAX_POOL_PAGES / sizeof(BucketEntry); i++) {
@@ -139,16 +140,16 @@ BOOL BucketPool::init() {
 
 PBYTE BucketPool::getNewPoolPage(SIZE size) {
     if (allocator == NULL) {
-        os->setLastStatus(NullPointer);
+        os->setLastStatus(StatusNullPointer);
         return NULL;
     }
     if (size == 0 || size > (MIN_POOL_SIZE << MAX_POOL_ORDER)) {
-        os->setLastStatus(ParameterError);
+        os->setLastStatus(StatusParameterError);
         return NULL;
     }
-    PBYTE ptr = allocator->allocPages(0);
+    PBYTE ptr = allocator->allocPages(0, NOT_ASSIGNED);
     if (ptr == NULL) {
-        os->setLastStatus(PoolNotEnough);
+        os->setLastStatus(StatusPoolNotEnough);
         return NULL;
     }
     ULONG countOfPools = PAGE_SIZE / size;
@@ -161,20 +162,20 @@ PBYTE BucketPool::getNewPoolPage(SIZE size) {
         prev = (CListEntry*)((PBYTE)prev + size);
         next = (CListEntry*)((PBYTE)next + size);
     }
-    os->setLastStatus(Success);
+    os->setLastStatus(StatusSuccess);
     return ptr;
 }
 
 BucketEntry* BucketPool::allocateBucketEntry(SIZE size) {
     if (entryList.getCount() == 0) {//所有的entry都用完了
-        os->setLastStatus(PoolNotEnough);
+        os->setLastStatus(StatusPoolNotEnough);
         return NULL;
     }
     BucketEntry* entry = (BucketEntry*)entryList.getFirst();
     entryList.remove(entry);
     PBYTE poolPage = getNewPoolPage(size);
     if (poolPage == NULL) {
-        os->setLastStatus(PoolNotEnough);
+        os->setLastStatus(StatusPoolNotEnough);
         return NULL;
     }
     entry->nextPtr = (CListEntry*)poolPage;

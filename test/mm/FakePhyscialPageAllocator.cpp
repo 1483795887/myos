@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "FakePhysicalPageAllocator.h"
+#include <mm/mm.h>
 
-PBYTE FakePhysicalPageAllocator::allocPages(ULONG order) {
+PBYTE FakePhysicalPageAllocator::allocPages(ULONG order, PBYTE address) {
     ULONG number = 1 << order;
     ULONG size = number * PAGE_SIZE;
     if (currentBlock >= MAX_BLOCKS || (remainPages < number))
