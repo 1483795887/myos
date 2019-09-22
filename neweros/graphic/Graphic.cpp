@@ -5,11 +5,12 @@ Status Graphic::init(Rect* rect, PBYTE vam) {
     this->rect = *rect;
     this->vam = vam;
 	this->father = NULL;
+	Status status = StatusSuccess;
     if (vam == NULL)
-        os->setLastStatus(StatusNullPointer);
+		status = StatusNullPointer;
     if (rect->width == 0 || rect->height == 0)
-        os->setLastStatus(StatusValueNotInRange);
-    return os->getLastStatus();
+        status = StatusValueNotInRange;
+    return status;
 }
 
 Status Graphic::putPixel(ULONG x, ULONG y, RGB rgb) {

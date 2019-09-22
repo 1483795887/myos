@@ -13,13 +13,13 @@ public:
 
         allocator = new FakePhysicalPageAllocator();
         pd = (PD)allocator->allocPages(0);
-        pageMapper = new PageMapper;
-        pageMapper->setPD(pd);
-        pageMapper->setAllocator(allocator);
+        //pageMapper = new PageMapper;
+        /*pageMapper->setPD(pd);
+        pageMapper->setAllocator(allocator);*/
     }
     virtual void TearDown() {
         delete allocator;
-        delete pageMapper;
+        //delete pageMapper;
     }
 
     void mapPDE(ULONG vAddr, PT pt, PD pd, ULONG property) {
@@ -36,87 +36,90 @@ public:
     PT pt;
     ULONG testAddr;
     ULONG physicalPage;
-    PageMapper* pageMapper;
+    //PageMapper* pageMapper;
     PhysicalPageAllocator* allocator;
 };
 
 TEST_F(PageMapperManagerTest, sizeTooBigWhenMapPagesThenFailed) {
-    EXPECT_EQ(pageMapper->mapPages(0, 3 * G, G + 1, 0), StatusMemoryOverLimit);
+    EXPECT_EQ(PageMapper::mapPages(pd, 0, 3 * G, G + 1, 0, allocator), StatusMemoryOverLimit);
 }
 
 TEST_F(PageMapperManagerTest, pageAlreadyExistWhenMapPagesThenFailed) {
     pt = (PT)allocator->allocPages(0);
     mapPDE(testAddr, pt, pd, Existence);
     mapPTE(testAddr, physicalPage, pt, Existence);
-    EXPECT_EQ(pageMapper->mapPages(physicalPage, testAddr, PAGE_SIZE, 0), StatusPageAlreadyExist);
+    EXPECT_EQ(PageMapper::mapPages(pd, physicalPage, testAddr, PAGE_SIZE, 0, allocator),
+		StatusPageAlreadyExist);
 }
 
 TEST_F(PageMapperManagerTest, nextPageAlreadyExistWhenMapPagesThenFailed) {
     pt = (PT)allocator->allocPages(0);
     mapPDE(testAddr, pt, pd, Existence);
     mapPTE(testAddr, physicalPage + PAGE_SIZE, pt, Existence);
-    EXPECT_EQ(pageMapper->mapPages(physicalPage, testAddr, PAGE_SIZE * 2, 0), StatusPageAlreadyExist);
+    EXPECT_EQ(PageMapper::mapPages(pd, physicalPage, testAddr, PAGE_SIZE * 2, 0, allocator),
+		StatusPageAlreadyExist);
 }
 
 TEST_F(PageMapperManagerTest, lastPageAlreadyExistWhenMapPagesThenFailed) {
     pt = (PT)allocator->allocPages(0);
     mapPDE(testAddr, pt, pd, Existence);
     mapPTE(testAddr, physicalPage + 9 * PAGE_SIZE, pt, Existence);
-    EXPECT_EQ(pageMapper->mapPages(physicalPage, testAddr, PAGE_SIZE * 10, 0), StatusPageAlreadyExist);
+    EXPECT_EQ(PageMapper::mapPages(pd, physicalPage, testAddr, PAGE_SIZE * 10, 0, allocator),
+		StatusPageAlreadyExist);
 }
 
 TEST_F(PageMapperManagerTest, mapOnePageWhenMapPagesThenSuccess) {
     pt = (PT)allocator->allocPages(0);
     mapPDE(testAddr, pt, pd, Existence);
-    pageMapper->mapPages(physicalPage, testAddr, PAGE_SIZE, Existence);
-    EXPECT_EQ(pageMapper->va2pa(testAddr), physicalPage);
+	PageMapper::mapPages(pd, physicalPage, testAddr, PAGE_SIZE, Existence, allocator);
+    EXPECT_EQ(PageMapper::va2pa(pd, testAddr), physicalPage);
 }
 
 TEST_F(PageMapperManagerTest, mapMultiplyPageWhenMapPagesThenSuccess) {
     pt = (PT)allocator->allocPages(0);
     mapPDE(testAddr, pt, pd, Existence);
-    pageMapper->mapPages(physicalPage, testAddr, PAGE_SIZE * 10, Existence);
-    EXPECT_EQ(pageMapper->va2pa(testAddr + PAGE_SIZE), physicalPage + PAGE_SIZE);
+	PageMapper::mapPages(pd, physicalPage, testAddr, PAGE_SIZE * 10, Existence, allocator);
+    EXPECT_EQ(PageMapper::va2pa(pd, testAddr + PAGE_SIZE), physicalPage + PAGE_SIZE);
 }
 
 TEST_F(PageMapperManagerTest, ptNotExistWhenMapPagesThenTheAllocPage) {
-    pageMapper->mapPages(physicalPage, testAddr, PAGE_SIZE, Existence);
+	PageMapper::mapPages(pd, physicalPage, testAddr, PAGE_SIZE, Existence, allocator);
     PT pt = (PT)((FakePhysicalPageAllocator*)allocator)->getLastPage();
 
     EXPECT_EQ(pt[((testAddr >> 12) & 1023)] & ~0xfff, physicalPage);
 }
 
 TEST_F(PageMapperManagerTest, ptNotExistWhenMapPagesThenMapSucceed) {
-    pageMapper->mapPages(physicalPage, testAddr, PAGE_SIZE, Existence);
+	PageMapper::mapPages(pd, physicalPage, testAddr, PAGE_SIZE, Existence, allocator);
 
-    EXPECT_EQ(pageMapper->va2pa(testAddr), physicalPage);
+    EXPECT_EQ(PageMapper::va2pa(pd, testAddr), physicalPage);
 }
 
 TEST_F(PageMapperManagerTest, ptNotExistWhenMapMultiplyPagesThenMappSucceed) {
-    pageMapper->mapPages(physicalPage, testAddr, PAGE_SIZE * 10, Existence);
+	PageMapper::mapPages(pd, physicalPage, testAddr, PAGE_SIZE * 10, Existence, allocator);
 
-    EXPECT_EQ(pageMapper->va2pa(testAddr + PAGE_SIZE), physicalPage + PAGE_SIZE);
+    EXPECT_EQ(PageMapper::va2pa(pd, testAddr + PAGE_SIZE), physicalPage + PAGE_SIZE);
 }
 
 TEST_F(PageMapperManagerTest, acrossPDWhenMapMultiplyPagesThenMappSucceed) {
-    pageMapper->mapPages(physicalPage, 0x3ff000, PAGE_SIZE * 10, Existence);
+	PageMapper::mapPages(pd, physicalPage, 0x3ff000, PAGE_SIZE * 10, Existence, allocator);
 
-    EXPECT_EQ(pageMapper->va2pa(0x3ff000 + PAGE_SIZE), physicalPage + PAGE_SIZE);
+    EXPECT_EQ(PageMapper::va2pa(pd, 0x3ff000 + PAGE_SIZE), physicalPage + PAGE_SIZE);
 }
 
 TEST_F(PageMapperManagerTest, pdNotExistWhenVA2PAThenFailed) {
-    EXPECT_EQ(pageMapper->va2pa(testAddr), NULL);
+    EXPECT_EQ(PageMapper::va2pa(pd, testAddr), NULL);
 }
 
 TEST_F(PageMapperManagerTest, ptNotExistWhenVA2PAThenFailed) {
     pt = (PT)allocator->allocPages(0);
     mapPDE(testAddr, pt, pd, Existence);
-    EXPECT_EQ(pageMapper->va2pa(testAddr), NULL);
+    EXPECT_EQ(PageMapper::va2pa(pd, testAddr), NULL);
 }
 
 TEST_F(PageMapperManagerTest, vA2PASuccess) {
     pt = (PT)allocator->allocPages(0);
     mapPDE(testAddr, pt, pd, Existence);
     mapPTE(testAddr, physicalPage, pt, Existence);
-    EXPECT_EQ(pageMapper->va2pa(testAddr), physicalPage);
+    EXPECT_EQ(PageMapper::va2pa(pd, testAddr), physicalPage);
 }

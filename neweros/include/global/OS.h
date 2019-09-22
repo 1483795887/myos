@@ -13,18 +13,6 @@ class OS {
 public:
     Pool* pool;
 
-    //ULONG start;        //物理地址
-    //ULONG end;
-
-    //ULONG codeStart;    //虚拟地址
-    /*SIZE codeSize;
-    ULONG dataStart;
-    SIZE dataSize;
-    ULONG rdataStart;
-    SIZE rdataSize;
-
-    ULONG entryPoint;*/
-
     Graphic* graphic;
     Console* console;
 
@@ -38,8 +26,6 @@ public:
         lastStatus = StatusSuccess;
         pool = NULL;
     }
-
-	void run();
 
 private:
     Status lastStatus;

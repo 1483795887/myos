@@ -3,7 +3,7 @@
 #include <mm/PageMapper.h>
 #include <arch/CPU.h>
 
-PageMapper::PageMapper() {
+/*PageMapper::PageMapper() {
     this->pd = (PD)NULL;
     this->allocator = NULL;
 }
@@ -14,9 +14,9 @@ void PageMapper::init() {
 
 void PageMapper::setPD(PD pd) {
     this->pd = pd;
-}
+}*/
 
-ULONG PageMapper::va2pa(ULONG vAddr) {
+ULONG PageMapper::va2pa(PD pd, ULONG vAddr) {
     PDE pde = pd[getPDEIndex(vAddr)];
     if (!(pde & Existence))
         return NULL;
@@ -27,14 +27,14 @@ ULONG PageMapper::va2pa(ULONG vAddr) {
     return getAddressFromEntry(pte);
 }
 
-Status PageMapper::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property) {
+Status PageMapper::mapPages(PD pd, ULONG pAddr, ULONG vAddr,
+	ULONG size, ULONG property, PhysicalPageAllocator* allocator) {
     pAddr = ulAlign(pAddr, PAGE_SIZE, FALSE);
     vAddr = ulAlign(vAddr, PAGE_SIZE, FALSE);
     size = ulAlign(size, PAGE_SIZE, TRUE);
     Status status = StatusSuccess;
     if (vAddr > vAddr + size) {
         status = StatusMemoryOverLimit;
-        os->setLastStatus(status);
         return status;
     }
     ULONG currentSize = 0;
@@ -45,7 +45,6 @@ Status PageMapper::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property
             PTE pte = pt[getPTEIndex(vAddr)];
             if (isPageExist(pte)) {
                 status = StatusPageAlreadyExist;
-                os->setLastStatus(status);
                 return status;
             } else {
 				pte = makePTE(pAddr, property);
@@ -60,14 +59,13 @@ Status PageMapper::mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property
         vAddr += PAGE_SIZE;
         pAddr += PAGE_SIZE;
     }
-    os->setLastStatus(status);
     return status;
 }
 
-void PageMapper::setAllocator(PhysicalPageAllocator* allocator) {
+/*void PageMapper::setAllocator(PhysicalPageAllocator* allocator) {
     this->allocator = allocator;
-}
+}*/
 
-void PageMapper::changePD() {
+void PageMapper::changePD(PD pd) {
 	setPageDirectory(pd);
 }

@@ -34,16 +34,16 @@ extern "C" void _cdecl setPageDirectory(PD pd);
 
 class PageMapper {
 public:
-    PageMapper();
+    /*PageMapper();
 	void init();
-    void setPD(PD pd);
-	ULONG va2pa(ULONG vAddr);
-	Status mapPages(ULONG pAddr, ULONG vAddr, ULONG size, ULONG property);
-    void setAllocator(PhysicalPageAllocator* allocator);
+    void setPD(PD pd);*/
+	static ULONG _stdcall va2pa(PD pd, ULONG vAddr);
+	static Status _stdcall mapPages(PD pd, ULONG pAddr, ULONG vAddr, ULONG size, ULONG property, PhysicalPageAllocator* allocator);
+    //void setAllocator(PhysicalPageAllocator* allocator);
 
-	void changePD();
-private:
+	static void _stdcall changePD(PD pd);
+/*private:
     PD pd;
-    PhysicalPageAllocator* allocator;
+    PhysicalPageAllocator* allocator;*/
 };
 

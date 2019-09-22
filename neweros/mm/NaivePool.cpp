@@ -1,21 +1,19 @@
+#include <Status.h>
 #include <mm/NaivePool.h>
-#include <global/OS.h>
-
 
 PBYTE NaivePool::allocate(SIZE size) {
     if (remainedSize < size) {
-        os->setLastStatus(StatusPoolNotEnough);
+		status = StatusPoolNotEnough;
         return NULL;
     } else {
         PBYTE result = nextAddress;
         if (((ULONG)result) + size < (ULONG)result) { //超出最大内存
-            os->setLastStatus(StatusMemoryOverLimit);
+            status = StatusMemoryOverLimit;
             return NULL;
         }
 
         remainedSize -= size;
         nextAddress += size;
-		os->setLastStatus(StatusSuccess);
         return result;
     }
 }

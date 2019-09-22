@@ -24,24 +24,24 @@ public:
 TEST_F(BucketPoolTest, noPageForDirWhenAllocateThenReturnStatus) {
 	allocator->setRemainPages(0);
 	pool->allocate(16);
-	EXPECT_EQ(os->getLastStatus(), StatusPoolNotEnough);
+	EXPECT_EQ(pool->getStatus(), StatusPoolNotEnough);
 }
 
 TEST_F(BucketPoolTest, sizeTooBigWhenAllocateThenReturnStatus) {
 	pool->allocate(PAGE_SIZE + 1);
-	EXPECT_EQ(os->getLastStatus(), StatusSizeTooBig);
+	EXPECT_EQ(pool->getStatus(), StatusSizeTooBig);
 }
 
 TEST_F(BucketPoolTest, pageForDirNotEnoughWhenAllocateThenReturnStatus) {
 	allocator->setRemainPages(MAX_POOL_PAGES - 1);
 	pool->allocate(16);
-	EXPECT_EQ(os->getLastStatus(), StatusPoolNotEnough);
+	EXPECT_EQ(pool->getStatus(), StatusPoolNotEnough);
 }
 
 TEST_F(BucketPoolTest, pageForPoolNotEnoughWhenAllocateThenReturnStatus) {
 	allocator->setRemainPages(MAX_POOL_PAGES);
 	pool->allocate(16);
-	EXPECT_EQ(os->getLastStatus(), StatusPoolNotEnough);
+	EXPECT_EQ(pool->getStatus(), StatusPoolNotEnough);
 }
 
 TEST_F(BucketPoolTest, sixteenWhenAllocateThenReturnNotZero) {
@@ -58,7 +58,7 @@ TEST_F(BucketPoolTest, lackOfOneMorePageForPoolWhenAllocateThenReturnStatus) {
 		pool->allocate(16);
 	}
 	pool->allocate(16);
-	EXPECT_EQ(os->getLastStatus(), StatusPoolNotEnough);
+	EXPECT_EQ(pool->getStatus(), StatusPoolNotEnough);
 }
 
 TEST_F(BucketPoolTest, noLackOfOneMorePageForPoolWhenAllocateThenReturnNotZero) {
@@ -73,7 +73,7 @@ TEST_F(BucketPoolTest, useUpOfDirMemoryWhenAllocateThenReturnStatus) {
 		pool->allocate(PAGE_SIZE);
 	}
 	pool->allocate(PAGE_SIZE);
-	EXPECT_EQ(os->getLastStatus(), StatusPoolNotEnough);
+	EXPECT_EQ(pool->getStatus(), StatusPoolNotEnough);
 }
 
 TEST_F(BucketPoolTest, notEverAllocatedWhenCheckInPoolThenFalse) {

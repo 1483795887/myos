@@ -5,7 +5,27 @@
 #include <graphic/Graphic.h>
 #include <arch/CPU.h>
 #include <global/BootParam.h>
+#include <global/OS.h>
+#include <mm/PhysicalPageAllocator.h>
 #include "setup.h"
+
+class NaiveAllocator :public PhysicalPageAllocator {
+public:
+	NaiveAllocator(ULONG* kernelStart) {
+		this->kernelStart = kernelStart;
+	}
+
+	virtual PBYTE allocPages(ULONG order) {
+		//虽然这里只用到order= 0 但还是写
+		SIZE size = getPageSizeByOrder(order);
+		ULONG addr = *kernelStart;
+		*kernelStart += size;
+		return (PBYTE)addr;
+	};
+
+private:
+	ULONG *kernelStart;
+};
 
 ULONG kernelStart = 0; //物理地址
 
@@ -133,24 +153,38 @@ void mapPages(PD pd, ULONG paddr, ULONG vaddr, ULONG size, ULONG flags) {
 
 void initMemory() {
 
-    pd = (PD)getOnePage();
+	NaiveAllocator allocator(&kernelStart);
 
-    mapPages(pd, 0, 0, KernelImageBase - KERNEL_BASE, Writable | Supervisor | Existence);
+    pd = (PD)allocator.allocPages(0);
+
+	PageMapper::mapPages(pd, 0, 0, KernelImageBase - KERNEL_BASE, Writable | Supervisor | Existence, 
+		&allocator);
+	PageMapper::mapPages(pd, getPAFromVA(codeStart), codeStart, codeSize, Supervisor | Existence,
+		&allocator);
+	PageMapper::mapPages(pd, getPAFromVA(rdataStart), rdataStart, rdataSize, Supervisor | Existence,
+		&allocator);
+	PageMapper::mapPages(pd, getPAFromVA(dataStart), dataStart, dataSize, Writable | Supervisor | Existence,
+		&allocator);
+
+    /*mapPages(pd, 0, 0, KernelImageBase - KERNEL_BASE, Writable | Supervisor | Existence);
     mapPages(pd, getPAFromVA(codeStart), codeStart, codeSize, Supervisor | Existence);
     mapPages(pd, getPAFromVA(rdataStart), rdataStart, rdataSize, Supervisor | Existence);
-    mapPages(pd, getPAFromVA(dataStart), dataStart, dataSize, Writable | Supervisor | Existence);
+    mapPages(pd, getPAFromVA(dataStart), dataStart, dataSize, Writable | Supervisor | Existence);*/
 
     ULONG* graphicInfos = (ULONG*)GraphicInfo;
     ULONG width = graphicInfos[0] & 0xffff;
     ULONG height = graphicInfos[0] >> 16;
     ULONG vam = (ULONG)graphicInfos[1];
 
-    mapPages(pd, vam, vam, width * height * sizeof(RGB), Writable | Supervisor | Existence);
+	PageMapper::mapPages(pd, vam, vam, width * height * sizeof(RGB), Writable | Supervisor | Existence,
+		&allocator);
+    //mapPages(pd, vam, vam, width * height * sizeof(RGB), Writable | Supervisor | Existence);
 
 	bootParams.graphicInfo = (PBYTE)GraphicInfo;
 	bootParams.font = (PBYTE)DotFontMap;
 
-    setPageDirectory(pd);
+	PageMapper::changePD(pd);
+    //setPageDirectory(pd);
     CPU::openPageMode();
 }
 
