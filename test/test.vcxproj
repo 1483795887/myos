@@ -58,6 +58,7 @@
     <ClCompile Include="mm\MmTest.cpp" />
     <ClCompile Include="mm\NaivePoolTest.cpp" />
     <ClCompile Include="mm\PhysicalTest.cpp" />
+    <ClCompile Include="mm\VirtualMemoryManagerTest.cpp" />
     <ClCompile Include="mm\ZoneTest.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

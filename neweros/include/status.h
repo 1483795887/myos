@@ -2,9 +2,9 @@
 
 enum Status {
 	StatusSuccess = 0,
-	StatusAddressNotAligned,
+	StatusNotAligned,
 	StatusMemoryOverLimit,
-	StatusPageAlreadyExist,       //映射页面时页面已存在
+	StatusPageAlreadyExist,
 	StatusNullPointer,
 	StatusPoolNotEnough,
 	StatusValueNotInRange,

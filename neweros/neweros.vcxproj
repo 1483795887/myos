@@ -71,6 +71,7 @@
     <ClInclude Include="include\mm\PageAllocator.h" />
     <ClInclude Include="include\mm\PhysicalPageAllocator.h" />
     <ClInclude Include="include\mm\Pool.h" />
+    <ClInclude Include="include\mm\VirtualMemoryManager.h" />
     <ClInclude Include="include\mm\Zone.h" />
     <ClInclude Include="include\Status.h" />
     <ClInclude Include="include\synchron\Atomic.h" />
@@ -101,6 +102,7 @@
     <ClCompile Include="mm\NaivePool.cpp" />
     <ClCompile Include="mm\PhysicalPageAllocator.cpp" />
     <ClCompile Include="mm\PageMapper.cpp" />
+    <ClCompile Include="mm\VirtualMemoryManager.cpp" />
     <ClCompile Include="mm\Zone.cpp" />
     <ClCompile Include="setup\main.cpp" />
   </ItemGroup>

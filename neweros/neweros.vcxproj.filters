@@ -167,6 +167,9 @@
     <ClInclude Include="include\mm\PhysicalPageAllocator.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\mm\VirtualMemoryManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kernel\main.cpp">
@@ -239,6 +242,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="mm\PhysicalPageAllocator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="mm\VirtualMemoryManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

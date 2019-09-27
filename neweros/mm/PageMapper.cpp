@@ -5,11 +5,11 @@
 
 ULONG PageMapper::va2pa(PD pd, ULONG vAddr) {
     PDE pde = pd[getPDEIndex(vAddr)];
-    if (!(pde & Existence))
+    if (!(pde & PMExistent))
         return NULL;
     PT pt = (PT)getAddressFromEntry(pde);
     PTE pte = pt[getPTEIndex(vAddr)];
-    if (!(pte & Existence))
+    if (!(pte & PMExistent))
         return NULL;
     return getAddressFromEntry(pte);
 }

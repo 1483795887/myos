@@ -157,21 +157,21 @@ void initMemory() {
 
     pd = (PD)allocator.allocPages(0);
 
-	PageMapper::mapPages(pd, 0, 0, KernelImageBase - KERNEL_BASE, Writable | Supervisor | Existence, 
+	PageMapper::mapPages(pd, 0, 0, KernelImageBase - KERNEL_BASE, PMWritable | PMSupervisor | PMExistent, 
 		&allocator);
-	PageMapper::mapPages(pd, getPAFromVA(codeStart), codeStart, codeSize, Supervisor | Existence,
+	PageMapper::mapPages(pd, getPAFromVA(codeStart), codeStart, codeSize, PMSupervisor | PMExistent,
 		&allocator);
-	PageMapper::mapPages(pd, getPAFromVA(rdataStart), rdataStart, rdataSize, Supervisor | Existence,
+	PageMapper::mapPages(pd, getPAFromVA(rdataStart), rdataStart, rdataSize, PMSupervisor | PMExistent,
 		&allocator);
 
 	for (ULONG addr = KERNEL_BASE; addr < MAX_MEMORY; addr += 4 * M)
-		PageMapper::mapPT(pd, addr, Supervisor | Writable | Existence, &allocator);
+		PageMapper::mapPT(pd, addr, PMSupervisor | PMWritable | PMExistent, &allocator);
 	//先将内核空间要用到的pt全部映射了，以后页面映射和页面申请要互相调用防止页面映射
 	//要申请pt而又调用页面申请，
 	//页面申请同时又要进行映射导致死循环，
 	//先将pt映射以后内核就不会出现缺pt的情况，也就不会去申请pt了
 
-	PageMapper::mapPages(pd, getPAFromVA(dataStart), dataStart, dataSize, Writable | Supervisor | Existence, 
+	PageMapper::mapPages(pd, getPAFromVA(dataStart), dataStart, dataSize, PMWritable | PMSupervisor | PMExistent, 
 		&allocator);	//dataSize包括了初始池
 
     ULONG* graphicInfos = (ULONG*)GraphicInfo;
@@ -179,7 +179,7 @@ void initMemory() {
     ULONG height = graphicInfos[0] >> 16;
     ULONG vam = (ULONG)graphicInfos[1];
 
-	PageMapper::mapPages(pd, vam, vam, width * height * sizeof(RGB), Writable | Supervisor | Existence,
+	PageMapper::mapPages(pd, vam, vam, width * height * sizeof(RGB), PMWritable | PMSupervisor | PMExistent,
 		&allocator);
 
 	bootParams.graphicInfo = (PBYTE)GraphicInfo;

@@ -17,6 +17,7 @@
     <ClCompile Include="mm\BucketPoolTest.cpp" />
     <ClCompile Include="lib\CStringTest.cpp" />
     <ClCompile Include="mm\FakePageAllocator.cpp" />
+    <ClCompile Include="mm\VirtualMemoryManagerTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

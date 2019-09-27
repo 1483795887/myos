@@ -24,5 +24,5 @@ PTE makePTE(ULONG address, ULONG flags) {
 
 BOOL isPageExist(ULONG entry)
 {
-	return (BOOL)(entry & Existence);
+	return (BOOL)(entry & PMExistent);
 }

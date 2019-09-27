@@ -18,9 +18,9 @@ typedef ULONG   PTE;
 typedef PTE*    PT;
 
 enum {
-    Existence = 1,
-    Writable  = 2,
-    Supervisor = 4
+    PMExistent = 1,
+    PMWritable  = 2,
+    PMSupervisor = 4
 };
 
 PDE getPDEIndex(ULONG address);
