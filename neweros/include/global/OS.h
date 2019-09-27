@@ -19,7 +19,7 @@ public:
     Status getLastStatus();
     void setLastStatus(Status status);
 
-    PhysicalPageAllocator* allocator;
+    PageAllocator* allocator;
     PageMapper* pageMapper;
 
     OS() {

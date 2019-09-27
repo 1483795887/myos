@@ -1,19 +1,17 @@
 #include <global/OS.h>
 #include <mm/mm.h> 
-#include <mm/PhysicalPageAllocatorImpl.h>
+#include <mm/PhysicalPageAllocator.h>
 #include <lib/Memory.h>
 
-PBYTE PhysicalPageAllocatorImpl::allocPages(ULONG order) {
-    PBYTE result = zone->getPages(order);
-    memset(result, 0, getPageSizeByOrder(order));
-    return result;
+PBYTE PhysicalPageAllocator::allocPages(ULONG order) { 
+    return zone->getPages(order);
 }
 
-void PhysicalPageAllocatorImpl::putPage(PBYTE page) {
+void PhysicalPageAllocator::putPage(PBYTE page) {
     zone->putPage(page);
 }
 
-void PhysicalPageAllocatorImpl::init(PBYTE start, SIZE memorySize) {
+void PhysicalPageAllocator::init(PBYTE start, SIZE memorySize) {
     ULONG pageCount = memorySize >> LOG2_PAGE_SIZE;
     memMap = New Page[pageCount];
     for (int i = 0; i < pageCount; i++)

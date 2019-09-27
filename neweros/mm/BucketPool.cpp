@@ -90,7 +90,7 @@ PBYTE BucketPool::allocate(SIZE size) {
         entry->nextPtr->removeThis();
         entry->nextPtr = entry->nextPtr->getNext();
     }
-    memset(ptr, 0, currentSize);
+	memset(ptr, 0, currentSize);
     entry->refCount++;
     return ptr;
 }
@@ -197,7 +197,7 @@ BucketEntry* BucketPool::getEntry(PBYTE ptr, BucketDirectory* directory) {
     return entry;
 }
 
-void BucketPool::setAllocator(PhysicalPageAllocator* allocator) {
+void BucketPool::setAllocator(PageAllocator* allocator) {
     this->allocator = allocator;
 }
 

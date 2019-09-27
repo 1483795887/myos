@@ -6,10 +6,10 @@
 #include <arch/CPU.h>
 #include <global/BootParam.h>
 #include <global/OS.h>
-#include <mm/PhysicalPageAllocator.h>
+#include <mm/PageAllocator.h>
 #include "setup.h"
 
-class NaiveAllocator :public PhysicalPageAllocator {
+class NaiveAllocator :public PageAllocator {
 public:
 	NaiveAllocator(ULONG* kernelStart) {
 		this->kernelStart = kernelStart;
@@ -163,13 +163,16 @@ void initMemory() {
 		&allocator);
 	PageMapper::mapPages(pd, getPAFromVA(rdataStart), rdataStart, rdataSize, Supervisor | Existence,
 		&allocator);
-	PageMapper::mapPages(pd, getPAFromVA(dataStart), dataStart, dataSize, Writable | Supervisor | Existence,
-		&allocator);
 
-    /*mapPages(pd, 0, 0, KernelImageBase - KERNEL_BASE, Writable | Supervisor | Existence);
-    mapPages(pd, getPAFromVA(codeStart), codeStart, codeSize, Supervisor | Existence);
-    mapPages(pd, getPAFromVA(rdataStart), rdataStart, rdataSize, Supervisor | Existence);
-    mapPages(pd, getPAFromVA(dataStart), dataStart, dataSize, Writable | Supervisor | Existence);*/
+	for (ULONG addr = KERNEL_BASE; addr < MAX_MEMORY; addr += 4 * M)
+		PageMapper::mapPT(pd, addr, Supervisor | Writable | Existence, &allocator);
+	//先将内核空间要用到的pt全部映射了，以后页面映射和页面申请要互相调用防止页面映射
+	//要申请pt而又调用页面申请，
+	//页面申请同时又要进行映射导致死循环，
+	//先将pt映射以后内核就不会出现缺pt的情况，也就不会去申请pt了
+
+	PageMapper::mapPages(pd, getPAFromVA(dataStart), dataStart, dataSize, Writable | Supervisor | Existence, 
+		&allocator);	//dataSize包括了初始池
 
     ULONG* graphicInfos = (ULONG*)GraphicInfo;
     ULONG width = graphicInfos[0] & 0xffff;
@@ -178,13 +181,11 @@ void initMemory() {
 
 	PageMapper::mapPages(pd, vam, vam, width * height * sizeof(RGB), Writable | Supervisor | Existence,
 		&allocator);
-    //mapPages(pd, vam, vam, width * height * sizeof(RGB), Writable | Supervisor | Existence);
 
 	bootParams.graphicInfo = (PBYTE)GraphicInfo;
 	bootParams.font = (PBYTE)DotFontMap;
 
 	PageMapper::changePD(pd);
-    //setPageDirectory(pd);
     CPU::openPageMode();
 }
 

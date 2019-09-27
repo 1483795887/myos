@@ -1,8 +1,8 @@
 #include "pch.h"
 #include <mm/PageMapper.h>
-#include <mm/physicalPageAllocator.h>
+#include <mm/PageAllocator.h>
 #include <types.h>
-#include "FakePhysicalPageAllocator.h"
+#include "FakePageAllocator.h"
 
 class PageMapperManagerTest : public testing::Test {
 public:
@@ -11,15 +11,11 @@ public:
         physicalPage = 0x123000;
         pt = NULL;
 
-        allocator = new FakePhysicalPageAllocator();
-        pd = (PD)allocator->allocPages(0);
-        //pageMapper = new PageMapper;
-        /*pageMapper->setPD(pd);
-        pageMapper->setAllocator(allocator);*/
+        allocator = new FakePageAllocator();
+		pd = (PD)allocator->allocPages(0);
     }
     virtual void TearDown() {
         delete allocator;
-        //delete pageMapper;
     }
 
     void mapPDE(ULONG vAddr, PT pt, PD pd, ULONG property) {
@@ -36,8 +32,7 @@ public:
     PT pt;
     ULONG testAddr;
     ULONG physicalPage;
-    //PageMapper* pageMapper;
-    PhysicalPageAllocator* allocator;
+    PageAllocator* allocator;
 };
 
 TEST_F(PageMapperManagerTest, sizeTooBigWhenMapPagesThenFailed) {
@@ -84,7 +79,7 @@ TEST_F(PageMapperManagerTest, mapMultiplyPageWhenMapPagesThenSuccess) {
 
 TEST_F(PageMapperManagerTest, ptNotExistWhenMapPagesThenTheAllocPage) {
 	PageMapper::mapPages(pd, physicalPage, testAddr, PAGE_SIZE, Existence, allocator);
-    PT pt = (PT)((FakePhysicalPageAllocator*)allocator)->getLastPage();
+    PT pt = (PT)((FakePageAllocator*)allocator)->getLastPage();
 
     EXPECT_EQ(pt[((testAddr >> 12) & 1023)] & ~0xfff, physicalPage);
 }

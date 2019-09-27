@@ -2,7 +2,7 @@
 #include <global/BootParam.h>
 #include <mm/NaivePool.h>
 #include <mm/BucketPool.h>
-#include <mm/PhysicalPageAllocatorImpl.h>
+#include <mm/PhysicalPageAllocator.h>
 #include <graphic/Graphic.h>
 #include <graphic/DotFont.h>
 #include <lib/CString.h>
@@ -36,10 +36,14 @@ void initOS(BootParams* bootParams) {
 }
 
 void initMem(BootParams* bootParams) {
-    PhysicalPageAllocatorImpl* allocator = New PhysicalPageAllocatorImpl;
+    PhysicalPageAllocator* allocator = New PhysicalPageAllocator;
     allocator->init((PBYTE)bootParams->kernelStart,
                     bootParams->memoryEnd - bootParams->kernelStart);
     os->allocator = allocator;
+
+	/*BucketPool* pool = New BucketPool;
+	pool->setAllocator(allocator);
+	os->pool = pool;*/
 }
 
 void initGraphic(BootParams* bootParams) {
@@ -50,7 +54,7 @@ void initGraphic(BootParams* bootParams) {
     rect.height = graphicInfos[1];
     graphic->init(&rect, *(PBYTE*)&graphicInfos[2]);
     os->graphic = graphic;
-
+    
     DotFont* font = New DotFont(bootParams->font, 8, 16);
     font->setColor(WHITE);
 

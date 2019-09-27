@@ -1,7 +1,7 @@
 #include "pch.h"
 #include <global/OS.h>
 #include <mm/FakePool.h>
-#include <mm/FakePhysicalPageAllocator.h>
+#include <mm/FakePageAllocator.h>
 #include <lib/CString.h>
 
 

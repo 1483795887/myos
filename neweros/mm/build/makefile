@@ -1,4 +1,4 @@
-ccobjs = $(OBJ)\PageMapper.obj $(OBJ)\Zone.obj $(OBJ)\NaivePool.obj $(OBJ)\PhysicalPageAllocatorImpl.obj $(OBJ)\BucketPool.obj
+ccobjs = $(OBJ)\PageMapper.obj $(OBJ)\Zone.obj $(OBJ)\NaivePool.obj $(OBJ)\PhysicalPageAllocator.obj $(OBJ)\BucketPool.obj
 asobjs = $(OBJ)\Page.obj
 ccarchobjs = $(OBJ)\PageMapping.obj
 library = $(toptarget)\mm.lib 

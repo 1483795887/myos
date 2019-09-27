@@ -1,10 +1,10 @@
 #pragma once
 
-#include <mm/physicalPageAllocator.h>
+#include <mm/PageAllocator.h>
 #include <types.h>
 
 #define MAX_BLOCKS 10
-class FakePhysicalPageAllocator : public PhysicalPageAllocator {
+class FakePageAllocator : public PageAllocator {
 public:
     virtual PBYTE allocPages(ULONG order);
 	virtual void putPage(PBYTE page);
@@ -13,9 +13,9 @@ public:
 
 	void setRemainPages(ULONG remainPages);
 
-    FakePhysicalPageAllocator();
+    FakePageAllocator();
 
-    virtual ~FakePhysicalPageAllocator();
+    virtual ~FakePageAllocator();
 private:
     PBYTE blocks[MAX_BLOCKS];
     ULONG currentBlock;

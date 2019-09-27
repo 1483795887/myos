@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "FakePhysicalPageAllocator.h"
+#include "FakePageAllocator.h"
 #include <mm/mm.h>
 
-PBYTE FakePhysicalPageAllocator::allocPages(ULONG order) {
+PBYTE FakePageAllocator::allocPages(ULONG order) {
     ULONG number = 1 << order;
     ULONG size = number * PAGE_SIZE;
     if (currentBlock >= MAX_BLOCKS || (remainPages < number))
@@ -15,28 +15,28 @@ PBYTE FakePhysicalPageAllocator::allocPages(ULONG order) {
     return buffer;
 }
 
-void FakePhysicalPageAllocator::putPage(PBYTE page) {
+void FakePageAllocator::putPage(PBYTE page) {
     remainPages ++;
 }
 
-PBYTE FakePhysicalPageAllocator::getLastPage() {
+PBYTE FakePageAllocator::getLastPage() {
     if (currentBlock > 0)
         return blocks[currentBlock - 1];
     return (PBYTE)NULL;
 }
 
-void FakePhysicalPageAllocator::setRemainPages(ULONG remainPages) {
+void FakePageAllocator::setRemainPages(ULONG remainPages) {
     this->remainPages = remainPages;
 }
 
-FakePhysicalPageAllocator::FakePhysicalPageAllocator() {
+FakePageAllocator::FakePageAllocator() {
     currentBlock = 0;
     remainPages = -1;
     for (int i = 0; i < MAX_BLOCKS; i++)
         blocks[i] = NULL;
 }
 
-FakePhysicalPageAllocator::~FakePhysicalPageAllocator() {
+FakePageAllocator::~FakePageAllocator() {
     for (int i = 0; i < MAX_BLOCKS; i++) {
         if (blocks[i] != NULL) {
             _aligned_free((void*)blocks[i]);

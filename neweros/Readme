@@ -29,4 +29,3 @@ klib.lib是仅限于内核使用，不能用于测试
 00050000~00100000 kernel暂存
 00100000~00xxxxxx kernel 
 c0100000~ffffffff kernel 内存
-ffffe000~fffffffc 先分配一个页给内核做栈，不够再加

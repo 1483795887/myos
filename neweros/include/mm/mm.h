@@ -5,6 +5,7 @@
 #define PAGE_MASK -PAGE_SIZE
 #define LOG2_PAGE_SIZE 12
 #define KERNEL_BASE 0xc0000000
+#define MAX_MEMORY 4 * G - 1
 
 inline ULONG getPAFromVA(ULONG va) {
 	return va - KERNEL_BASE;

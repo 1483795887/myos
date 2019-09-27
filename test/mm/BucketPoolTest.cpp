@@ -2,12 +2,12 @@
 #include <global/OS.h>
 #include <mm/PageMapper.h>
 #include <mm/BucketPool.h>
-#include "FakePhysicalPageAllocator.h"
+#include "FakePageAllocator.h"
 
 class BucketPoolTest :public testing::Test {
 public:
 	virtual void SetUp() {
-		allocator = new FakePhysicalPageAllocator();
+		allocator = new FakePageAllocator();
 		pool = new BucketPool;
 		pool->setAllocator(allocator);
 		os->setLastStatus(StatusSuccess);
@@ -17,7 +17,7 @@ public:
 		delete allocator;
 	}
 
-	FakePhysicalPageAllocator* allocator;
+	FakePageAllocator* allocator;
 	BucketPool* pool;
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Pool.h"
-#include "PhysicalPageAllocator.h"
+#include "PageAllocator.h"
 
 #define MAX_POOL_PAGES 4
 
@@ -37,7 +37,7 @@ public:
     virtual void free(PBYTE addr);
     virtual BOOL isInPool(PBYTE ptr);
 	
-    void setAllocator(PhysicalPageAllocator* allocator);
+    void setAllocator(PageAllocator* allocator);
     BucketPool();
 private:
 	BOOL init();
@@ -46,7 +46,7 @@ private:
 
 	BucketEntry* getEntry(PBYTE ptr, BucketDirectory* directory);
 
-    PhysicalPageAllocator* allocator;
+    PageAllocator* allocator;
     BucketDirectory direcories[MAX_POOL_ORDER + 1];
 	CList entryList;
 	BOOL initialized;

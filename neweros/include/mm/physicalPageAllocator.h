@@ -1,15 +1,14 @@
 #pragma once
-#include "../Types.h"
-#include "Zone.h"
 
-class PhysicalPageAllocator {
+#include "PageAllocator.h"
+
+class PhysicalPageAllocator : public PageAllocator {
 public:
-	virtual PBYTE allocPages(ULONG order) {
-		return NULL;
-	};
-	virtual void putPage(PBYTE page) {
-
-	}
-	virtual ~PhysicalPageAllocator() {
-	};
+    virtual PBYTE allocPages(ULONG order);
+    virtual void putPage(PBYTE page);
+    void init(PBYTE start, SIZE size);
+private:
+    Zone* zone;
+    Page* memMap;
+	ULONG baseAddr;
 };

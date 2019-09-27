@@ -39,7 +39,7 @@
   <ItemGroup>
     <ClInclude Include="asychron\FakeAtomic.h" />
     <ClInclude Include="graphic\FakeFont.h" />
-    <ClInclude Include="mm\FakePhysicalPageAllocator.h" />
+    <ClInclude Include="mm\FakePageAllocator.h" />
     <ClInclude Include="mm\FakePool.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -53,7 +53,7 @@
     <ClCompile Include="lib\CStringTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mm\BucketPoolTest.cpp" />
-    <ClCompile Include="mm\FakePhyscialPageAllocator.cpp" />
+    <ClCompile Include="mm\FakePageAllocator.cpp" />
     <ClCompile Include="mm\FakePool.cpp" />
     <ClCompile Include="mm\MmTest.cpp" />
     <ClCompile Include="mm\NaivePoolTest.cpp" />

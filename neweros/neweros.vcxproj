@@ -68,8 +68,8 @@
     <ClInclude Include="include\mm\NaivePool.h" />
     <ClInclude Include="include\mm\Page.h" />
     <ClInclude Include="include\mm\PageMapper.h" />
+    <ClInclude Include="include\mm\PageAllocator.h" />
     <ClInclude Include="include\mm\PhysicalPageAllocator.h" />
-    <ClInclude Include="include\mm\PhysicalPageAllocatorImpl.h" />
     <ClInclude Include="include\mm\Pool.h" />
     <ClInclude Include="include\mm\Zone.h" />
     <ClInclude Include="include\Status.h" />
@@ -99,7 +99,7 @@
     <ClCompile Include="mm\BucketPool.cpp" />
     <ClCompile Include="mm\i386\PageMapping.cpp" />
     <ClCompile Include="mm\NaivePool.cpp" />
-    <ClCompile Include="mm\PhysicalPageAllocatorImpl.cpp" />
+    <ClCompile Include="mm\PhysicalPageAllocator.cpp" />
     <ClCompile Include="mm\PageMapper.cpp" />
     <ClCompile Include="mm\Zone.cpp" />
     <ClCompile Include="setup\main.cpp" />

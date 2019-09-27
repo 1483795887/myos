@@ -1,10 +1,10 @@
 #include "pch.h"
 #include <mm/zone.h>
-#include "FakePhysicalPageAllocator.h"
+#include "FakePageAllocator.h"
 #include <mm/Page.h>
 #include <mm/FakePool.h>
 #include <mm/NaivePool.h>
-#include <mm/FakePhysicalPageAllocator.h>
+#include <mm/FakePageAllocator.h>
 #include <global/OS.h>
 
 
@@ -14,7 +14,7 @@ public:
         fakePool = new FakePool(PAGE_SIZE * 32);
         os->pool = fakePool;
         os->setLastStatus(StatusSuccess);
-        allocator = new FakePhysicalPageAllocator();
+        allocator = new FakePageAllocator();
         zone = new Zone();
 
 		pages = new Page[4096];
@@ -35,7 +35,7 @@ public:
     }
 
     FakePool* fakePool;
-    PhysicalPageAllocator* allocator;
+    PageAllocator* allocator;
     Zone* zone;
 	Page* pages;
 };
