@@ -2,6 +2,7 @@
 
 enum Status {
 	StatusSuccess = 0,
+	StatusSuccessButNoEffect,
 	StatusNotAligned,
 	StatusMemoryOverLimit,
 	StatusPageAlreadyExist,

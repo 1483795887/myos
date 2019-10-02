@@ -7,6 +7,8 @@ public:
 	CList();
 	ULONG getCount();
 	void insertHead(CListEntry* entry);
+	void insertAfter(CListEntry* prev, CListEntry* entry);
+	void insertBefore(CListEntry* next, CListEntry* entry);
 	void remove(CListEntry* entry);
 	CListEntry *getHead();
 	CListEntry *getFirst();

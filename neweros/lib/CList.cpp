@@ -10,9 +10,19 @@ ULONG CList::getCount() {
 
 void CList::insertHead(CListEntry* entry) {
     if (entry != NULL) {
-		head.insertNext(entry);
+        head.insertNext(entry);
         count++;
     }
+}
+
+void CList::insertAfter(CListEntry * prev, CListEntry * entry) {
+    prev->insertNext(entry);
+    count++;
+}
+
+void CList::insertBefore(CListEntry * next, CListEntry * entry) {
+    next->getPrev()->insertNext(entry);
+    count++;
 }
 
 void CList::remove(CListEntry* entry) {
@@ -25,7 +35,7 @@ void CList::remove(CListEntry* entry) {
             }
         }
         if (find) {
-			entry->removeThis();
+            entry->removeThis();
             count--;
         }
     }
