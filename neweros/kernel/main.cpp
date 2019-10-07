@@ -41,9 +41,9 @@ void initMem(BootParams* bootParams) {
                     bootParams->memoryEnd - bootParams->kernelStart);
     os->allocator = allocator;
 
-	/*BucketPool* pool = New BucketPool;
+	BucketPool* pool = New BucketPool;
 	pool->setAllocator(allocator);
-	os->pool = pool;*/
+	os->pool = pool;
 }
 
 void initGraphic(BootParams* bootParams) {

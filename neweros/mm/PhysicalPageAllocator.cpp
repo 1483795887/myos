@@ -4,11 +4,11 @@
 #include <lib/Memory.h>
 
 PBYTE PhysicalPageAllocator::allocPages(ULONG order) { 
-    return zone->getPages(order);
+    return zone->getPages(order) + KERNEL_BASE;
 }
 
 void PhysicalPageAllocator::putPage(PBYTE page) {
-    zone->putPage(page);
+    zone->putPage(page - KERNEL_BASE);
 }
 
 void PhysicalPageAllocator::init(PBYTE start, SIZE memorySize) {

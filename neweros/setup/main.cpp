@@ -9,22 +9,22 @@
 #include <mm/PageAllocator.h>
 #include "setup.h"
 
-class NaiveAllocator :public PageAllocator {
+class NaiveAllocator : public PageAllocator {
 public:
-	NaiveAllocator(ULONG* kernelStart) {
-		this->kernelStart = kernelStart;
-	}
+    NaiveAllocator(ULONG* kernelStart) {
+        this->kernelStart = kernelStart;
+    }
 
-	virtual PBYTE allocPages(ULONG order) {
-		//虽然这里只用到order= 0 但还是写
-		SIZE size = getPageSizeByOrder(order);
-		ULONG addr = *kernelStart;
-		*kernelStart += size;
-		return (PBYTE)addr;
-	};
+    virtual PBYTE allocPages(ULONG order) {
+        //虽然这里只用到order= 0 但还是写
+        SIZE size = getPageSizeByOrder(order);
+        ULONG addr = *kernelStart;
+        *kernelStart += size;
+        return (PBYTE)addr;
+    };
 
 private:
-	ULONG *kernelStart;
+    ULONG *kernelStart;
 };
 
 ULONG kernelStart = 0; //物理地址
@@ -32,7 +32,7 @@ ULONG kernelStart = 0; //物理地址
 ULONG codeStart, codeSize, dataStart, dataSize, rdataStart, rdataSize;//虚拟地址
 ULONG entryPoint;
 
-ULONG memoryEnd;	//物理地址
+ULONG memoryEnd;    //物理地址
 PD pd;
 
 PBYTE pool;
@@ -66,15 +66,15 @@ void copyKernel() {
             kernelStart = sections->virtualAddress + sections->virtualSize + kernelBase;
         if (sections->characteristics & SECTION_FLAG_CONTAIN_CODE) {
             codeStart = sections->virtualAddress + KernelImageBase;
-			codeSize = sections->virtualSize;
+            codeSize = sections->virtualSize;
         }
         if (sections->characteristics & SECTION_FLAG_CONTAIN_INITAILIZED_DATA) {
             if (sections->characteristics & SECTION_FLAG_WRITABLE) {
-				dataStart = sections->virtualAddress + KernelImageBase;
-				dataSize = sections->virtualSize;
+                dataStart = sections->virtualAddress + KernelImageBase;
+                dataSize = sections->virtualSize;
             } else {
-				rdataStart = sections->virtualAddress + KernelImageBase;
-				rdataSize = sections->virtualSize;
+                rdataStart = sections->virtualAddress + KernelImageBase;
+                rdataSize = sections->virtualSize;
 
             }
         }
@@ -109,83 +109,44 @@ void getMemorySize() {
         }
     }
     memoryEnd = usableMemoryLength;
-	kernelStart = ulAlign(kernelStart, PAGE_SIZE, TRUE);
+    kernelStart = ulAlign(kernelStart, PAGE_SIZE, TRUE);
 
-	pool = (PBYTE)(kernelStart + KERNEL_BASE);
-	poolSize = getPoolSize(usableMemoryLength);
+    pool = (PBYTE)(kernelStart + KERNEL_BASE);
+    poolSize = getPoolSize(usableMemoryLength);
 
-	kernelStart += poolSize;
-	dataSize += poolSize;
-}
-
-ULONG getOnePage() {
-    ULONG addr = kernelStart;
-	kernelStart += PAGE_SIZE;
-    return addr;
-}
-
-void mapPages(PD pd, ULONG paddr, ULONG vaddr, ULONG size, ULONG flags) {
-    paddr = ulAlign(paddr, PAGE_SIZE, FALSE);
-    vaddr = ulAlign(vaddr, PAGE_SIZE, FALSE);
-    size = ulAlign(size, PAGE_SIZE, TRUE);
-
-    PT pt = (PT)getAddressFromEntry(pd[getPDEIndex(vaddr)]);
-
-	ULONG currentSize = 0;
-	while (currentSize < size) {
-		PDE pde = pd[getPDEIndex(vaddr)];
-		if (isPageExist(pde)) {
-			PT pt = (PT)getAddressFromEntry(pde);
-			PTE pte = pt[getPTEIndex(vaddr)];
-				pte = makePTE(paddr, flags);
-				pt[getPTEIndex(vaddr)] = pte;
-		}
-		else {
-			PT pt = (PT)getOnePage();
-			pd[getPDEIndex(vaddr)] = makePDE((ULONG)pt, flags);
-			continue;
-		}
-		currentSize += PAGE_SIZE;
-		vaddr += PAGE_SIZE;
-		paddr += PAGE_SIZE;
-	}
+    kernelStart += poolSize;
+    dataSize += poolSize;
 }
 
 void initMemory() {
 
-	NaiveAllocator allocator(&kernelStart);
+    NaiveAllocator allocator(&kernelStart);
 
     pd = (PD)allocator.allocPages(0);
 
-	PageMapper::mapPages(pd, 0, 0, KernelImageBase - KERNEL_BASE, PMWritable | PMSupervisor | PMExistent, 
-		&allocator);
-	PageMapper::mapPages(pd, getPAFromVA(codeStart), codeStart, codeSize, PMSupervisor | PMExistent,
-		&allocator);
-	PageMapper::mapPages(pd, getPAFromVA(rdataStart), rdataStart, rdataSize, PMSupervisor | PMExistent,
-		&allocator);
+    PageMapper::mapPages(pd, 0, 0, KernelImageBase - KERNEL_BASE, PMWritable | PMSupervisor | PMExistent,
+                         &allocator);
+    PageMapper::mapPages(pd, getPAFromVA(codeStart), codeStart, codeSize, PMSupervisor | PMExistent,
+                         &allocator);
+    PageMapper::mapPages(pd, getPAFromVA(rdataStart), rdataStart, rdataSize, PMSupervisor | PMExistent,
+                         &allocator);
 
-	for (ULONG addr = KERNEL_BASE; addr < MAX_MEMORY; addr += 4 * M)
-		PageMapper::mapPT(pd, addr, PMSupervisor | PMWritable | PMExistent, &allocator);
-	//先将内核空间要用到的pt全部映射了，以后页面映射和页面申请要互相调用防止页面映射
-	//要申请pt而又调用页面申请，
-	//页面申请同时又要进行映射导致死循环，
-	//先将pt映射以后内核就不会出现缺pt的情况，也就不会去申请pt了
-
-	PageMapper::mapPages(pd, getPAFromVA(dataStart), dataStart, dataSize, PMWritable | PMSupervisor | PMExistent, 
-		&allocator);	//dataSize包括了初始池
+    PageMapper::mapPages(pd, getPAFromVA(dataStart), dataStart,
+                         memoryEnd - getPAFromVA(dataStart), PMWritable | PMSupervisor | PMExistent,
+                         &allocator);    //dataSize包括了初始池
 
     ULONG* graphicInfos = (ULONG*)GraphicInfo;
     ULONG width = graphicInfos[0] & 0xffff;
     ULONG height = graphicInfos[0] >> 16;
     ULONG vam = (ULONG)graphicInfos[1];
 
-	PageMapper::mapPages(pd, vam, vam, width * height * sizeof(RGB), PMWritable | PMSupervisor | PMExistent,
-		&allocator);
+    PageMapper::mapPages(pd, vam, vam, width * height * sizeof(RGB), PMWritable | PMSupervisor | PMExistent,
+                         &allocator);
 
-	bootParams.graphicInfo = (PBYTE)GraphicInfo;
-	bootParams.font = (PBYTE)DotFontMap;
+    bootParams.graphicInfo = (PBYTE)GraphicInfo;
+    bootParams.font = (PBYTE)DotFontMap;
 
-	PageMapper::changePD(pd);
+    PageMapper::changePD(pd);
     CPU::openPageMode();
 }
 
@@ -197,17 +158,17 @@ void main() {
     getMemorySize();
     initMemory();
 
-	bootParams.codeSize = codeSize;
-	bootParams.codeStart = codeStart;
-	bootParams.dataSize = dataSize;
-	bootParams.dataStart = dataStart;
-	bootParams.rdataSize = rdataSize;
-	bootParams.rdataStart = rdataStart;
-	bootParams.kernelStart = kernelStart;
-	bootParams.memoryEnd = memoryEnd;
-	bootParams.pd = pd;
-	bootParams.pool = pool;
-	bootParams.poolSize = poolSize;
+    bootParams.codeSize = codeSize;
+    bootParams.codeStart = codeStart;
+    bootParams.dataSize = dataSize;
+    bootParams.dataStart = dataStart;
+    bootParams.rdataSize = rdataSize;
+    bootParams.rdataStart = rdataStart;
+    bootParams.kernelStart = kernelStart;
+    bootParams.memoryEnd = memoryEnd;
+    bootParams.pd = pd;
+    bootParams.pool = pool;
+    bootParams.poolSize = poolSize;
 
     KernelEntry kernelEntry = (KernelEntry)entryPoint;
     kernelEntry(&bootParams);
