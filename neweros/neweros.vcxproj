@@ -39,12 +39,13 @@
     <None Include="install\MakeVHD.bat" />
     <None Include="install\mount.bat" />
     <None Include="install\unmount.bat" />
-    <None Include="kernel\i386\InterruptA.asm" />
+    <None Include="interrupt\i386\Interrupt.asm" />
     <None Include="klib\i386\Atomic.asm" />
     <None Include="mm\i386\Page.asm" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\arch\i386\Descritpor.h" />
+    <ClInclude Include="include\arch\i386\SystemTables.h" />
     <ClInclude Include="include\fs\Pe.h" />
     <ClInclude Include="include\global\BootParam.h" />
     <ClInclude Include="include\global\OS.h" />
@@ -85,8 +86,9 @@
     <ClCompile Include="graphic\Container.cpp" />
     <ClCompile Include="graphic\DotFont.cpp" />
     <ClCompile Include="graphic\Graphic.cpp" />
-    <ClCompile Include="kernel\i386\trap.cpp" />
-    <ClCompile Include="kernel\Interrupt.cpp" />
+    <ClCompile Include="interrupt\i386\TrapInit.cpp" />
+    <ClCompile Include="interrupt\InterruptHandler.cpp" />
+    <ClCompile Include="kernel\i386\init.cpp" />
     <ClCompile Include="kernel\main.cpp" />
     <ClCompile Include="klib\AtomicC.cpp" />
     <ClCompile Include="klib\CPU.cpp" />

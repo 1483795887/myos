@@ -1,7 +1,7 @@
 include asm.inc
 
 .code
-extern _trapHandler:proc
+extern _commonIntHandler:proc
 
 public _trapDivideZero
 public _trapDebug
@@ -107,7 +107,7 @@ commonInt:
     mov gs, ax
 
     push esp
-    call _trapHandler
+    call _commonIntHandler
     add esp, 4
 
 retFromInt:

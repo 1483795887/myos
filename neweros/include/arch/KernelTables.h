@@ -26,15 +26,3 @@ public:
 private:
 	PBYTE table;
 };
-
-/*class InterruptVectorTable {
-public:
-	void setTable(PBYTE table) {
-		this->table = table;
-	}
-	void initDefaultTrap(TrapHandler* handler);
-	void initInterrupt(InterruptHandler* handler);
-	void initSyscall(SyscallHandler* handler);
-private:
-	PBYTE table;
-};*/

@@ -5,4 +5,4 @@ public:
 	void run();
 };
 
-KernelProcess kernel;
+void initArch();

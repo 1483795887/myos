@@ -7,21 +7,8 @@
 #include <graphic/DotFont.h>
 #include <lib/CString.h>
 #include <lib/Memory.h>
+#include <interrupt/Interrrupt.h>
 #include "Kernel.h"
-
-/*void initGdt() {
-    PBYTE globalDescriptorTable = os->pageMapper->allocatePage(0);
-
-    kernelGlobal->gdt = New GlobalDescriptorTable(globalDescriptorTable);
-
-    kernelGlobal->gdt->setDescriptor(KernelCode, 0, 4 * G - 1, Code, Kernel);
-    kernelGlobal->gdt->setDescriptor(KernelData, 0, 4 * G - 1, Data, Kernel);
-    kernelGlobal->gdt->setDescriptor(UserCode, 0, 4 * G - 1, Code, User);
-    kernelGlobal->gdt->setDescriptor(UserData, 0, 4 * G - 1, Data, User);
-
-    CPU::setGlobalDescriptorTable(globalDescriptorTable);
-}
-*/
 
 void initOS(BootParams* bootParams) {
     NaivePool* pool = (NaivePool*)bootParams->pool;
@@ -70,11 +57,13 @@ void main(BootParams* bootParams) {
     initMem(bootParams);
     initGraphic(bootParams);
 
-    CString str;
-    for (int i = 0; i < 100; i++) {
-        str.format("%d ", i);
-        os->console->print(str.getBuf());
-    }
+	initArch();
+	initInterrupt();
+
+	int a = 0;
+	int b = 1;
+	int c = 2;
+	c = b / a;
 
     for (;;);
 }

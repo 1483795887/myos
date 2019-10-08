@@ -1,8 +1,7 @@
-ccobjs = $(OBJ)\main.obj $(OBJ)\Interrupt.obj
-ccarchobjs = $(OBJ)\trap.obj
-asobjs = $(OBJ)\InterruptA.obj
+ccobjs = $(OBJ)\main.obj
+ccarchobjs = $(OBJ)\init.obj
 
-lib = $(toptarget)\klib.lib $(toptarget)\mm.lib $(toptarget)\lib.lib $(toptarget)\global.lib $(toptarget)\graphic.lib
+lib = $(toptarget)\klib.lib $(toptarget)\mm.lib $(toptarget)\lib.lib $(toptarget)\global.lib $(toptarget)\graphic.lib $(toptarget)\interrupt.lib
 
 executable = $(toptarget)\kernel.exe
 target = $(executable)

@@ -16,7 +16,7 @@ subargs = $(subargs) Debug=Debug
 
 #测试一下
 
-modules=boot klib lib mm global graphic setup kernel
+modules=boot klib lib mm global graphic setup interrupt kernel
 buildtargets = $(modules: =.build ).build
 cleantargets = $(modules: =.clean ).clean
 
