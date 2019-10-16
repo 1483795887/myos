@@ -36,7 +36,7 @@ void setDescriptor(PBYTE table, ULONG n, PBYTE start, ULONG limit,
     desTable[n] = Descriptor((ULONG)start, limit, flags);
 }
 
-void setTrapHandler(PBYTE table, int no, InterruptRoutine handler) {
+void setTrapHandler(PBYTE table, int no, InterruptEntry handler) {
     Gate* gateTable = (Gate*)table;
     BYTE flags = 0;
     if (no != BreakPointVec)
@@ -47,14 +47,14 @@ void setTrapHandler(PBYTE table, int no, InterruptRoutine handler) {
     gateTable[no] = Gate((ULONG)handler, flags, selector);
 }
 
-void setInterruptHandler(PBYTE table, int no, InterruptRoutine handler) {
+void setInterruptHandler(PBYTE table, int no, InterruptEntry handler) {
     Gate* gateTable = (Gate*)table;
     BYTE flags = (DA_386IGate | DA_DPL0);
     Selector selector = KernelCodeSel;
     gateTable[no] = Gate((ULONG)handler, flags, selector);
 }
 
-void setSyscallHandler(PBYTE table, InterruptRoutine handler) {
+void setSyscallHandler(PBYTE table, InterruptEntry handler) {
     Gate* gateTable = (Gate*)table;
     BYTE flags = (DA_386IGate | DA_DPL3);
     Selector selector = KernelCodeSel;

@@ -4,17 +4,18 @@
 #include <lib/CString.h>
 
 void _cdecl commonIntHandler(PBYTE par) {
-	CString str("theInterruptIsWorking");
-	os->console->print(str.getBuf());
-	while (1);
+    CString str("theInterruptIsWorking");
+    os->console->print(str.getBuf());
+    while (1);
 }
 
-void initIOInterrupt(PBYTE table) {
 
-}
 
 void initSyscall(PBYTE table) {
+}
 
+DWORD DefaultInterruptHandler(TrapFrame * frame) {
+    return 0;
 }
 
 void initInterrupt() {

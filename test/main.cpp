@@ -27,7 +27,7 @@ void operator delete(void* ptr) {
 int main(int argc, char** argv) {
     os = new OS();
     InitGoogleTest(&argc, argv);
-    ///FLAGS_gtest_filter = "VirtualMemoryManagerTest.*";
+    FLAGS_gtest_filter = "IRQTest.*";
 
     int result = RUN_ALL_TESTS();
 

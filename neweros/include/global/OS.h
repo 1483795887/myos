@@ -1,13 +1,10 @@
 #pragma once
-
 #include <Types.h>
 #include <Status.h>
 #include <mm/Pool.h>
 #include <mm/PageMapper.h>
 #include <graphic/Graphic.h>
 #include <graphic/Console.h>
-
-
 
 class OS {
 public:

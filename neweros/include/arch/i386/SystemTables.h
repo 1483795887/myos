@@ -16,9 +16,11 @@ typedef enum {
     SegTypeTSS
 } DescriptorType;
 
+typedef void(_cdecl *InterruptEntry)();
+
 void setDescriptor(PBYTE table, ULONG n, PBYTE start, ULONG limit,
                           DescriptorType type, Privilege privilege);
 
-void setTrapHandler(PBYTE table, int no, InterruptRoutine handler);
-void setInterruptHandler(PBYTE table, int no, InterruptRoutine handler);
-void setSyscallHandler(PBYTE table, InterruptRoutine handler);
+void setTrapHandler(PBYTE table, int no, InterruptEntry handler);
+void setInterruptHandler(PBYTE table, int no, InterruptEntry handler);
+void setSyscallHandler(PBYTE table, InterruptEntry handler);

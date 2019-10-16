@@ -46,6 +46,7 @@
   <ItemGroup>
     <ClInclude Include="include\arch\i386\Descritpor.h" />
     <ClInclude Include="include\arch\i386\SystemTables.h" />
+    <ClInclude Include="include\arch\IO.h" />
     <ClInclude Include="include\fs\Pe.h" />
     <ClInclude Include="include\global\BootParam.h" />
     <ClInclude Include="include\global\OS.h" />
@@ -55,10 +56,15 @@
     <ClInclude Include="include\graphic\Font.h" />
     <ClInclude Include="include\graphic\Graphic.h" />
     <ClInclude Include="include\graphic\Rect.h" />
+    <ClInclude Include="include\interrupt\i386\I82C59AInterruptController.h" />
     <ClInclude Include="include\interrupt\i386\i386Interrupt.h" />
     <ClInclude Include="include\interrupt\Interrrupt.h" />
     <ClInclude Include="include\arch\CPU.h" />
     <ClInclude Include="include\arch\KernelTables.h" />
+    <ClInclude Include="include\interrupt\InterruptController.h" />
+    <ClInclude Include="include\interrupt\Interrupter.h" />
+    <ClInclude Include="include\interrupt\IRQ.h" />
+    <ClInclude Include="include\interrupt\TrapFrame.h" />
     <ClInclude Include="include\lib\Bitmap.h" />
     <ClInclude Include="include\lib\CList.h" />
     <ClInclude Include="include\lib\CListEntry.h" />
@@ -86,13 +92,17 @@
     <ClCompile Include="graphic\Container.cpp" />
     <ClCompile Include="graphic\DotFont.cpp" />
     <ClCompile Include="graphic\Graphic.cpp" />
+    <ClCompile Include="interrupt\i386\I82C59AInterruptController.cpp" />
+    <ClCompile Include="interrupt\i386\IOInterruptInit.cpp" />
     <ClCompile Include="interrupt\i386\TrapInit.cpp" />
     <ClCompile Include="interrupt\InterruptHandler.cpp" />
+    <ClCompile Include="interrupt\IRQ.cpp" />
     <ClCompile Include="kernel\i386\init.cpp" />
     <ClCompile Include="kernel\main.cpp" />
     <ClCompile Include="klib\AtomicC.cpp" />
     <ClCompile Include="klib\CPU.cpp" />
     <ClCompile Include="klib\delete.cpp" />
+    <ClCompile Include="klib\i386\IO.asm" />
     <ClCompile Include="klib\i386\SystemTables.cpp" />
     <ClCompile Include="klib\Memory.cpp" />
     <ClCompile Include="lib\Bitmap.cpp" />

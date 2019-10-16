@@ -26,3 +26,7 @@ typedef enum {
 
 	SyscallVec	= 0x80
 }InterruptVec;
+
+#define MaxCountOfTraps CoprocErrVec
+#define MaxCountOfIOs	0x16
+

@@ -173,6 +173,24 @@
     <ClInclude Include="kernel\Kernel.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\interrupt\TrapFrame.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\arch\IO.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\interrupt\InterruptController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\interrupt\i386\I82C59AInterruptController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\interrupt\Interrupter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\interrupt\IRQ.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kernel\main.cpp">
@@ -251,6 +269,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="interrupt\InterruptHandler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="interrupt\i386\IOInterruptInit.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="klib\i386\IO.asm">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="interrupt\i386\I82C59AInterruptController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="interrupt\IRQ.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -10,7 +10,6 @@
     <ClCompile Include="mm\NaivePoolTest.cpp" />
     <ClCompile Include="mm\FakePool.cpp" />
     <ClCompile Include="lib\BitmapTest.cpp" />
-    <ClCompile Include="asychron\FakeAtomic.cpp" />
     <ClCompile Include="graphic\GraphicTest.cpp" />
     <ClCompile Include="graphic\ConsoleTest.cpp" />
     <ClCompile Include="graphic\FakeFont.cpp" />
@@ -18,13 +17,15 @@
     <ClCompile Include="lib\CStringTest.cpp" />
     <ClCompile Include="mm\FakePageAllocator.cpp" />
     <ClCompile Include="mm\VirtualMemoryManagerTest.cpp" />
+    <ClCompile Include="asynchron\FakeAtomic.cpp" />
+    <ClCompile Include="interrupt\IRQTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="mm\FakePool.h" />
-    <ClInclude Include="asychron\FakeAtomic.h" />
     <ClInclude Include="graphic\FakeFont.h" />
     <ClInclude Include="mm\FakePageAllocator.h" />
+    <ClInclude Include="asynchron\FakeAtomic.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
