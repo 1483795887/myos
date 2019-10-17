@@ -1,5 +1,28 @@
 include asm.inc
 
+P_STACKBASE	=	0
+GSREG		=	P_STACKBASE         ;00h
+FSREG		=	GSREG		+ 4     ;04h
+ESREG		=	FSREG		+ 4     ;08h
+DSREG		=	ESREG		+ 4     ;0ch
+EDIREG		=	DSREG		+ 4     ;10h
+ESIREG		=	EDIREG		+ 4     ;14h
+EBPREG		=	ESIREG		+ 4     ;18h
+KERNESPREG  =	EBPREG      + 4     ;1ch
+EBXREG		=	KERNESPREG	+ 4     ;20h
+EDXREG		=	EBXREG		+ 4     ;24h
+ECXREG		=	EDXREG		+ 4     ;28h
+EAXREG		=	ECXREG		+ 4     ;2ch
+INTVEC      =	EAXREG      + 4     ;30h
+ERRORCODE	=	INTVEC		+ 4     ;34h
+EIPREG		=	ERRORCODE	+ 4     ;38h
+CSREG		=	EIPREG		+ 4     ;3ch
+EFLAGSREG	=	CSREG		+ 4     ;40h
+ESPREG		=	EFLAGSREG	+ 4     ;44h
+SSREG		=	ESPREG		+ 4     ;48h     
+
+P_STACKTOP	= SSREG   
+
 .code
 extern _commonIntHandler:proc
 
@@ -106,7 +129,9 @@ commonInt:
     mov fs, ax
     mov gs, ax
 
-    push esp
+    mov eax, esp
+	add eax, P_STACKTOP
+	push eax ;TrapFrame
     call _commonIntHandler
     add esp, 4
 

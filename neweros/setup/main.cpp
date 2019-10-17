@@ -147,7 +147,7 @@ void initMemory() {
     bootParams.font = (PBYTE)DotFontMap;
 
     PageMapper::changePD(pd);
-    CPU::openPageMode();
+    openPageMode();
 }
 
 typedef void(*KernelEntry)(BootParams* bootParams);

@@ -3,12 +3,12 @@ include x86Common.inc
 
 .code
 
-public doOpenPageMode
-public doSetGlobalDescriptorTable
-public doSetInterruptVectorTable
+public openPageMode
+public setGlobalDescriptorTable
+public setInterruptVectorTable
+public halt
 
-
-doOpenPageMode proc C 
+openPageMode proc C 
     push eax
 
     mov	eax, cr0
@@ -17,7 +17,7 @@ doOpenPageMode proc C
 
     pop eax
     ret
-doOpenPageMode endp
+openPageMode endp
 
 ljmp proc   ;eax为跳转目标,bx为段
     mov ds:[setupoffset], eax
@@ -30,7 +30,7 @@ ljmp proc   ;eax为跳转目标,bx为段
     ret
 ljmp endp
 
-doSetGlobalDescriptorTable proc C table
+setGlobalDescriptorTable proc C table
     push eax
     mov eax, table
     mov ds:[GdtAddr], eax
@@ -43,18 +43,21 @@ next:
     add esp, 4
     pop eax
     ret
-doSetGlobalDescriptorTable endp
+setGlobalDescriptorTable endp
 
-doSetInterruptVectorTable proc C table
+setInterruptVectorTable proc C table
     push eax
     mov eax, table
     mov ds:[IdtAddr], eax
     lidt fword ptr ds:[IdtPtr]
     pop eax
     ret
-doSetInterruptVectorTable endp
+setInterruptVectorTable endp
 
-
+halt proc C
+	hlt
+	ret
+halt endp
 
 .data
 

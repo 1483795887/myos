@@ -21,7 +21,7 @@
     <Text Include="setup\build\obji386\Placeholder.txt" />
     <Text Include="kernel\build\obji386\Placeholder.txt" />
     <Text Include="graphic\build\obji386\Placeholder.txt" />
-    <Text Include="klib\i386\CPUA.asm" />
+    <Text Include="klib\i386\CPU.asm" />
   </ItemGroup>
   <ItemGroup>
     <None Include="boot\i386\utils.inc">
@@ -191,6 +191,9 @@
     <ClInclude Include="include\interrupt\IRQ.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="interrupt\UnknownInterrupter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="kernel\main.cpp">
@@ -217,9 +220,6 @@
     <ClCompile Include="klib\delete.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="klib\AtomicC.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="graphic\Graphic.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -230,9 +230,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="graphic\Container.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="klib\CPU.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="mm\BucketPool.cpp">
@@ -281,6 +278,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="interrupt\IRQ.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="interrupt\UnknownInterrupter.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

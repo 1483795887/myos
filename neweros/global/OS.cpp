@@ -28,3 +28,7 @@ void* _cdecl operator new[](SIZE size, Pool* pool) {
     return pool->allocate(size);
 }
 
+/*编译器会给纯虚类也填一个_purecall,平时在CRT中会提供但这里没有,便提供一个*/
+extern "C" int _cdecl _purecall() {
+	return 0;
+}

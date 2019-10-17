@@ -2,9 +2,7 @@
 #include "../types.h"
 #include <mm/PageMapper.h>
 
-class CPU {
-public:
-	static void openPageMode();
-	static void setGlobalDescriptorTable(PBYTE table);
-	static void setInterruptVectorTable(PBYTE table);
-};
+extern "C" void _cdecl openPageMode();
+extern "C" void _cdecl setGlobalDescriptorTable(PBYTE table);
+extern "C" void _cdecl setInterruptVectorTable(PBYTE table);
+extern "C" void _cdecl halt();

@@ -13,12 +13,11 @@ typedef enum {
 	Syscall
 }IntType;
 
-extern "C" void _cdecl commonIntHandler(PBYTE par);
+extern "C" void _cdecl commonIntHandler(TrapFrame* frame);
 
 void initInterrupt();
 void initTrap(PBYTE table);
 void initIOInterrupt(PBYTE table);
 void initSyscall(PBYTE table);
 
-
-DWORD DefaultInterruptHandler(TrapFrame* frame);
+#define MAX_IRQ 256

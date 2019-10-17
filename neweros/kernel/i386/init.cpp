@@ -11,7 +11,7 @@ void initGlobalDescript() {
 	setDescriptor(table, SegUserCode, 0, MAX_MEMORY, SegTypeCode, User);
 	setDescriptor(table, SegUserData, 0, MAX_MEMORY, SegTypeData, User);
 
-	CPU::setGlobalDescriptorTable(table);
+	setGlobalDescriptorTable(table);
 }
 
 void initArch() {

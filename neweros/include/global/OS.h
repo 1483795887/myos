@@ -5,6 +5,7 @@
 #include <mm/PageMapper.h>
 #include <graphic/Graphic.h>
 #include <graphic/Console.h>
+#include <interrupt/IRQ.h>
 
 class OS {
 public:
@@ -18,6 +19,8 @@ public:
 
     PageAllocator* allocator;
     PageMapper* pageMapper;
+
+	IRQ* irqs;
 
     OS() {
         lastStatus = StatusSuccess;
@@ -33,6 +36,5 @@ extern OS* os;
 
 void* _cdecl operator new (SIZE size, Pool* pool);
 void* _cdecl operator new[](SIZE size, Pool* pool);
-
 
 #define New new(os->pool)

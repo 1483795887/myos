@@ -2,11 +2,10 @@
 #include <arch/CPU.h>
 #include <interrupt/Interrrupt.h>
 #include <lib/CString.h>
+#include "UnknownInterrupter.h"
 
-void _cdecl commonIntHandler(PBYTE par) {
-    CString str("theInterruptIsWorking");
-    os->console->print(str.getBuf());
-    while (1);
+void _cdecl commonIntHandler(TrapFrame* frame) {
+	os->irqs[frame->type].handle(frame);
 }
 
 
@@ -19,11 +18,20 @@ DWORD DefaultInterruptHandler(TrapFrame * frame) {
 }
 
 void initInterrupt() {
+
+	os->irqs = New IRQ[MAX_IRQ];
+	Interrupter* unknownInterrupter = New UnknownInterrupter;
+
+	for (int i = 0; i < MAX_IRQ; i++) {
+		os->irqs->setIRQ(i);
+		os->irqs->bindInterrupter(unknownInterrupter);
+	}
+
     PBYTE table = os->allocator->allocPages(0);
 
     initTrap(table);
     initIOInterrupt(table);
     initSyscall(table);
 
-    CPU::setInterruptVectorTable(table);
+    setInterruptVectorTable(table);
 }
